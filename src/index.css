@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.chainslistbtn{
+    position: relative;
+}
+.chainslistdrowdown{
+    position: absolute;
+    top: 80px;
+    min-width: 160px;
+}
