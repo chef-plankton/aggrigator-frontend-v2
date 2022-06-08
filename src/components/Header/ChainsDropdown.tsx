@@ -23,11 +23,11 @@ function ChainsDropdown() {
             className="flex px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
           >
               <img
-            src="https://app.1inch.io/assets/images/network-logos/ethereum.svg"
+            src="https://app.1inch.io/assets/images/network-logos/binance-light_2.svg"
             alt=""
             className="w-5 mr-1"
           />
-            Ethereum
+            BNB Chain
           </a>
         </li>
         <li>
@@ -36,24 +36,11 @@ function ChainsDropdown() {
             className="flex px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
           >
               <img
-            src="https://app.1inch.io/assets/images/network-logos/ethereum.svg"
+            src="https://app.1inch.io/assets/images/network-logos/polygon.svg"
             alt=""
             className="w-5 mr-1"
           />
-            Ethereum
-          </a>
-        </li>
-        <li>
-        <a
-            href="#"
-            className="flex px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-          >
-              <img
-            src="https://app.1inch.io/assets/images/network-logos/ethereum.svg"
-            alt=""
-            className="w-5 mr-1"
-          />
-            Ethereum
+            Polygon
           </a>
         </li>
       </ul>

@@ -9,7 +9,9 @@ import { useWeb3React } from "@web3-react/core";
 import { InjectedConnector } from "@web3-react/injected-connector";
 import { Web3Provider } from "@ethersproject/providers";
 function Header() {
-  const [walletAdress, setWalletAdress] = useState<string | null | undefined>(null);
+  const [walletAdress, setWalletAdress] = useState<string | null | undefined>(
+    null
+  );
   const [toggle, setToggle] = useState(true);
   const toggleMenu = () => {
     setToggle(!toggle);
@@ -21,15 +23,18 @@ function Header() {
   const injectedConnector = new InjectedConnector({
     supportedChainIds: [1, 3, 4, 5, 42],
   });
-  const { chainId, account, activate, active, library } =
+  const { chainId, account, activate, active, library, deactivate } =
     useWeb3React<Web3Provider>();
   const onClick = () => {
     activate(injectedConnector);
   };
+  const onClickForDisconnect = () => {
+    deactivate();
+  };
 
   useEffect(() => {
     setWalletAdress(account);
-  },[account]);
+  }, [account]);
   // End testing
   return (
     <nav className="bg-white shadow-lg z-10">
@@ -49,12 +54,6 @@ function Header() {
                 className="py-4 px-2 text-green-500 border-b-4 border-green-500 font-semibold "
               >
                 Home
-              </Link>
-              <Link
-                to="/2"
-                className="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300"
-              >
-                Services
               </Link>
               <Link
                 to="/3"
@@ -83,8 +82,19 @@ function Header() {
               onClick={onClick}
               className="py-2 px-2 font-medium text-white bg-green-500 rounded hover:bg-green-400 transition duration-300"
             >
-              {walletAdress=== undefined ? "Connect Wallet" : walletAdress}
+              {walletAdress === undefined ? "Connect Wallet" : walletAdress}
             </button>
+
+            {active ? (
+              <button
+                onClick={onClickForDisconnect}
+                className="py-2 px-2 font-medium text-white bg-red-500 rounded hover:bg-red-400 transition duration-300"
+              >
+                Disconnect
+              </button>
+            ) : (
+              ""
+            )}
           </div>
           {/* Mobile menu button */}
 
@@ -158,7 +168,7 @@ function Header() {
               onClick={onClick}
               className="block py-2 px-2 font-medium text-white bg-green-500 hover:bg-green-400 transition duration-300"
             >
-              {walletAdress=== undefined ? "Connect Wallet" : walletAdress}
+              {walletAdress === undefined ? "Connect Wallet" : walletAdress}
             </button>
           </li>
         </ul>
