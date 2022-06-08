@@ -53,24 +53,24 @@ function ToBox() {
         <div>Balance: -</div>
       </div>
       <div className="px-3 py-5 flex justify-between flex-col md:flex-row">
-        <div className="md:w-[50%] w-[100%}">
-          <StyledInput placeholder="0.0" />
+        <div className="md:w-[50%] w-[100%} flex justify-between">
+          <ChangeChainButton
+            imageSrc={
+              "https://app.1inch.io/assets/images/network-logos/ethereum.svg"
+            }
+            coinName={"Ethereum"}
+            chain={"mainnet"}
+          />
+          <ChangeChainButton
+            imageSrc={
+              "https://app.1inch.io/assets/images/network-logos/ethereum.svg"
+            }
+            coinName={"Ethereum"}
+            chain={"mainnet"}
+          />
         </div>
-        <div className="md:w-[50%] w-[100%} flex justify-between mt-[50px] md:mt-0">
-          <ChangeChainButton
-            imageSrc={
-              "https://app.1inch.io/assets/images/network-logos/ethereum.svg"
-            }
-            coinName={"Ethereum"}
-            chain={"mainnet"}
-          />
-          <ChangeChainButton
-            imageSrc={
-              "https://app.1inch.io/assets/images/network-logos/ethereum.svg"
-            }
-            coinName={"Ethereum"}
-            chain={"mainnet"}
-          />
+        <div className="md:w-[50%] w-[100%} mt-[50px] md:mt-0 flex justify-center">
+          <StyledInput placeholder="0.0" />
         </div>
       </div>
     </StyledToBox>

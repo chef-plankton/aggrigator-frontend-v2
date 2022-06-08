@@ -170,6 +170,16 @@ function Header() {
             >
               {walletAdress === undefined ? "Connect Wallet" : walletAdress}
             </button>
+            {active ? (
+              <button
+                onClick={onClickForDisconnect}
+                className="py-2 px-2 font-medium text-white bg-red-500 rounded hover:bg-red-400 transition duration-300"
+              >
+                Disconnect
+              </button>
+            ) : (
+              ""
+            )}
           </li>
         </ul>
       </div>
