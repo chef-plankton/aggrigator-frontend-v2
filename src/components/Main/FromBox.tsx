@@ -9,7 +9,7 @@ const StyledFromBox = styled.div`
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   width: 100%;
-  height: 200px;
+  min-height: 200px;
   margin-bottom: 50px;
   padding: 20px;
   display: flex;
@@ -34,6 +34,9 @@ const StyledInput = styled.input`
   white-space: nowrap;
   overflow: hidden;
   appearance: textfield;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
   &:focus {
     outline: none;
   }
@@ -56,7 +59,7 @@ function FromBox() {
         <div className="md:w-[50%] w-[100%}">
           <StyledInput placeholder="0.0" />
         </div>
-        <div className="md:w-[50%] w-[100%} flex justify-between">
+        <div className="md:w-[50%] w-[100%} flex justify-between mt-[50px] md:mt-0">
           <ChangeChainButton
             imageSrc={
               "https://app.1inch.io/assets/images/network-logos/ethereum.svg"

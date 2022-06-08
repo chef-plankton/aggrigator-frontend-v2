@@ -16,6 +16,9 @@ const StyledButton = styled.div`
   backdrop-filter: blur(30px);
   font-size: 14px;
   cursor: pointer;
+  @media (max-width: 768px) {
+    padding: 10px 15px;
+  }
 `;
 const ChangeChainButton: FC<{
   imageSrc: string;
