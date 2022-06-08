@@ -1,17 +1,19 @@
 import React, { useState } from "react";
-import logoPic from "../../assets/1inch-network-logo-vector.png";
+import logoPic from "../../assets/mainlogo.png";
 import { Link } from "react-router-dom";
 import ArrowDownFont from "../../assets/arrow-down-sign-to-navigate.png";
 import ChainsDropdown from "./ChainsDropdown";
 import Logo from "./Logo";
+import ChainsButton from "./ChainsButton";
 function Header() {
   const [toggle, setToggle] = useState(true);
   const toggleMenu = () => {
     setToggle(!toggle);
+    setDropdown(false);
   };
   const [dropdown, setDropdown] = useState(false);
   return (
-    <nav className="bg-white shadow-lg">
+    <nav className="bg-white shadow-lg z-10">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex justify-between">
           <div className="flex space-x-7">
@@ -51,22 +53,12 @@ function Header() {
           </div>
           {/* Secondary Navbar items */}
           <div className="hidden md:flex items-center space-x-3 ">
-            <button
-              onClick={() => setDropdown(!dropdown)}
-              className="py-2 px-2 font-medium text-gray-500 rounded transition duration-300 flex items-center chainslistbtn"
-            >
-              <img
-                src="https://app.1inch.io/assets/images/network-logos/ethereum.svg"
-                alt=""
-                className="w-5 mr-1"
-              />
-              Ethereum
-              <img
-                src={ArrowDownFont}
-                alt=""
-                className="w-[12px] h-[12px] ml-1 -mb-0.5"
-              />
-            </button>
+            <ChainsButton
+              ArrowDownFont={ArrowDownFont}
+              setDropdown={setDropdown}
+              dropdown={dropdown}
+              setToggle={setToggle}
+            />
             {dropdown ? <ChainsDropdown /> : ""}
             <Link
               to="/24"
@@ -76,7 +68,17 @@ function Header() {
             </Link>
           </div>
           {/* Mobile menu button */}
+
           <div className="md:hidden flex items-center">
+            <div className="md:hidden flex items-center mr-5">
+              <ChainsButton
+                ArrowDownFont={ArrowDownFont}
+                setDropdown={setDropdown}
+                dropdown={dropdown}
+                setToggle={setToggle}
+              />
+              {dropdown ? <ChainsDropdown /> : ""}
+            </div>
             <button
               onClick={toggleMenu}
               className="outline-none mobile-menu-button"
@@ -131,6 +133,14 @@ function Header() {
             >
               Contact Us
             </a>
+          </li>
+          <li>
+            <Link
+              to="/24"
+              className="block py-2 px-2 font-medium text-white bg-green-500 hover:bg-green-400 transition duration-300"
+            >
+              Connect Wallet
+            </Link>
           </li>
         </ul>
       </div>
