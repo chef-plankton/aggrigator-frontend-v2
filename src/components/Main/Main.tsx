@@ -11,7 +11,7 @@ function Main() {
         <ToBox />
         <Link
           to="/24"
-          className="mt-[50px] py-4 w-[100%] text-center font-medium text-lg text-white bg-green-500 rounded hover:bg-green-400 transition duration-300 shadow-[0_8px_32px_rgba(31,38,135,0.37)]"
+          className="mt-[50px] py-4 w-[100%] text-center font-medium text-lg text-white bg-green-500 rounded-[10px] hover:bg-green-400 transition duration-300 shadow-[0_8px_32px_rgba(31,38,135,0.37)]"
         >
           Connect Wallet
         </Link>
