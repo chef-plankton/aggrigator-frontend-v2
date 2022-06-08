@@ -1,17 +1,36 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logoPic from "../../assets/mainlogo.png";
 import { Link } from "react-router-dom";
 import ArrowDownFont from "../../assets/arrow-down-sign-to-navigate.png";
 import ChainsDropdown from "./ChainsDropdown";
 import Logo from "./Logo";
 import ChainsButton from "./ChainsButton";
+import { useWeb3React } from "@web3-react/core";
+import { InjectedConnector } from "@web3-react/injected-connector";
+import { Web3Provider } from "@ethersproject/providers";
 function Header() {
+  const [walletAdress, setWalletAdress] = useState<string | null | undefined>(null);
   const [toggle, setToggle] = useState(true);
   const toggleMenu = () => {
     setToggle(!toggle);
     setDropdown(false);
   };
   const [dropdown, setDropdown] = useState(false);
+
+  // testing
+  const injectedConnector = new InjectedConnector({
+    supportedChainIds: [1, 3, 4, 5, 42],
+  });
+  const { chainId, account, activate, active, library } =
+    useWeb3React<Web3Provider>();
+  const onClick = () => {
+    activate(injectedConnector);
+  };
+
+  useEffect(() => {
+    setWalletAdress(account);
+  },[account]);
+  // End testing
   return (
     <nav className="bg-white shadow-lg z-10">
       <div className="max-w-6xl mx-auto px-4">
@@ -60,12 +79,12 @@ function Header() {
               setToggle={setToggle}
             />
             {dropdown ? <ChainsDropdown /> : ""}
-            <Link
-              to="/24"
+            <button
+              onClick={onClick}
               className="py-2 px-2 font-medium text-white bg-green-500 rounded hover:bg-green-400 transition duration-300"
             >
-              Connect Wallet
-            </Link>
+              {walletAdress=== undefined ? "Connect Wallet" : walletAdress}
+            </button>
           </div>
           {/* Mobile menu button */}
 
@@ -135,12 +154,12 @@ function Header() {
             </a>
           </li>
           <li>
-            <Link
-              to="/24"
+            <button
+              onClick={onClick}
               className="block py-2 px-2 font-medium text-white bg-green-500 hover:bg-green-400 transition duration-300"
             >
-              Connect Wallet
-            </Link>
+              {walletAdress=== undefined ? "Connect Wallet" : walletAdress}
+            </button>
           </li>
         </ul>
       </div>
