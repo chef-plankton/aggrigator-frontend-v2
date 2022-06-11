@@ -6,7 +6,8 @@ import MetaMaskCard from './components/ConnectWallets/connectorCards/MetaMaskCar
 import NetworkCard from './components/ConnectWallets/connectorCards/NetworkCard'
 import WalletConnectCard from './components/ConnectWallets/connectorCards/WalletConnectCard'
 import ProviderExample from './components/ConnectWallets/ProviderExample'
-function App() {
+function App() {console.log(process.env.REACT_APP_INFURA_KEY);
+
   return (
     <>
       <Header />
