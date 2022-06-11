@@ -5,7 +5,7 @@ import ArrowDownFont from "../../assets/arrow-down-sign-to-navigate.png";
 import ChainsDropdown from "./ChainsDropdown";
 import Logo from "./Logo";
 import ChainsButton from "./ChainsButton";
-
+import ConnectWalletModal from "../Modals/ConnectWalletModal";
 function Header() {
   const [walletAdress, setWalletAdress] = useState<string | null | undefined>(
     null
@@ -16,7 +16,11 @@ function Header() {
     setDropdown(false);
   };
   const [dropdown, setDropdown] = useState(false);
-
+  // Modal State
+  const [modalIsOpen, setIsOpen] = React.useState(false);
+  const openmodaaal = () =>{
+    setIsOpen(true)
+  }
   return (
     <nav className="bg-white shadow-lg z-10">
       <div className="max-w-6xl mx-auto px-4">
@@ -60,11 +64,12 @@ function Header() {
             />
             {dropdown ? <ChainsDropdown /> : ""}
             <button
+              onClick={openmodaaal}
               className="py-2 px-2 font-medium text-white bg-green-500 rounded hover:bg-green-400 transition duration-300"
             >
               {walletAdress === undefined ? "Connect Wallet" : walletAdress}
             </button>
-
+            <ConnectWalletModal modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} />
             {/* {active ? (
               <button
                 onClick={onClickForDisconnect}
@@ -151,7 +156,7 @@ function Header() {
             </button>
             {/* {active ? (
               <button
-                onClick={onClickForDisconnect}
+                // onClick={onClickForDisconnect}
                 className="py-2 px-2 font-medium text-white bg-red-500 rounded hover:bg-red-400 transition duration-300"
               >
                 Disconnect
