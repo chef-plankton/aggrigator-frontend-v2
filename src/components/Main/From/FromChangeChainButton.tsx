@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import styled from "styled-components";
-import ArrowDownFont from "../../assets/arrow-down-sign-to-navigate.png";
+import ArrowDownFont from "../../../assets/arrow-down-sign-to-navigate.png";
 const StyledButton = styled.div`
   width: 50%;
   height: 100%;
@@ -20,7 +20,7 @@ const StyledButton = styled.div`
     padding: 10px 15px;
   }
 `;
-const ChangeChainButton: FC<{
+const FromChangeChainButton: FC<{
   imageSrc: string;
   coinName: string;
   chain: string;
@@ -41,4 +41,4 @@ const ChangeChainButton: FC<{
   );
 };
 
-export default ChangeChainButton;
+export default FromChangeChainButton;

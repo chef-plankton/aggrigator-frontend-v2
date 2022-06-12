@@ -1,6 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import ChangeChainButton from "./ChangeChainButton";
+import ToBalance from "./ToBalance";
+import ToChangeChainButton from "./ToChangeChainButton";
+import ToChangeNetworkButton from "./ToChangeNetworkButton";
+import ToInput from "./ToInput";
 const StyledToBox = styled.div`
   background: rgba(255, 255, 255, 0.25);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
@@ -16,52 +19,23 @@ const StyledToBox = styled.div`
   flex-direction: column;
   justify-content: space-between;
 `;
-const StyledInput = styled.input`
-  position: relative;
-  text-overflow: ellipsis;
-  font-weight: 400;
-  font-size: 44px;
-  padding: 0px;
-  display: block;
-  color: "palevioletred";
-  background: none;
-  border: none;
-  outline: none;
-  border-bottom: 1px solid #757575;
-  border-radius: 3px;
-  width: 90%;
-  height: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  appearance: textfield;
-  &:focus {
-    outline: none;
-  }
-  ::placeholder,
-  ::-webkit-input-placeholder {
-    font-size: 50px;
-  }
-  :-ms-input-placeholder {
-    font-size: 50px;
-  }
-`;
 function ToBox() {
   return (
     <StyledToBox>
       <div className="px-3 py-1 w-[100%] flex justify-between">
         <div>To</div>
-        <div>Balance: -</div>
+        <ToBalance />
       </div>
       <div className="px-3 py-5 flex justify-between flex-col md:flex-row">
         <div className="md:w-[50%] w-[100%} flex justify-between">
-          <ChangeChainButton
+          <ToChangeNetworkButton
             imageSrc={
               "https://app.1inch.io/assets/images/network-logos/ethereum.svg"
             }
             coinName={"Ethereum"}
             chain={"mainnet"}
           />
-          <ChangeChainButton
+          <ToChangeChainButton
             imageSrc={
               "https://app.1inch.io/assets/images/network-logos/ethereum.svg"
             }
@@ -70,7 +44,7 @@ function ToBox() {
           />
         </div>
         <div className="md:w-[50%] w-[100%} mt-[50px] md:mt-0 flex justify-center">
-          <StyledInput placeholder="0.0" />
+          <ToInput />
         </div>
       </div>
     </StyledToBox>

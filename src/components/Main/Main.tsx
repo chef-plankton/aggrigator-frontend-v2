@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import FromBox from "./FromBox";
-import ToBox from "./ToBox";
+import FromBox from "./From/FromBox";
+import ToBox from "./To/ToBox";
 
 function Main() {
   return (
