@@ -44,6 +44,7 @@ export function getAddChainParameters(chainId: number): AddEthereumChainParamete
 }
 
 export const CHAINS: { [chainId: number]: BasicChainInformation | ExtendedChainInformation } = {
+  // Ethereum
   1: {
     urls: [
       process.env.REACT_APP_INFURA_KEY ? `https://mainnet.infura.io/v3/${process.env.REACT_APP_INFURA_KEY}` : undefined,

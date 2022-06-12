@@ -42,6 +42,7 @@ export default function WalletConnectCard() {
       accounts={accounts}
       provider={provider}
       ENSNames={ENSNames}
+      imageSrc={"https://app.uniswap.org/static/media/walletConnectIcon.304e3277.svg"}
     />
   )
 }

@@ -34,6 +34,7 @@ export default function NetworkCard() {
       accounts={accounts}
       provider={provider}
       ENSNames={ENSNames}
+      imageSrc=""
     />
   )
 }

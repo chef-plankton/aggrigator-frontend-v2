@@ -34,6 +34,7 @@ export default function MetaMaskCard() {
       accounts={accounts}
       provider={provider}
       ENSNames={ENSNames}
+      imageSrc={"https://app.uniswap.org/static/media/metamask.02e3ec27.png"}
     />
   )
 }
