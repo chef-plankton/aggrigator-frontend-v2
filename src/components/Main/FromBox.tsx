@@ -1,5 +1,7 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
+import { RootState } from "../../app/store";
 import ChangeChainButton from "./ChangeChainButton";
 const StyledFromBox = styled.div`
   background: rgba(255, 255, 255, 0.25);
@@ -49,6 +51,7 @@ const StyledInput = styled.input`
   }
 `;
 function FromBox() {
+  const chainId = useSelector(({ chains }: RootState) => chains.value);
   return (
     <StyledFromBox>
       <div className="px-3 py-1 w-[100%] flex justify-between">
@@ -59,10 +62,22 @@ function FromBox() {
         
         <div className="md:w-[50%] w-[100%} flex justify-between ">
           <ChangeChainButton
-            imageSrc={
-              "https://app.1inch.io/assets/images/network-logos/ethereum.svg"
-            }
-            coinName={"Ethereum"}
+            imageSrc={`${
+              chainId === 1
+                ? "https://app.1inch.io/assets/images/network-logos/ethereum.svg"
+                : ""
+            }${
+              chainId === 56
+                ? "https://app.1inch.io/assets/images/network-logos/binance-light_2.svg"
+                : ""
+            }${
+              chainId === 137
+                ? "https://app.1inch.io/assets/images/network-logos/polygon.svg"
+                : ""
+            }`}
+            coinName={`${chainId === 1 ? "Ethereum" : ""}
+            ${chainId === 56 ? "BNB Chain" : ""}
+            ${chainId === 137 ? "Polygon" : ""}`}
             chain={"mainnet"}
           />
           <ChangeChainButton
