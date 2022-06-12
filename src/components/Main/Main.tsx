@@ -6,7 +6,7 @@ import ToBox from "./ToBox";
 function Main() {
   return (
     <main className="bg-slate-100">
-      <div className="max-w-6xl mx-auto px-4 min-h-screen flex flex-col items-center py-[100px]">
+      <div className="max-w-6xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[100px] pt-[50px]">
         <FromBox />
         <ToBox />
         <Link

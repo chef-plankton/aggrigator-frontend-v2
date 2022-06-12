@@ -5,7 +5,7 @@ import ArrowDownFont from "../../assets/arrow-down-sign-to-navigate.png";
 import ChainsDropdown from "./ChainsDropdown";
 import Logo from "./Logo";
 import ChainsButton from "./ChainsButton";
-import ConnectWalletModal from "../../Modals/ConnectWalletModal";
+import ConnectWalletModal from "../Modals/ConnectWalletModal";
 function Header() {
   const [walletAdress, setWalletAdress] = useState<string | null | undefined>(
     null

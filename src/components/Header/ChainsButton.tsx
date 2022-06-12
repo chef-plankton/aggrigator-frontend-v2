@@ -1,5 +1,6 @@
 import React, { FC } from "react";
-
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
 const ChainsButton: FC<{
   ArrowDownFont: string;
   setDropdown: (value: boolean) => void;
@@ -10,17 +11,32 @@ const ChainsButton: FC<{
     setDropdown(!dropdown);
     setToggle(true);
   };
+  const chainId = useSelector(({ chains }: RootState) => chains.value);
   return (
     <button
       onClick={toggleChains}
       className="py-2 px-2 font-medium text-gray-500 rounded transition duration-300 flex items-center chainslistbtn"
     >
       <img
-        src="https://app.1inch.io/assets/images/network-logos/ethereum.svg"
+        src={`${
+          chainId === 1
+            ? "https://app.1inch.io/assets/images/network-logos/ethereum.svg"
+            : ""
+        }${
+          chainId === 56
+            ? "https://app.1inch.io/assets/images/network-logos/binance-light_2.svg"
+            : ""
+        }${
+          chainId === 137
+            ? "https://app.1inch.io/assets/images/network-logos/polygon.svg"
+            : ""
+        }`}
         alt=""
         className="w-5 mr-1"
       />
-      Ethereum
+      {chainId === 1 ? "Ethereum" : ""}
+      {chainId === 56 ? "BNB Chain" : ""}
+      {chainId === 137 ? "Polygon" : ""}
       <img
         src={ArrowDownFont}
         alt=""
