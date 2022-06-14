@@ -3,7 +3,7 @@ interface ChainsState {
   value: number
 }
 const initialState: ChainsState = {
-  value: 1,
+  value: 56,
 }
 export const counterSlice = createSlice({
   name: 'chains',

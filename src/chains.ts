@@ -44,14 +44,14 @@ export function getAddChainParameters(chainId: number): AddEthereumChainParamete
 }
 
 export const CHAINS: { [chainId: number]: BasicChainInformation | ExtendedChainInformation } = {
-  // Ethereum
-  1: {
+  // BSC
+  56: {
     urls: [
       process.env.REACT_APP_INFURA_KEY ? `https://mainnet.infura.io/v3/${process.env.REACT_APP_INFURA_KEY}` : undefined,
       process.env.REACT_APP_ALCHEMY_KEY ? `https://eth-mainnet.alchemyapi.io/v2/${process.env.REACT_APP_ALCHEMY_KEY}` : undefined,
       'https://cloudflare-eth.com',
     ].filter((url) => url !== undefined),
-    name: 'Mainnet',
+    name: 'BSC Mainnet',
   },
   // Polygon
   137: {

@@ -6,21 +6,31 @@ import ChainsDropdown from "./ChainsDropdown";
 import Logo from "./Logo";
 import ChainsButton from "./ChainsButton";
 import ConnectWalletModal from "../Modals/ConnectWalletModal";
+import ConnectWalletButton from "./ConnectWalletButton";
+import ConnectingToWalletModal from "./../Modals/ConnectingToWalletModal";
+import { hooks, metaMask } from "../../connectors/metaMask";
 function Header() {
-  const [walletAdress, setWalletAdress] = useState<string | null | undefined>(
-    null
-  );
   const [toggle, setToggle] = useState(true);
   const toggleMenu = () => {
     setToggle(!toggle);
     setDropdown(false);
   };
   const [dropdown, setDropdown] = useState(false);
-  // Modal State
-  const [modalIsOpen, setIsOpen] = React.useState(false);
-  const openmodaaal = () => {
-    setIsOpen(true);
-  };
+  // ConnectWalletModal State
+  const [connectWalletModalIsOpen, setConnectWalletModalIsOpen] =
+    useState(false);
+  // ConnectingWalletModal State
+  const {
+    useChainId,
+    useAccounts,
+    useIsActivating,
+    useIsActive,
+    useProvider,
+    useENSNames,
+  } = hooks;
+  const isActivating = useIsActivating();
+  const [connectingWalletModalIsOpen, setConnectingWalletModalIsOpen] =
+    useState(false);
   return (
     <nav className="bg-white shadow-lg z-10">
       <div className="max-w-6xl mx-auto px-4">
@@ -40,18 +50,6 @@ function Header() {
               >
                 Home
               </Link>
-              <Link
-                to="/3"
-                className="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300"
-              >
-                About
-              </Link>
-              <Link
-                to="/4"
-                className="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300"
-              >
-                Contact Us
-              </Link>
             </div>
           </div>
           {/* Secondary Navbar items */}
@@ -63,29 +61,24 @@ function Header() {
               setToggle={setToggle}
             />
             {dropdown ? <ChainsDropdown /> : ""}
-            <button
-              onClick={openmodaaal}
-              className="py-2 px-2 font-medium text-white bg-green-500 rounded hover:bg-green-400 transition duration-300"
-            >
-              {walletAdress === undefined ? "Connect Wallet" : walletAdress}
-            </button>
-            <ConnectWalletModal
-              modalIsOpen={modalIsOpen}
-              setIsOpen={setIsOpen}
+            <ConnectWalletButton
+              setConnectWalletModalIsOpen={setConnectWalletModalIsOpen}
             />
-            {/* {active ? (
-              <button
-                onClick={onClickForDisconnect}
-                className="py-2 px-2 font-medium text-white bg-red-500 rounded hover:bg-red-400 transition duration-300"
-              >
-                Disconnect
-              </button>
-            ) : (
-              ""
-            )} */}
+            <ConnectWalletModal
+              connectWalletModalIsOpen={connectWalletModalIsOpen}
+              setConnectWalletModalIsOpen={setConnectWalletModalIsOpen}
+            />
           </div>
-          {/* Mobile menu button */}
+          {isActivating ? (
+            <ConnectingToWalletModal
+              connectingWalletModalIsOpen={connectingWalletModalIsOpen}
+              setConnectingWalletModalIsOpen={setConnectingWalletModalIsOpen}
+            />
+          ) : (
+            ""
+          )}
 
+          {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
             <div className="md:hidden flex items-center mr-5">
               <ChainsButton
@@ -151,21 +144,7 @@ function Header() {
               Contact Us
             </a>
           </li>
-          <li>
-            <button className="block py-2 px-2 font-medium text-white bg-green-500 hover:bg-green-400 transition duration-300">
-              {walletAdress === undefined ? "Connect Wallet" : walletAdress}
-            </button>
-            {/* {active ? (
-              <button
-                // onClick={onClickForDisconnect}
-                className="py-2 px-2 font-medium text-white bg-red-500 rounded hover:bg-red-400 transition duration-300"
-              >
-                Disconnect
-              </button>
-            ) : (
-              ""
-            )} */}
-          </li>
+          <li></li>
         </ul>
       </div>
     </nav>
