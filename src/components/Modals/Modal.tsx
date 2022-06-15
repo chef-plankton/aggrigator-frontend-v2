@@ -2,8 +2,10 @@ import React, { FC } from "react";
 import Modal from "react-modal";
 import CloseIcon from "../../assets/img/close.png";
 import MetaMaskCard from "../Wallets/MetaMaskCard";
-import DisconnectMetaMaskWallet from "../Wallets/DisconnectMetaMaskWallet";
+import DisconnectWallet from "../Wallets/DisconnectWallet";
 import WalletConnectCard from "../Wallets/WalletConnectCard";
+import { hooks as metamaskhooks } from "../../connectors/metaMask";
+import { hooks as walletconnecthooks } from "../../connectors/walletConnect";
 const customStyles = {
   overlay: {
     backgroundColor: "rgba(0, 0, 0, 0.3)",
@@ -36,6 +38,10 @@ function ConnectWalletModal({
   connectWalletModalIsOpen,
   setConnectWalletModalIsOpen,
 }: Props) {
+  const { useIsActive: metamaskUseIsActive } = metamaskhooks;
+  const metamaskIsActive = metamaskUseIsActive();
+  const { useIsActive: walletconnectUseIsActive } = walletconnecthooks;
+  const walletconnectIsActive = walletconnectUseIsActive();
   function closeModal() {
     setConnectWalletModalIsOpen(false);
   }
@@ -61,8 +67,14 @@ function ConnectWalletModal({
           </div>
         </div>
         <div className='flex flex-col w-[100%]'>
-          <MetaMaskCard />
-          <WalletConnectCard />
+          {metamaskIsActive || walletconnectIsActive ? (
+            <DisconnectWallet />
+          ) : (
+            <>
+              <MetaMaskCard />
+              <WalletConnectCard />
+            </>
+          )}
         </div>
         <div className='w-[100%] border-[1px] rounded-xl px-[12px] py-[15px] bg-[#edeef2] mt-2'>
           <p className='text-[14px]'>
