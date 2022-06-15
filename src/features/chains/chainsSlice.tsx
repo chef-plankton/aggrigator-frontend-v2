@@ -1,21 +1,21 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 interface ChainsState {
-  value: number
+  value: number;
 }
 const initialState: ChainsState = {
   value: 56,
-}
-export const counterSlice = createSlice({
-  name: 'chains',
+};
+export const chainsSlice = createSlice({
+  name: "chains",
   initialState,
   reducers: {
-    changeChain: (state,action) => {
-      state.value = action.payload
+    changeChain: (state, action) => {
+      state.value = action.payload;
     },
   },
-})
+});
 
 // Action creators are generated for each case reducer function
-export const { changeChain } = counterSlice.actions
+export const { changeChain } = chainsSlice.actions;
 
-export default counterSlice.reducer
+export default chainsSlice.reducer;

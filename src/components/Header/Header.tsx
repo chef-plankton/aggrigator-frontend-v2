@@ -3,12 +3,12 @@ import logoPic from "../../assets/mainlogo.png";
 import { Link } from "react-router-dom";
 import ArrowDownFont from "../../assets/arrow-down-sign-to-navigate.png";
 import ChainsDropdown from "./ChainsDropdown";
-import Logo from "./Logo";
+import Logo from "./Logo/Logo";
 import ChainsButton from "./ChainsButton";
-import ConnectWalletModal from "../Modals/ConnectWalletModal";
+import ConnectWalletModal from "../Modals/Modal";
 import ConnectWalletButton from "./ConnectWalletButton";
-import ConnectingToWalletModal from "./../Modals/ConnectingToWalletModal";
 import { hooks, metaMask } from "../../connectors/metaMask";
+import Menu from "./Menu";
 function Header() {
   const [toggle, setToggle] = useState(true);
   const toggleMenu = () => {
@@ -29,8 +29,6 @@ function Header() {
     useENSNames,
   } = hooks;
   const isActivating = useIsActivating();
-  const [connectingWalletModalIsOpen, setConnectingWalletModalIsOpen] =
-    useState(false);
   return (
     <nav className="bg-white shadow-lg z-10">
       <div className="max-w-6xl mx-auto px-4">
@@ -43,14 +41,7 @@ function Header() {
               </Link>
             </div>
             {/* Primary Navbar items */}
-            <div className="hidden md:flex items-center space-x-1">
-              <Link
-                to="/1"
-                className="py-4 px-2 text-green-500 border-b-4 border-green-500 font-semibold "
-              >
-                Home
-              </Link>
-            </div>
+            <Menu />
           </div>
           {/* Secondary Navbar items */}
           <div className="hidden md:flex items-center space-x-3 ">
@@ -69,14 +60,11 @@ function Header() {
               setConnectWalletModalIsOpen={setConnectWalletModalIsOpen}
             />
           </div>
-          {isActivating ? (
-            <ConnectingToWalletModal
-              connectingWalletModalIsOpen={connectingWalletModalIsOpen}
-              setConnectingWalletModalIsOpen={setConnectingWalletModalIsOpen}
-            />
+          {/* {isActivating ? (
+            
           ) : (
             ""
-          )}
+          )} */}
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
