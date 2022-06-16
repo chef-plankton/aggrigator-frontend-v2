@@ -1,9 +1,9 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { hooks, metaMask } from "../../connectors/metaMask";
-interface Props {
-  setConnectWalletModalIsOpen: (value: boolean) => void;
-  }
-function ConnectWalletButton({setConnectWalletModalIsOpen} :Props) {
+import { changeModalStatus } from "../../features/modals/modalsSlice";
+
+function ConnectWalletButton() {
   const {
     useChainId,
     useAccounts,
@@ -14,10 +14,11 @@ function ConnectWalletButton({setConnectWalletModalIsOpen} :Props) {
   } = hooks;
   const isActive = useIsActive();
   const accounts = useAccounts();
+  const dispatch = useDispatch();
   return (
     <button
-      onClick={() => setConnectWalletModalIsOpen(true)}
-      className="py-2 px-2 font-medium text-white bg-green-500 rounded hover:bg-green-400 transition duration-300"
+      onClick={() => dispatch(changeModalStatus(true))}
+      className='py-2 px-2 font-medium text-white bg-green-500 rounded hover:bg-green-400 transition duration-300'
     >
       {isActive ? accounts : "Connnect Wallet"}
     </button>

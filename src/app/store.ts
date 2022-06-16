@@ -1,8 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import chainsReducer from "../features/chains/chainsSlice";
+import modalsReducer from "../features/modals/modalsSlice";
 const store = configureStore({
   reducer: {
     chains: chainsReducer,
+    modals: modalsReducer
   },
 });
 

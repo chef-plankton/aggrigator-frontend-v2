@@ -5,10 +5,10 @@ import ArrowDownFont from "../../assets/arrow-down-sign-to-navigate.png";
 import ChainsDropdown from "./ChainsDropdown";
 import Logo from "./Logo/Logo";
 import ChainsButton from "./ChainsButton";
-import ConnectWalletModal from "../Modals/Modal";
 import ConnectWalletButton from "./ConnectWalletButton";
 import { hooks, metaMask } from "../../connectors/metaMask";
 import Menu from "./Menu";
+import GeneralModal from "../Modals/GeneralModal";
 function Header() {
   const [toggle, setToggle] = useState(true);
   const toggleMenu = () => {
@@ -30,13 +30,13 @@ function Header() {
   } = hooks;
   const isActivating = useIsActivating();
   return (
-    <nav className="bg-white shadow-lg z-10">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="flex justify-between">
-          <div className="flex space-x-7">
+    <nav className='bg-white shadow-lg z-10'>
+      <div className='max-w-6xl mx-auto px-4'>
+        <div className='flex justify-between'>
+          <div className='flex space-x-7'>
             <div>
               {/* Website Logo */}
-              <Link to="/" className="flex items-center py-4 px-2">
+              <Link to='/' className='flex items-center py-4 px-2'>
                 <Logo logoPic={logoPic} />
               </Link>
             </div>
@@ -44,7 +44,7 @@ function Header() {
             <Menu />
           </div>
           {/* Secondary Navbar items */}
-          <div className="hidden md:flex items-center space-x-3 ">
+          <div className='hidden md:flex items-center space-x-3 '>
             <ChainsButton
               ArrowDownFont={ArrowDownFont}
               setDropdown={setDropdown}
@@ -52,13 +52,8 @@ function Header() {
               setToggle={setToggle}
             />
             {dropdown ? <ChainsDropdown /> : ""}
-            <ConnectWalletButton
-              setConnectWalletModalIsOpen={setConnectWalletModalIsOpen}
-            />
-            <ConnectWalletModal
-              connectWalletModalIsOpen={connectWalletModalIsOpen}
-              setConnectWalletModalIsOpen={setConnectWalletModalIsOpen}
-            />
+            <ConnectWalletButton />
+            <GeneralModal />
           </div>
           {/* {isActivating ? (
             
@@ -67,8 +62,8 @@ function Header() {
           )} */}
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
-            <div className="md:hidden flex items-center mr-5">
+          <div className='md:hidden flex items-center'>
+            <div className='md:hidden flex items-center mr-5'>
               <ChainsButton
                 ArrowDownFont={ArrowDownFont}
                 setDropdown={setDropdown}
@@ -79,19 +74,19 @@ function Header() {
             </div>
             <button
               onClick={toggleMenu}
-              className="outline-none mobile-menu-button"
+              className='outline-none mobile-menu-button'
             >
               <svg
-                className=" w-6 h-6 text-gray-500 hover:text-green-500 "
-                x-show="!showMenu"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+                className=' w-6 h-6 text-gray-500 hover:text-green-500 '
+                x-show='!showMenu'
+                fill='none'
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth='2'
+                viewBox='0 0 24 24'
+                stroke='currentColor'
               >
-                <path d="M4 6h16M4 12h16M4 18h16"></path>
+                <path d='M4 6h16M4 12h16M4 18h16'></path>
               </svg>
             </button>
           </div>
@@ -99,35 +94,35 @@ function Header() {
       </div>
       {/* mobile menu */}
       <div className={`${toggle ? "hidden" : ""} mobile-menu`}>
-        <ul className="">
-          <li className="active">
+        <ul className=''>
+          <li className='active'>
             <a
-              href="index.html"
-              className="block text-sm px-2 py-4 text-white bg-green-500 font-semibold"
+              href='index.html'
+              className='block text-sm px-2 py-4 text-white bg-green-500 font-semibold'
             >
               Home
             </a>
           </li>
           <li>
             <a
-              href="#services"
-              className="block text-sm px-2 py-4 hover:bg-green-500 transition duration-300"
+              href='#services'
+              className='block text-sm px-2 py-4 hover:bg-green-500 transition duration-300'
             >
               Services
             </a>
           </li>
           <li>
             <a
-              href="#about"
-              className="block text-sm px-2 py-4 hover:bg-green-500 transition duration-300"
+              href='#about'
+              className='block text-sm px-2 py-4 hover:bg-green-500 transition duration-300'
             >
               About
             </a>
           </li>
           <li>
             <a
-              href="#contact"
-              className="block text-sm px-2 py-4 hover:bg-green-500 transition duration-300"
+              href='#contact'
+              className='block text-sm px-2 py-4 hover:bg-green-500 transition duration-300'
             >
               Contact Us
             </a>

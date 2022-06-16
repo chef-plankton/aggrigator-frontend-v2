@@ -6,6 +6,10 @@ import DisconnectWallet from "../Wallets/DisconnectWallet";
 import WalletConnectCard from "../Wallets/WalletConnectCard";
 import { hooks as metamaskhooks } from "../../connectors/metaMask";
 import { hooks as walletconnecthooks } from "../../connectors/walletConnect";
+import { changeModalStatus } from "../../features/modals/modalsSlice";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
 const customStyles = {
   overlay: {
     backgroundColor: "rgba(0, 0, 0, 0.3)",
@@ -30,26 +34,21 @@ const customStyles = {
 };
 
 Modal.setAppElement("#root");
-interface Props {
-  connectWalletModalIsOpen: boolean;
-  setConnectWalletModalIsOpen: (value: boolean) => void;
-}
-function ConnectWalletModal({
-  connectWalletModalIsOpen,
-  setConnectWalletModalIsOpen,
-}: Props) {
+
+function GeneralModal() {
+  const dispatch = useDispatch();
+  const generalModal = useSelector(
+    ({ modals }: RootState) => modals.generalModal
+  );
   const { useIsActive: metamaskUseIsActive } = metamaskhooks;
   const metamaskIsActive = metamaskUseIsActive();
   const { useIsActive: walletconnectUseIsActive } = walletconnecthooks;
   const walletconnectIsActive = walletconnectUseIsActive();
-  function closeModal() {
-    setConnectWalletModalIsOpen(false);
-  }
   return (
     <div>
       <Modal
-        isOpen={connectWalletModalIsOpen}
-        onRequestClose={closeModal}
+        isOpen={generalModal}
+        onRequestClose={() => dispatch(changeModalStatus(false))}
         style={customStyles}
         contentLabel='Example Modal'
       >
@@ -61,7 +60,7 @@ function ConnectWalletModal({
             <img
               src={CloseIcon}
               alt=''
-              onClick={closeModal}
+              onClick={() => dispatch(changeModalStatus(false))}
               className='cursor-pointer w-[20px]'
             />
           </div>
@@ -87,4 +86,4 @@ function ConnectWalletModal({
     </div>
   );
 }
-export default ConnectWalletModal;
+export default GeneralModal;
