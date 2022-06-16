@@ -47,7 +47,7 @@ const ChainsButton: FC<{
           className='w-[12px] h-[12px] ml-1 -mb-0.5'
         />
       </button>
-      <ReactTooltip id='chainsbutton' type='info' effect='solid'>
+      <ReactTooltip id='chainsbutton' type='info' effect='solid' place='bottom'>
         <span>Select your network</span>
       </ReactTooltip>
     </>
