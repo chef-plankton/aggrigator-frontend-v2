@@ -8,7 +8,6 @@ import ChainsButton from "./ChainsButton";
 import ConnectWalletButton from "./ConnectWalletButton";
 import { hooks, metaMask } from "../../connectors/metaMask";
 import Menu from "./Menu";
-import GeneralModal from "../Modals/GeneralModal";
 function Header() {
   const [toggle, setToggle] = useState(true);
   const toggleMenu = () => {
@@ -16,10 +15,7 @@ function Header() {
     setDropdown(false);
   };
   const [dropdown, setDropdown] = useState(false);
-  // ConnectWalletModal State
-  const [connectWalletModalIsOpen, setConnectWalletModalIsOpen] =
-    useState(false);
-  // ConnectingWalletModal State
+
   const {
     useChainId,
     useAccounts,
@@ -35,8 +31,8 @@ function Header() {
         <div className='flex justify-between'>
           <div className='flex space-x-7'>
             <div>
-              {/* Website Logo */}
               <Link to='/' className='flex items-center py-4 px-2'>
+                {/* Main Menu Logo */}
                 <Logo logoPic={logoPic} />
               </Link>
             </div>
@@ -45,22 +41,19 @@ function Header() {
           </div>
           {/* Secondary Navbar items */}
           <div className='hidden md:flex items-center space-x-3 '>
+            {/* Chains Button Dropdown */}
             <ChainsButton
               ArrowDownFont={ArrowDownFont}
               setDropdown={setDropdown}
               dropdown={dropdown}
               setToggle={setToggle}
             />
+            {/* Check showing dropdown */}
             {dropdown ? <ChainsDropdown /> : ""}
-            <ConnectWalletButton />
-            <GeneralModal />
-          </div>
-          {/* {isActivating ? (
-            
-          ) : (
-            ""
-          )} */}
 
+            {/* Connect wallet button */}
+            <ConnectWalletButton />
+          </div>
           {/* Mobile menu button */}
           <div className='md:hidden flex items-center'>
             <div className='md:hidden flex items-center mr-5'>

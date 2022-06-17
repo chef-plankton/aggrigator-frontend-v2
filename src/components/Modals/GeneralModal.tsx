@@ -1,15 +1,10 @@
 import React, { FC } from "react";
 import Modal from "react-modal";
-import CloseIcon from "../../assets/img/close.png";
-import MetaMaskCard from "../Wallets/MetaMaskCard";
-import DisconnectWallet from "../Wallets/DisconnectWallet";
-import WalletConnectCard from "../Wallets/WalletConnectCard";
-import { hooks as metamaskhooks } from "../../connectors/metaMask";
-import { hooks as walletconnecthooks } from "../../connectors/walletConnect";
 import { changeModalStatus } from "../../features/modals/modalsSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
+import ConnectWalletModal from "./ConnectWalletModal";
 const customStyles = {
   overlay: {
     backgroundColor: "rgba(0, 0, 0, 0.3)",
@@ -40,48 +35,19 @@ function GeneralModal() {
   const generalModal = useSelector(
     ({ modals }: RootState) => modals.generalModal
   );
-  const { useIsActive: metamaskUseIsActive } = metamaskhooks;
-  const metamaskIsActive = metamaskUseIsActive();
-  const { useIsActive: walletconnectUseIsActive } = walletconnecthooks;
-  const walletconnectIsActive = walletconnectUseIsActive();
+  const connectWalletModal = useSelector(
+    ({ modals }: RootState) => modals.connectWalletModal
+  );
+
   return (
     <div>
       <Modal
         isOpen={generalModal}
         onRequestClose={() => dispatch(changeModalStatus(false))}
         style={customStyles}
-        contentLabel='Example Modal'
+        contentLabel='General Modal'
       >
-        <div className='flex justify-between mb-5'>
-          <div>
-            <h4 className='font-bold'>Connect a wallet</h4>
-          </div>
-          <div>
-            <img
-              src={CloseIcon}
-              alt=''
-              onClick={() => dispatch(changeModalStatus(false))}
-              className='cursor-pointer w-[20px]'
-            />
-          </div>
-        </div>
-        <div className='flex flex-col w-[100%]'>
-          {metamaskIsActive || walletconnectIsActive ? (
-            <DisconnectWallet />
-          ) : (
-            <>
-              <MetaMaskCard />
-              <WalletConnectCard />
-            </>
-          )}
-        </div>
-        <div className='w-[100%] border-[1px] rounded-xl px-[12px] py-[15px] bg-[#edeef2] mt-2'>
-          <p className='text-[14px]'>
-            By connecting a wallet, you agree to Akka Labs’ Terms of Service and
-            acknowledge that you have read and understand the Akka Protocol
-            Disclaimer.
-          </p>
-        </div>
+        {connectWalletModal ? <ConnectWalletModal /> : ""}
       </Modal>
     </div>
   );
