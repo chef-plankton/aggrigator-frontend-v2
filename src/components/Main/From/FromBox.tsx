@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { RootState } from "../../../app/store";
 import FromBalance from "./FromBalance";
-import FromChangeChainButton from "./FromChangeChainButton";
+import FromChangeChainButton from "./FromChangeTokenButton";
 import FromChangeNetworkButton from "./FromChangeNetworkButton";
 import FromInput from "./FromInput";
 const StyledFromBox = styled.div`

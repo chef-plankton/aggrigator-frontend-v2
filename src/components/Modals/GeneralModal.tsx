@@ -5,6 +5,8 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import ConnectWalletModal from "./ConnectWalletModal";
+import FromTokenlist from "../Main/From/FromTokenlist";
+import FromNetworklist from "../Main/From/FromNetworklist";
 const customStyles = {
   overlay: {
     backgroundColor: "rgba(0, 0, 0, 0.3)",
@@ -16,15 +18,16 @@ const customStyles = {
     right: "auto",
     bottom: "auto",
     width: "500px",
-    height: "400px",
+    height: "auto",
     maxWidth: "420px",
     maxHeight: "90vh",
     marginRight: "-50%",
-    padding: "20px",
+    padding: "0px",
     backgroundColor: "rgb(255, 255, 255)",
     border: "1px solid rgb(247, 248, 250)",
     boxShadow: "rgb(47 128 237 / 5%) 0px 4px 8px 10px",
     borderRadius: "20px",
+    overflow: "hidden",
   },
 };
 
@@ -38,6 +41,12 @@ function GeneralModal() {
   const connectWalletModal = useSelector(
     ({ modals }: RootState) => modals.connectWalletModal
   );
+  const fromTokenlistModal = useSelector(
+    ({ modals }: RootState) => modals.fromTokenlistModal
+  );
+  const fromNetworklistModal = useSelector(
+    ({ modals }: RootState) => modals.fromNetworklistModal
+  );
 
   return (
     <div>
@@ -45,9 +54,11 @@ function GeneralModal() {
         isOpen={generalModal}
         onRequestClose={() => dispatch(changeModalStatus(false))}
         style={customStyles}
-        contentLabel='General Modal'
+        contentLabel="General Modal"
       >
         {connectWalletModal ? <ConnectWalletModal /> : ""}
+        {fromTokenlistModal ? <FromTokenlist /> : ""}
+        {fromNetworklistModal ? <FromNetworklist /> : ""}
       </Modal>
     </div>
   );
