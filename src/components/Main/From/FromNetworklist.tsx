@@ -79,9 +79,6 @@ function FromNetworklist() {
           </li>
         </ul>
       </div>
-      <div className="w-[100%] border-[1px] rounded-xl px-[12px] py-[15px] bg-[#edeef2] mt-2 cursor-pointer">
-        <p className="text-[14px] text-center">Manage Tokenlist</p>
-      </div>
     </>
   );
 }

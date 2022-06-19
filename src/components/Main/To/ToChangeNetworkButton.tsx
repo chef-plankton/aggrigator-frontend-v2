@@ -1,6 +1,8 @@
 import React, { FC } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import ArrowDownFont from "../../../assets/arrow-down-sign-to-navigate.png";
+import { ToNetworklistStatus } from "../../../features/modals/modalsSlice";
 const StyledButton = styled.div`
   width: 50%;
   height: 100%;
@@ -25,8 +27,9 @@ const ToChangeNetworkButton: FC<{
   coinName: string;
   chain: string;
 }> = ({ imageSrc, coinName, chain }) => {
+  const dispatch = useDispatch();
   return (
-    <StyledButton>
+    <StyledButton onClick={() => dispatch(ToNetworklistStatus(true))}>
       <div>
         <img src={imageSrc} alt="" />
       </div>

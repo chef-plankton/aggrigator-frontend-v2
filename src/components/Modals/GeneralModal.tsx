@@ -1,4 +1,3 @@
-import React, { FC } from "react";
 import Modal from "react-modal";
 import { changeModalStatus } from "../../features/modals/modalsSlice";
 import { useDispatch } from "react-redux";
@@ -7,6 +6,8 @@ import { RootState } from "../../app/store";
 import ConnectWalletModal from "./ConnectWalletModal";
 import FromTokenlist from "../Main/From/FromTokenlist";
 import FromNetworklist from "../Main/From/FromNetworklist";
+import ToTokenlist from "../Main/To/ToTokenlist";
+import ToNetworklist from "../Main/To/ToNetworklist";
 const customStyles = {
   overlay: {
     backgroundColor: "rgba(0, 0, 0, 0.3)",
@@ -47,6 +48,12 @@ function GeneralModal() {
   const fromNetworklistModal = useSelector(
     ({ modals }: RootState) => modals.fromNetworklistModal
   );
+  const ToTokenlistModal = useSelector(
+    ({ modals }: RootState) => modals.ToTokenlistModal
+  );
+  const ToNetworklistModal = useSelector(
+    ({ modals }: RootState) => modals.ToNetworklistModal
+  );
 
   return (
     <div>
@@ -56,9 +63,16 @@ function GeneralModal() {
         style={customStyles}
         contentLabel="General Modal"
       >
+        {/* Check if needs to show Connect wallet modal */}
         {connectWalletModal ? <ConnectWalletModal /> : ""}
+        {/* Check if needs to show from token list modal */}
         {fromTokenlistModal ? <FromTokenlist /> : ""}
+        {/* Check if needs to show from network list modal */}
         {fromNetworklistModal ? <FromNetworklist /> : ""}
+        {/* Check if needs to show to token list modal */}
+        {ToTokenlistModal ? <ToTokenlist /> : ""}
+        {/* Check if needs to show to network list modal */}
+        {ToNetworklistModal ? <ToNetworklist /> : ""}
       </Modal>
     </div>
   );
