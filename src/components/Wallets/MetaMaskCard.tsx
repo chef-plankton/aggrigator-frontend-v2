@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { hooks, metaMask } from "../../connectors/metaMask";
 import { CHAINS, getAddChainParameters, URLS } from "../../chains";
+import metaMaskIcon from "../../assets/img/wallets/metamask.png";
+
 function MetaMaskCard() {
   const {
     useChainId,
@@ -41,11 +43,7 @@ function MetaMaskCard() {
     >
       <h6 className="font-semibold text-[16px]">MetaMask</h6>
       <div>
-        <img
-          src="https://app.uniswap.org/static/media/metamask.02e3ec27.png"
-          alt=""
-          className="w-[32px]"
-        />
+        <img src={metaMaskIcon} alt="" className="w-[32px]" />
       </div>
     </div>
   );

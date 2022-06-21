@@ -1,4 +1,3 @@
-import React from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { RootState } from "../../app/store";
@@ -21,12 +20,17 @@ function ConnectWalletButton() {
   const accounts = useAccounts();
 
   const dispatch = useDispatch();
+  const themeMode = useSelector(({ theme }: RootState) => theme.value);
   return (
     <button
       onClick={() => {
         dispatch(connectWalletStatus(true));
       }}
-      className='py-2 px-2 font-medium text-white bg-green-500 rounded hover:bg-green-400 transition duration-300'
+      className={`py-2 px-2 font-medium text-white ${
+        themeMode === "light"
+          ? "bg-[#4ECCA3] hover:bg-[#79d8b8]"
+          : "bg-[#4ECCA3] hover:bg-[#79d8b8]"
+      } rounded transition duration-300`}
     >
       {isActive ? accounts : "Connnect Wallet"}
     </button>

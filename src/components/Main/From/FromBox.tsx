@@ -6,9 +6,10 @@ import FromBalance from "./FromBalance";
 import FromChangeChainButton from "./FromChangeTokenButton";
 import FromChangeNetworkButton from "./FromChangeNetworkButton";
 import FromInput from "./FromInput";
-const StyledFromBox = styled.div`
-  background: rgba(255, 255, 255, 0.25);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+const StyledFromBox = styled.div<{ color: string; backgroundColor: string }>`
+  background: ${({ backgroundColor }) =>
+    backgroundColor ? backgroundColor : "rgba(255, 255, 255, 0.25)"};
+  box-shadow: 0 8px 32px 0 #23293176;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   border-radius: 10px;
@@ -20,18 +21,26 @@ const StyledFromBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  color: ${({ color }) => (color ? color : "black")};
 `;
 
 function FromBox() {
   const chainId = useSelector(({ chains }: RootState) => chains.value);
+  const themeMode = useSelector(({ theme }: RootState) => theme.value);
   return (
-    <StyledFromBox>
+    <StyledFromBox
+      color={themeMode === "light" ? "black" : "white"}
+      backgroundColor={
+        themeMode === "light"
+          ? "rgba(255, 255, 255, 0.25)"
+          : "rgba(255, 255, 255, 0.25)"
+      }
+    >
       <div className="px-3 py-1 w-[100%] flex justify-between">
         <div>From</div>
         <FromBalance />
       </div>
       <div className="px-3 py-5 flex justify-between flex-col md:flex-row">
-        
         <div className="md:w-[50%] w-[100%} flex justify-between ">
           <FromChangeNetworkButton
             imageSrc={`${

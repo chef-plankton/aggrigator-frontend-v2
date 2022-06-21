@@ -4,9 +4,12 @@ import ToBalance from "./ToBalance";
 import ToChangeChainButton from "./ToChangeTokenButton";
 import ToChangeNetworkButton from "./ToChangeNetworkButton";
 import ToInput from "./ToInput";
-const StyledToBox = styled.div`
-  background: rgba(255, 255, 255, 0.25);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+import { useSelector } from "react-redux";
+import { RootState } from "../../../app/store";
+const StyledToBox = styled.div<{ color: string; backgroundColor: string }>`
+  background: ${({ backgroundColor }) =>
+    backgroundColor ? backgroundColor : "rgba(255, 255, 255, 0.25)"};
+  box-shadow: 0 8px 32px 0 #23293176;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   border-radius: 10px;
@@ -18,10 +21,19 @@ const StyledToBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  color: ${({ color }) => (color ? color : "black")};
 `;
 function ToBox() {
+  const themeMode = useSelector(({ theme }: RootState) => theme.value);
   return (
-    <StyledToBox>
+    <StyledToBox
+      color={themeMode === "light" ? "black" : "white"}
+      backgroundColor={
+        themeMode === "light"
+          ? "rgba(255, 255, 255, 0.25)"
+          : "rgba(255, 255, 255, 0.25)"
+      }
+    >
       <div className="px-3 py-1 w-[100%] flex justify-between">
         <div>To</div>
         <ToBalance />

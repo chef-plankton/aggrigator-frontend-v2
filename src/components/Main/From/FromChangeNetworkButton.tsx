@@ -1,10 +1,12 @@
 import React, { FC } from "react";
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import ReactTooltip from "react-tooltip";
 import styled from "styled-components";
+import { RootState } from "../../../app/store";
 import ArrowDownFont from "../../../assets/arrow-down-sign-to-navigate.png";
 import { fromNetworklistStatus } from "../../../features/modals/modalsSlice";
-const StyledButton = styled.div`
+const StyledButton = styled.div<{ backgroundColor: string }>`
   width: 50%;
   height: 100%;
   display: flex;
@@ -14,7 +16,8 @@ const StyledButton = styled.div`
   margin: 0 10px;
   text-decoration: none;
   border-radius: 15px;
-  background-color: #eeeeee;
+  background-color: ${({ backgroundColor }) =>
+    backgroundColor ? backgroundColor : "#EEEEEE"};
   border: 1px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(30px);
   font-size: 14px;
@@ -29,18 +32,26 @@ const FromChangeNetworkButton: FC<{
   chain: string;
 }> = ({ imageSrc, coinName, chain }) => {
   const dispatch = useDispatch();
+  const themeMode = useSelector(({ theme }: RootState) => theme.value);
   return (
     <>
-      <StyledButton onClick={() => dispatch(fromNetworklistStatus(true))}>
+      <StyledButton
+        backgroundColor={
+          themeMode === "light"
+            ? "#EEEEEE"
+            : "#393E46"
+        }
+        onClick={() => dispatch(fromNetworklistStatus(true))}
+      >
         <div>
-          <img src={imageSrc} alt='' />
+          <img src={imageSrc} alt="" />
         </div>
-        <div className='mx-5'>
+        <div className="mx-5">
           <h3>{coinName}</h3>
           <h6>{chain}</h6>
         </div>
         <div>
-          <img src={ArrowDownFont} alt='' />
+          <img src={ArrowDownFont} alt="" />
         </div>
       </StyledButton>
     </>

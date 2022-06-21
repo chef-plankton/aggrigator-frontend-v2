@@ -7,7 +7,12 @@ import {
   walletConnect,
 } from "../../connectors/walletConnect";
 import { getAddChainParameters } from "../../chains";
-function ChainsDropdown() {
+import bnblightIcon from "../../assets/img/chains/binance-light.svg";
+import polygonIcon from "../../assets/img/chains/polygon.svg";
+interface Props {
+  setDropdown: (value: boolean) => void;
+}
+function ChainsDropdown({ setDropdown }: Props) {
   const chainId = useSelector(({ chains }: RootState) => chains.value);
   const { useIsActive: metamaskUseIsActive } = metamaskhooks;
   const metamaskIsActive = metamaskUseIsActive();
@@ -23,26 +28,22 @@ function ChainsDropdown() {
       dispatch(changeChain(chainid));
       walletConnect.activate(chainid);
       console.log(walletConnect.activate(chainid));
-      
     } else {
       dispatch(changeChain(chainid));
     }
   };
   return (
-    <div className='z-10 bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 chainslistdrowdown'>
-      <ul className='py-1 text-sm text-gray-700 dark:text-gray-200'>
+    <div className="z-10 bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 chainslistdrowdown">
+      <ul className="py-1 text-sm text-gray-700 dark:text-gray-200">
         <li>
           <div
             onClick={() => {
               changeChainId(56);
+              setDropdown(false);
             }}
-            className='flex px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer'
+            className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
           >
-            <img
-              src='https://app.1inch.io/assets/images/network-logos/binance-light_2.svg'
-              alt=''
-              className='w-5 mr-1'
-            />
+            <img src={bnblightIcon} alt="" className="w-[24px] mr-2" />
             BNB Chain
           </div>
         </li>
@@ -50,14 +51,11 @@ function ChainsDropdown() {
           <div
             onClick={() => {
               changeChainId(137);
+              setDropdown(false);
             }}
-            className='flex px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer'
+            className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
           >
-            <img
-              src='https://app.1inch.io/assets/images/network-logos/polygon.svg'
-              alt=''
-              className='w-5 mr-1'
-            />
+            <img src={polygonIcon} alt="" className="w-[24px] mr-2" />
             Polygon
           </div>
         </li>
