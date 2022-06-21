@@ -10,7 +10,7 @@ function Main() {
   return (
     <main
       className={`${
-        themeMode === "light" ? "bg-white" : "bg-[#393E46]"
+        themeMode === "light" ? "bg-slate-100" : "bg-[#393E46]"
       } shadow-lg z-10`}
     >
       <div className="max-w-6xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[100px] pt-[50px] md:pt-[100px]">
@@ -22,7 +22,7 @@ function Main() {
             themeMode === "light"
               ? "bg-[#4ECCA3] hover:bg-[#79d8b8]"
               : "bg-[#4ECCA3] hover:bg-[#79d8b8]"
-          } transition duration-300 shadow-[0_8px_32px_rgba(31,38,135,0.37)]`}
+          } transition duration-300 shadow-[0_8px_32px_#23293176]`}
         >
           Swap
         </Link>

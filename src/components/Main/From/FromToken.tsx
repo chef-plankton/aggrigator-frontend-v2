@@ -1,18 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-function FromToken() {
+function FromToken({ token, index }) {
   return (
-    <div className="flex items-center justify-between">
-      <img
-        className="w-[24px] h-[24px] rounded-[50%]"
-        alt="1inch logo"
-        src="https://assets.coingecko.com/coins/images/13469/thumb/1inch-token.png?1608803028"
-      />
-      <div>
-        <div>1INCH</div>
-        <div>1inch</div>
+    <div key={index} className="flex items-center justify-between my-2">
+      <div className="w-[10%] flex justify-start">
+        <img
+          className="w-[24px] h-[24px] rounded-[50%]"
+          alt="1inch logo"
+          src={token.logoURI}
+        />
       </div>
-      <div>0</div>
+
+      <div className="w-[80%] flex flex-col items-start">
+        <div className="text-[14px]">{token.symbol}</div>
+        <div className="text-[14px]">{token.name}</div>
+      </div>
+      <div className="w-[10%] flex justify-end">0</div>
     </div>
   );
 }

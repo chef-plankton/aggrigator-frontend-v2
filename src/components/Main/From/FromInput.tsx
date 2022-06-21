@@ -1,5 +1,7 @@
 import React from 'react'
+import { useSelector } from 'react-redux';
 import styled from "styled-components";
+import { RootState } from '../../../app/store';
 const StyledInput = styled.input`
   position: relative;
   text-overflow: ellipsis;
@@ -11,7 +13,7 @@ const StyledInput = styled.input`
   background: none;
   border: none;
   outline: none;
-  border-bottom: 1px solid #757575;
+  border-bottom: 1px solid ${({ color }) => (color ? color : "#757575")};
   border-radius: 3px;
   width: 90%;
   height: 100%;
@@ -33,8 +35,9 @@ const StyledInput = styled.input`
   }
 `;
 function FromInput() {
+  const themeMode = useSelector(({ theme }: RootState) => theme.value);
   return (
-    <StyledInput placeholder="Please enter your coin balance" />
+    <StyledInput color={themeMode === "light" ? "black" : "white"} placeholder="Please enter your coin balance" />
   )
 }
 
