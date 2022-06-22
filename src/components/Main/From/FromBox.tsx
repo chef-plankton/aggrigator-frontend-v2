@@ -6,6 +6,8 @@ import FromBalance from "./FromBalance";
 import FromChangeChainButton from "./FromChangeTokenButton";
 import FromChangeNetworkButton from "./FromChangeNetworkButton";
 import FromInput from "./FromInput";
+import bnblightIcon from "../../../assets/img/chains/binance-light.svg";
+import polygonIcon from "../../../assets/img/chains/polygon.svg";
 const StyledFromBox = styled.div<{ color: string; backgroundColor: string }>`
   background: ${({ backgroundColor }) =>
     backgroundColor ? backgroundColor : "rgba(255, 255, 255, 0.25)"};
@@ -43,18 +45,8 @@ function FromBox() {
       <div className="px-3 py-5 flex justify-between flex-col md:flex-row">
         <div className="md:w-[50%] w-[100%} flex justify-between ">
           <FromChangeNetworkButton
-            imageSrc={`${
-              chainId === 1
-                ? "https://app.1inch.io/assets/images/network-logos/ethereum.svg"
-                : ""
-            }${
-              chainId === 56
-                ? "https://app.1inch.io/assets/images/network-logos/binance-light_2.svg"
-                : ""
-            }${
-              chainId === 137
-                ? "https://app.1inch.io/assets/images/network-logos/polygon.svg"
-                : ""
+            imageSrc={`${chainId === 56 ? bnblightIcon : ""}${
+              chainId === 137 ? polygonIcon : ""
             }`}
             coinName={`${chainId === 1 ? "Ethereum" : ""}
             ${chainId === 56 ? "BNB Chain" : ""}

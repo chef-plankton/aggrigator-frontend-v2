@@ -10,7 +10,8 @@ import {
 } from "../../../connectors/walletConnect";
 import { changeChain } from "../../../features/chains/chainsSlice";
 import { changeModalStatus } from "../../../features/modals/modalsSlice";
-
+import bnblightIcon from "../../../assets/img/chains/binance-light.svg";
+import polygonIcon from "../../../assets/img/chains/polygon.svg";
 function FromNetworklist() {
   const dispatch = useDispatch();
   const { useIsActive: metamaskUseIsActive } = metamaskhooks;
@@ -54,11 +55,7 @@ function FromNetworklist() {
               }}
               className="flex px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
             >
-              <img
-                src="https://app.1inch.io/assets/images/network-logos/binance-light_2.svg"
-                alt=""
-                className="w-5 mr-1"
-              />
+              <img src={bnblightIcon} alt="" className="w-5 mr-1" />
               BNB Chain
             </div>
           </li>
@@ -69,11 +66,7 @@ function FromNetworklist() {
               }}
               className="flex px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
             >
-              <img
-                src="https://app.1inch.io/assets/images/network-logos/polygon.svg"
-                alt=""
-                className="w-5 mr-1"
-              />
+              <img src={polygonIcon} alt="" className="w-5 mr-1" />
               Polygon
             </div>
           </li>
