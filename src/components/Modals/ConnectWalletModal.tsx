@@ -7,6 +7,8 @@ import { hooks as metamaskhooks } from "../../connectors/metaMask";
 import { hooks as walletconnecthooks } from "../../connectors/walletConnect";
 import { useDispatch } from "react-redux";
 import { changeModalStatus } from "../../features/modals/modalsSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
 function ConnectWalletModal() {
   const dispatch = useDispatch();
   const {
@@ -20,12 +22,18 @@ function ConnectWalletModal() {
     useIsActivating: walletconnectUseIsActivating,
   } = walletconnecthooks;
   const walletconnectIsActive = walletconnectUseIsActive();
-
+  const themeMode = useSelector(({ theme }: RootState) => theme.value);
   return (
     <>
       <div className="flex justify-between mb-5 pr-5 pl-5 pt-5 pb-2">
         <div>
-          <h4 className="font-bold">Connect a wallet</h4>
+          <h4
+            className={`font-bold ${
+              themeMode === "light" ? "text-black" : "text-white"
+            }`}
+          >
+            Connect a wallet
+          </h4>
         </div>
         <div>
           <img

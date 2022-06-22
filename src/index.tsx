@@ -20,7 +20,9 @@ import {
   hooks as walletConnectHooks,
   walletConnect,
 } from "./connectors/walletConnect";
-
+import { QueryClientProvider, QueryClient } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
+const queryClient = new QueryClient();
 const connectors: [MetaMask | WalletConnect | Network, Web3ReactHooks][] = [
   [metaMask, metaMaskHooks],
   [walletConnect, walletConnectHooks],
@@ -34,11 +36,14 @@ const root = ReactDOM.createRoot(
 root.render(
   <>
     <Provider store={store}>
-      <Router>
-        <Web3ReactProvider connectors={connectors}>
-          <App />
-        </Web3ReactProvider>
-      </Router>
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <Web3ReactProvider connectors={connectors}>
+            <App />
+          </Web3ReactProvider>
+        </Router>
+        <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+      </QueryClientProvider>
     </Provider>
   </>
 );

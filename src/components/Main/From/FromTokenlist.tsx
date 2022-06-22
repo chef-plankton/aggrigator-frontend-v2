@@ -1,4 +1,6 @@
+import axios from "axios";
 import React, { HTMLAttributes, useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import CloseIcon from "../../../assets/img/close.png";
@@ -22,14 +24,11 @@ const StyledInput = styled.input<HTMLAttributes<HTMLInputElement>>`
 `;
 function FromTokenlist() {
   const dispatch = useDispatch();
-  const [dataToken, setDataToken] = useState([]);
-  useEffect(() => {
-    fetch(
-      "https://raw.githubusercontent.com/pancakeswap/token-list/main/src/tokens/cmc.json"
-    )
-      .then((response) => response.json())
-      .then((data) => setDataToken(data));
-  }, []);
+  const { isLoading, data } = useQuery("tokens", () => {
+    return axios.get("http://localhost:4000/tokens");
+  });
+  console.log(data);
+
   return (
     <>
       <div className="flex justify-between mb-5 pt-5 pr-5 pl-5">
@@ -48,10 +47,12 @@ function FromTokenlist() {
       <div className="px-5">
         <StyledInput type="text" placeholder="Search name or paste address" />
       </div>
-      <div className="flex flex-col w-[100%] overflow-y-scroll h-[500px] px-5">
-        {dataToken.map((token, index) => (
-          <FromToken token={token} index={index} />
-        ))}
+      <div className="flex flex-col w-[100%] overflow-y-scroll h-[500px]">
+        {isLoading
+          ? "is loading..."
+          : data.data.map((token, index) => (
+              <FromToken token={token} index={index} />
+            ))}
       </div>
       <div className="w-[100%] border-[1px] rounded-xl px-[12px] py-[15px] bg-[#edeef2] mt-2 cursor-pointer">
         <p className="text-[14px] text-center">Manage Tokenlist</p>

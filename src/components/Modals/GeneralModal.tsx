@@ -8,29 +8,6 @@ import FromTokenlist from "../Main/From/FromTokenlist";
 import FromNetworklist from "../Main/From/FromNetworklist";
 import ToTokenlist from "../Main/To/ToTokenlist";
 import ToNetworklist from "../Main/To/ToNetworklist";
-const customStyles = {
-  overlay: {
-    backgroundColor: "rgba(0, 0, 0, 0.3)",
-  },
-  content: {
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    right: "auto",
-    bottom: "auto",
-    width: "500px",
-    height: "auto",
-    maxWidth: "420px",
-    maxHeight: "90vh",
-    marginRight: "-50%",
-    padding: "0px",
-    backgroundColor: "rgb(255, 255, 255)",
-    border: "1px solid rgb(247, 248, 250)",
-    boxShadow: "rgb(47 128 237 / 5%) 0px 4px 8px 10px",
-    borderRadius: "20px",
-    overflow: "hidden",
-  },
-};
 
 Modal.setAppElement("#root");
 
@@ -54,13 +31,42 @@ function GeneralModal() {
   const ToNetworklistModal = useSelector(
     ({ modals }: RootState) => modals.ToNetworklistModal
   );
-
+  const themeMode = useSelector(({ theme }: RootState) => theme.value);
   return (
     <div>
       <Modal
         isOpen={generalModal}
         onRequestClose={() => dispatch(changeModalStatus(false))}
-        style={customStyles}
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.3)",
+          },
+          content: {
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            right: "auto",
+            bottom: "auto",
+            width: "500px",
+            height: "auto",
+            maxWidth: "420px",
+            maxHeight: "90vh",
+            marginRight: "-50%",
+            padding: "0px",
+            backgroundColor:
+              themeMode === "light" ? "rgb(255, 255, 255)" : "rgb(35, 41, 49)",
+            border:
+              themeMode === "light"
+                ? "1px solid rgb(247, 248, 250)"
+                : "rgb(26, 30, 36)",
+            boxShadow:
+              themeMode === "light"
+                ? "rgb(47 128 237 / 5%) 0px 4px 8px 10px"
+                : "rgb(35 41 49 / 5%) 0px 4px 8px 10px",
+            borderRadius: "20px",
+            overflow: "hidden",
+          },
+        }}
         contentLabel="General Modal"
       >
         {/* Check if needs to show Connect wallet modal */}
