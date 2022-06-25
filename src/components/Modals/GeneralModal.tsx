@@ -8,6 +8,7 @@ import FromTokenlist from "../Main/From/FromTokenlist";
 import FromNetworklist from "../Main/From/FromNetworklist";
 import ToTokenlist from "../Main/To/ToTokenlist";
 import ToNetworklist from "../Main/To/ToNetworklist";
+import FromAdvanceSetting from "../Main/From/FromAdvanceSetting";
 
 Modal.setAppElement("#root");
 
@@ -31,6 +32,9 @@ function GeneralModal() {
   const ToNetworklistModal = useSelector(
     ({ modals }: RootState) => modals.ToNetworklistModal
   );
+  const fromAdvanceSettingModal = useSelector(
+    ({ modals }: RootState) => modals.fromAdvanceSettingModal
+  );
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   return (
     <div>
@@ -39,7 +43,7 @@ function GeneralModal() {
         onRequestClose={() => dispatch(changeModalStatus(false))}
         style={{
           overlay: {
-            backgroundColor: "rgba(0, 0, 0, 0.3)",
+            backgroundColor: "rgba(0, 0, 0, 0.815)",
           },
           content: {
             top: "50%",
@@ -80,6 +84,8 @@ function GeneralModal() {
         {ToTokenlistModal ? <ToTokenlist /> : ""}
         {/* Check if needs to show to network list modal */}
         {ToNetworklistModal ? <ToNetworklist /> : ""}
+        {/* Check if needs to show to advance setting modal */}
+        {fromAdvanceSettingModal ? <FromAdvanceSetting /> : ""}
       </Modal>
     </div>
   );

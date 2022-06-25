@@ -8,6 +8,8 @@ import FromChangeNetworkButton from "./FromChangeNetworkButton";
 import FromInput from "./FromInput";
 import bnblightIcon from "../../../assets/img/chains/binance-light.svg";
 import polygonIcon from "../../../assets/img/chains/polygon.svg";
+import FromAdvanceSetting from "./FromAdvanceSettingButton";
+import FromRefresh from "./FromRefresh";
 const StyledFromBox = styled.div<{ color: string; backgroundColor: string }>`
   background: ${({ backgroundColor }) =>
     backgroundColor ? backgroundColor : "rgba(255, 255, 255, 0.25)"};
@@ -39,8 +41,11 @@ function FromBox() {
       }
     >
       <div className="px-3 py-1 w-[100%] flex justify-between">
-        <div>From</div>
         <FromBalance />
+        <div className="flex">
+          <FromRefresh />
+          <FromAdvanceSetting />
+        </div>
       </div>
       <div className="px-3 py-5 flex justify-between flex-col md:flex-row">
         <div className="md:w-[50%] w-[100%} flex justify-between ">
