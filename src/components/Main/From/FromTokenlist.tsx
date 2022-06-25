@@ -1,8 +1,10 @@
 import axios from "axios";
 import React, { HTMLAttributes, useEffect, useState } from "react";
 import { useQuery } from "react-query";
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import { RootState } from "../../../app/store";
 import CloseIcon from "../../../assets/img/close.png";
 import { changeModalStatus } from "../../../features/modals/modalsSlice";
 import FromToken from "./FromToken";
@@ -24,8 +26,15 @@ const StyledInput = styled.input<HTMLAttributes<HTMLInputElement>>`
 `;
 function FromTokenlist() {
   const dispatch = useDispatch();
+  const chainId = useSelector(({ chains }: RootState) => chains.value);
+
   const { isLoading, data } = useQuery("tokens", () => {
-    return axios.get("http://localhost:4000/tokens");
+    if (chainId === 56) {
+      return axios.get("http://localhost:4000/BSC");
+    }
+    if (chainId === 137) {
+      return axios.get("http://localhost:4000/polygon");
+    }
   });
   console.log(data);
 

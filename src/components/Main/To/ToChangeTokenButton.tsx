@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { RootState } from "../../../app/store";
 import ArrowDownFont from "../../../assets/arrow-down-sign-to-navigate.png";
 import { ToTokenlistStatus } from "../../../features/modals/modalsSlice";
+import tokenImage from "../../../assets/img/token.png";
 const StyledButton = styled.div<{ backgroundColor: string }>`
   width: 50%;
   height: 100%;
@@ -44,6 +45,9 @@ const ToChangeChainButton: FC<{
         <h3>{coinName}</h3>
         <h6>{chain}</h6>
       </div> */}
+      <div>
+        <img src={tokenImage} alt="" className="w-[42px]" />
+      </div>
       <div className="mx-5">
         <h2>Select Token</h2>
       </div>

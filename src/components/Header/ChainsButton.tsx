@@ -33,7 +33,6 @@ const ChainsButton: FC<{
           alt=""
           className="w-[32px] h-[32px] mr-2"
         />
-        {chainId === 1 ? "Ethereum" : ""}
         {chainId === 56 ? "BNB Chain" : ""}
         {chainId === 137 ? "Polygon" : ""}
         <img

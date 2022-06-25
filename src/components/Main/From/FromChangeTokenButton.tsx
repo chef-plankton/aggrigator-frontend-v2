@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { RootState } from "../../../app/store";
 import ArrowDownFont from "../../../assets/arrow-down-sign-to-navigate.png";
+import tokenImage from "../../../assets/img/token.png";
 import { fromTokenlistStatus } from "../../../features/modals/modalsSlice";
 const StyledButton = styled.div<HTMLAttributes<HTMLElement> & { backgroundColor: string }>`
   width: 50%;
@@ -44,6 +45,9 @@ const FromChangeChainButton: FC<{
         <h3>{coinName}</h3>
         <h6>{chain}</h6>
       </div> */}
+      <div>
+        <img src={tokenImage} alt="" className="w-[42px]" />
+      </div>
       <div className="mx-5">
         <h2>Select Token</h2>
       </div>
