@@ -56,7 +56,7 @@ function FromTokenlist() {
       <div className="px-5">
         <StyledInput type="text" placeholder="Search name or paste address" />
       </div>
-      <div className="flex flex-col w-[100%] overflow-y-scroll h-[500px]">
+      <div className="flex flex-col w-[100%] overflow-y-scroll h-[500px] scrollbar">
         {isLoading
           ? "is loading..."
           : data.data.map((token, index) => (
