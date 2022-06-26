@@ -46,28 +46,30 @@ function FromNetworklist() {
           />
         </div>
       </div>
-      <div className="flex flex-col w-[100%] overflow-y-scroll px-5">
-        <ul className="py-1 text-sm text-gray-700 dark:text-gray-200">
-          <li>
+      <div className="w-[100%] p-5">
+        <ul className="w-[100%] h-[100%] py-1 text-sm text-gray-700 dark:text-gray-200 flex justify-center items-center">
+          <li className="m-2">
             <div
               onClick={() => {
                 changeChainId(56);
+                dispatch(changeModalStatus(false));
               }}
-              className="flex px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+              className="flex flex-col items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-md dark:hover:text-white cursor-pointer"
             >
-              <img src={bnblightIcon} alt="" className="w-5 mr-1" />
-              BNB Chain
+              <img src={bnblightIcon} alt="" className="w-[56px] mb-2" />
+              <span>BNB Chain</span>
             </div>
           </li>
-          <li>
+          <li className="m-2">
             <div
               onClick={() => {
                 changeChainId(137);
+                dispatch(changeModalStatus(false));
               }}
-              className="flex px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+              className="flex flex-col items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-md dark:hover:text-white cursor-pointer"
             >
-              <img src={polygonIcon} alt="" className="w-5 mr-1" />
-              Polygon
+              <img src={polygonIcon} alt="" className="w-[56px] mb-2" />
+              <span>Polygon</span>
             </div>
           </li>
         </ul>

@@ -4,6 +4,9 @@ import { RootState } from "../../app/store";
 import { hooks, metaMask } from "../../connectors/metaMask";
 import { CHAINS, getAddChainParameters, URLS } from "../../chains";
 import metaMaskIcon from "../../assets/img/wallets/metamask.png";
+import { getWETHContract, getContract } from "../../utils/contractHelpers";
+import { ethers } from "ethers";
+import { parseEther } from "@ethersproject/units";
 
 function MetaMaskCard() {
   const {
@@ -18,6 +21,11 @@ function MetaMaskCard() {
   const isActivating = useIsActivating();
   const isActive = useIsActive();
   const [error, setError] = useState(undefined);
+  // const provider = useProvider();
+
+  // console.log(
+  //   getWETHContract("0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", provider).deposit({value: parseEther("0.001")})
+  // );
 
   // attempt to connect eagerly on mount
   useEffect(() => {

@@ -44,7 +44,7 @@ function FromAdvanceSetting() {
           <span>Transaction Deadline</span>
         </div>
         <div className="w-[30%]">
-          <input type="text" placeholder="0.01" className="w-[100%] p-2 border border-slate-300 rounded-md focus:outline-none" />
+          <input type="text" placeholder="15min" className="w-[100%] p-2 border border-slate-300 rounded-md focus:outline-none" />
         </div>
       </div>
     </>

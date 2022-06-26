@@ -51,7 +51,6 @@ function GeneralModal() {
             transform: "translate(-50%, -50%)",
             right: "auto",
             bottom: "auto",
-            minHeight: "300px",
             width: "500px",
             height: "auto",
             maxWidth: "420px",
