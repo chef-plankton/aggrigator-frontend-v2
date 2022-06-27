@@ -49,7 +49,7 @@ function MetaMaskCard() {
                 .catch(setError)
       }
     >
-      <h6 className="font-semibold text-[16px]">MetaMask</h6>
+      <h6 className="font-medium text-[16px]">MetaMask</h6>
       <div>
         <img src={metaMaskIcon} alt="" className="w-[32px]" />
       </div>

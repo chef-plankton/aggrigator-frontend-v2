@@ -5,6 +5,8 @@ import styled from "styled-components";
 import { RootState } from "../../../app/store";
 import ArrowDownFont from "../../../assets/arrow-down-sign-to-navigate.png";
 import { ToNetworklistStatus } from "../../../features/modals/modalsSlice";
+import bnblightIcon from "../../../assets/img/chains/binance-light.svg";
+import polygonIcon from "../../../assets/img/chains/polygon.svg";
 const StyledButton = styled.div<{ backgroundColor: string }>`
   width: 50%;
   height: 100%;
@@ -26,10 +28,9 @@ const StyledButton = styled.div<{ backgroundColor: string }>`
   }
 `;
 const ToChangeNetworkButton: FC<{
-  imageSrc: string;
   coinName: string;
   chain: string;
-}> = ({ imageSrc, coinName, chain }) => {
+}> = ({ coinName, chain }) => {
   const dispatch = useDispatch();
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   return (
@@ -38,7 +39,7 @@ const ToChangeNetworkButton: FC<{
       onClick={() => dispatch(ToNetworklistStatus(true))}
     >
       <div>
-        <img src={imageSrc} alt="" />
+        <img src={bnblightIcon} alt="" />
       </div>
       <div className="mx-5">
         <h3>{coinName}</h3>

@@ -41,10 +41,7 @@ function ToBox() {
       <div className="px-3 py-5 flex justify-between flex-col md:flex-row">
         <div className="md:w-[50%] w-[100%} flex justify-between">
           <ToChangeNetworkButton
-            imageSrc={
-              "https://app.1inch.io/assets/images/network-logos/ethereum.svg"
-            }
-            coinName={"Ethereum"}
+            coinName={"BNB Chain"}
             chain={"mainnet"}
           />
           <ToChangeChainButton

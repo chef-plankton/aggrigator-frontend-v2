@@ -40,7 +40,7 @@ function WalletConnectCard() {
                 .catch(setError)
       }
     >
-      <h6 className="font-semibold text-[16px]">WalletConnect</h6>
+      <h6 className="font-medium text-[16px]">WalletConnect</h6>
       <div>
         <img src={walletConnectIcon} alt="" className="w-[32px]" />
       </div>

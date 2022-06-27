@@ -1,15 +1,16 @@
-import React from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { RootState } from "../../../app/store";
 import FromBalance from "./FromBalance";
-import FromChangeChainButton from "./FromChangeTokenButton";
+import FromChangeTokenButton from "./FromChangeTokenButton";
 import FromChangeNetworkButton from "./FromChangeNetworkButton";
 import FromInput from "./FromInput";
 import bnblightIcon from "../../../assets/img/chains/binance-light.svg";
 import polygonIcon from "../../../assets/img/chains/polygon.svg";
 import FromAdvanceSetting from "./FromAdvanceSettingButton";
 import FromRefresh from "./FromRefresh";
+
+// From Box Styles
 const StyledFromBox = styled.div<{ color: string; backgroundColor: string }>`
   background: ${({ backgroundColor }) =>
     backgroundColor ? backgroundColor : "rgba(255, 255, 255, 0.25)"};
@@ -28,7 +29,9 @@ const StyledFromBox = styled.div<{ color: string; backgroundColor: string }>`
   color: ${({ color }) => (color ? color : "black")};
 `;
 
+// From Box Component
 function FromBox() {
+  // Get data from redux
   const chainId = useSelector(({ chains }: RootState) => chains.value);
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   return (
@@ -40,6 +43,7 @@ function FromBox() {
           : "rgba(255, 255, 255, 0.25)"
       }
     >
+      {/* box top bar */}
       <div className="px-3 py-1 w-[100%] flex justify-between">
         <FromBalance />
         <div className="flex">
@@ -47,8 +51,10 @@ function FromBox() {
           <FromAdvanceSetting />
         </div>
       </div>
+      {/* box datas */}
       <div className="px-3 py-5 flex justify-between flex-col md:flex-row">
         <div className="md:w-[50%] w-[100%} flex justify-between ">
+          {/* from network */}
           <FromChangeNetworkButton
             imageSrc={`${chainId === 56 ? bnblightIcon : ""}${
               chainId === 137 ? polygonIcon : ""
@@ -58,7 +64,8 @@ function FromBox() {
             ${chainId === 137 ? "Polygon" : ""}`}
             chain={"mainnet"}
           />
-          <FromChangeChainButton
+          {/* from token */}
+          <FromChangeTokenButton
             imageSrc={
               "https://app.1inch.io/assets/images/network-logos/ethereum.svg"
             }
@@ -66,6 +73,7 @@ function FromBox() {
             chain={"mainnet"}
           />
         </div>
+        {/* from input */}
         <div className="md:w-[50%] w-[100%} mt-[30px] md:mt-0 flex justify-center">
           <FromInput />
         </div>
