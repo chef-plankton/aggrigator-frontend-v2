@@ -14,6 +14,7 @@ import bnblightIcon from "../../../assets/img/chains/binance-light.svg";
 import polygonIcon from "../../../assets/img/chains/polygon.svg";
 function FromNetworklist() {
   const dispatch = useDispatch();
+  
   const { useIsActive: metamaskUseIsActive } = metamaskhooks;
   const metamaskIsActive = metamaskUseIsActive();
   const { useIsActive: walletconnectUseIsActive } = walletconnecthooks;

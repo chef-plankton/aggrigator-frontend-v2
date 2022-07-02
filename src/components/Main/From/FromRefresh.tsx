@@ -4,14 +4,14 @@ import ReactTooltip from "react-tooltip";
 function FromRefresh() {
   return (
     <>
-      <div className="hover:bg-slate-200 p-2 rounded-md cursor-pointer">
+      <div className="hover:bg-[#EEEEEE] p-2 rounded-md cursor-pointer">
         <div>
           <img
             // data-tip
             // data-for="settingbutton"
             src={refreshImage}
             alt=""
-            className="w-[25px]"
+            className="w-[20px]"
           />
           {/* <ReactTooltip
             id="settingbutton"

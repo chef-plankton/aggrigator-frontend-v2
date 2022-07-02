@@ -25,14 +25,14 @@ function ConnectWalletModal() {
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   return (
     <>
-      <div className="flex justify-between mb-5 pr-5 pl-5 pt-5 pb-2">
+      <div className="flex justify-between items-center mb-5 pr-5 pl-5 pt-5 pb-2">
         <div>
           <h4
-            className={`font-bold ${
+            className={`font-medium ${
               themeMode === "light" ? "text-black" : "text-white"
             }`}
           >
-            Connect a wallet
+            Connect a Wallet
           </h4>
         </div>
         <div>
@@ -40,7 +40,7 @@ function ConnectWalletModal() {
             src={CloseIcon}
             alt=""
             onClick={() => dispatch(changeModalStatus(false))}
-            className="cursor-pointer w-[20px]"
+            className="cursor-pointer w-[15px]"
           />
         </div>
       </div>

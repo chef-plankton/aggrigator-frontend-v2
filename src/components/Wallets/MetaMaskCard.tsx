@@ -7,16 +7,10 @@ import metaMaskIcon from "../../assets/img/wallets/metamask.png";
 import { getWETHContract, getContract } from "../../utils/contractHelpers";
 import { ethers } from "ethers";
 import { parseEther } from "@ethersproject/units";
+import { useERC20 } from "../../hooks/useContract";
 
 function MetaMaskCard() {
-  const {
-    useChainId,
-    useAccounts,
-    useIsActivating,
-    useIsActive,
-    useProvider,
-    useENSNames,
-  } = hooks;
+  const { useIsActivating, useIsActive } = hooks;
   const chainId = useSelector(({ chains }: RootState) => chains.value);
   const isActivating = useIsActivating();
   const isActive = useIsActive();
@@ -33,7 +27,7 @@ function MetaMaskCard() {
       console.debug("Failed to connect eagerly to metamask");
     });
   }, []);
-
+  
   return (
     <div
       className="flex items-center justify-between border-[1px] rounded-xl border-[#D3D3D3] px-[12px] py-[15px] bg-[#edeef2] mb-2 cursor-pointer"

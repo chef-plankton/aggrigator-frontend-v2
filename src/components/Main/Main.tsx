@@ -1,11 +1,34 @@
-import React from "react";
+import { formatEther } from "@ethersproject/units";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { RootState } from "../../app/store";
+import { hooks } from "../../connectors/metaMask";
+import { useERC20 } from "../../hooks/useContract";
 import FromBox from "./From/FromBox";
 import ToBox from "./To/ToBox";
 
 function Main() {
+  // const { useIsActivating, useIsActive } = hooks;
+  // const isActive = useIsActive();
+  // console.log(isActive);
+
+  // const erc20 = useERC20(
+  //   "0x55d398326f99059fF775485246999027B3197955",
+  //   isActive
+  // );
+  // async function name() {
+  //   let salam = await erc20.balanceOf(
+  //     "0xa182aab7b51232fbfabc22d989f21d264b0b246f"
+  //   );
+  //   console.log(Number(formatEther(salam)).toFixed(4));
+  // }
+  // useEffect(() => {
+  //   if (isActive) {
+  //     name();
+  //   }
+  // }, [isActive]);
+
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   return (
     <main

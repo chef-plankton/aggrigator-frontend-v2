@@ -9,7 +9,7 @@ function FromAdvanceSettingButton() {
   return (
     <>
       <div
-        className="hover:bg-slate-200 p-2 rounded-md cursor-pointer"
+        className="hover:bg-[#EEEEEE] p-2 rounded-md cursor-pointer"
         onClick={() => dispatch(FromAdvanceSettingStatus(true))}
       >
         <div>
@@ -18,7 +18,7 @@ function FromAdvanceSettingButton() {
             // data-for="settingbutton"
             src={settingImage}
             alt=""
-            className="w-[25px]"
+            className="w-[20px]"
           />
           {/* <ReactTooltip
             id="settingbutton"

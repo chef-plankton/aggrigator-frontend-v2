@@ -67,7 +67,7 @@ function GeneralModal() {
               themeMode === "light"
                 ? "rgb(47 128 237 / 5%) 0px 4px 8px 10px"
                 : "rgb(35 41 49 / 5%) 0px 4px 8px 10px",
-            borderRadius: "20px",
+            borderRadius: "10px",
             overflow: "hidden",
           },
         }}
