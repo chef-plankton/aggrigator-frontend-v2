@@ -1,17 +1,19 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+export type WalletName = "metamask" | "walletconnect";
 interface AccountState {
-  wallet: string;
+  wallet: WalletName;
   address: string;
 }
 const initialState: AccountState = {
-  wallet: "",
+  wallet: "metamask",
   address: "",
 };
+
 export const accountSlice = createSlice({
   name: "account",
   initialState,
   reducers: {
-    changeWallet: (state, action) => {
+    changeWallet: (state, action: PayloadAction<WalletName>) => {
       state.wallet = action.payload;
     },
     changeAddress: (state, action) => {

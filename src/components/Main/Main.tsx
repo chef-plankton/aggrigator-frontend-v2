@@ -9,7 +9,7 @@ import FromBox from "./From/FromBox";
 import ToBox from "./To/ToBox";
 
 function Main() {
-  const hooks = useWallet();
+  // const hooks = useWallet();
   // const { useIsActivating, useIsActive } = hooks;
   // const isActive = useIsActive();
   // console.log(isActive);

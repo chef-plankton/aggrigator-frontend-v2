@@ -4,39 +4,44 @@ import {
   hooks as walletconnecthooks,
   walletConnect,
 } from "../../connectors/walletConnect";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
+import useWallet from "./useWallet";
 function DisconnectWallet() {
-  const { useIsActive: metamaskUseIsActive } = metamaskhooks;
-  const metamaskIsActive = metamaskUseIsActive();
-  const { useIsActive: walletconnectUseIsActive } = walletconnecthooks;
-  const walletconnectIsActive = walletconnectUseIsActive();
-  // const disconnectwallet = () => {
-  //   if (metamaskIsActive) {
-  //     if (metaMask?.deactivate) {
-  //       void metaMask.deactivate();
-  //     } else {
-  //       void metaMask.resetState();
-  //     }
-  //   }
-  //   if (walletconnectIsActive) {
-  //     if (walletConnect?.deactivate) {
-  //       void walletConnect.deactivate();
-  //     } else {
-  //       void walletConnect.resetState();
-  //     }
-  //   } else {
-  //     console.log("else");
-  //   }
-  // };
+  const walletName = useSelector(({ account }: RootState) => account.wallet);
+  const hooks = useWallet(walletName);
+  const { useIsActive } = hooks;
+  const isActive = useIsActive();
+
+  const disconnectwallet = () => {
+    if (isActive && walletName === "metamask") {
+      if (metaMask?.deactivate) {
+        void metaMask.deactivate();
+      } else {
+        void metaMask.resetState();
+      }
+    }
+    if (isActive && walletName === "walletconnect") {
+      if (walletConnect?.deactivate) {
+        void walletConnect.deactivate();
+      } else {
+        void walletConnect.resetState();
+      }
+    } else {
+      console.log("else");
+    }
+  };
   return (
     <div
-      className='flex items-center justify-between border-[1px] rounded-xl border-[#D3D3D3] px-[12px] py-[15px] bg-[#edeef2] mb-2 cursor-pointer'
-      // onClick={() => disconnectwallet()}
+      className="flex items-center justify-between border-[1px] rounded-xl border-[#D3D3D3] px-[12px] py-[15px] bg-[#edeef2] mb-2 cursor-pointer"
+      onClick={() => disconnectwallet()}
     >
-      <h6 className='font-semibold text-[16px]'>
-        You Need to disconnect your current wallet before connect with a new wallet
+      <h6 className="font-semibold text-[16px]">
+        You Need to disconnect your current wallet before connect with a new
+        wallet
       </h6>
       <div>
-        <img src={forbiddenImg} alt='' className='w-[32px]' />
+        <img src={forbiddenImg} alt="" className="w-[32px]" />
       </div>
     </div>
   );
