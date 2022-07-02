@@ -8,6 +8,8 @@ import { getWETHContract, getContract } from "../../utils/contractHelpers";
 import { ethers } from "ethers";
 import { parseEther } from "@ethersproject/units";
 import { useERC20 } from "../../hooks/useContract";
+import { useDispatch } from "react-redux";
+import { changeWallet } from "../../features/account/accountSlice";
 
 function MetaMaskCard() {
   const { useIsActivating, useIsActive } = hooks;
@@ -27,7 +29,7 @@ function MetaMaskCard() {
       console.debug("Failed to connect eagerly to metamask");
     });
   }, []);
-  
+  const dispatch = useDispatch();
   return (
     <div
       className="flex items-center justify-between border-[1px] rounded-xl border-[#D3D3D3] px-[12px] py-[15px] bg-[#edeef2] mb-2 cursor-pointer"
@@ -39,7 +41,10 @@ function MetaMaskCard() {
           : () =>
               metaMask
                 .activate(getAddChainParameters(chainId))
-                .then(() => setError(undefined))
+                .then(() => {
+                  setError(undefined);
+                  dispatch(changeWallet("metamask"));
+                })
                 .catch(setError)
       }
     >

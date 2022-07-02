@@ -3,12 +3,13 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { RootState } from "../../app/store";
-import { hooks } from "../../connectors/metaMask";
+import useWallet from "../../components/Wallets/useWallet";
 import { useERC20 } from "../../hooks/useContract";
 import FromBox from "./From/FromBox";
 import ToBox from "./To/ToBox";
 
 function Main() {
+  const hooks = useWallet();
   // const { useIsActivating, useIsActive } = hooks;
   // const isActive = useIsActive();
   // console.log(isActive);

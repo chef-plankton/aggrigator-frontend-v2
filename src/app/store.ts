@@ -3,12 +3,14 @@ import chainsReducer from "../features/chains/chainsSlice";
 import modalsReducer from "../features/modals/modalsSlice";
 import themeReducer from "../features/theme/themeSlice";
 import routeReducer from "../features/route/routeSlice";
+import accountReducer from "../features/account/accountSlice";
 const store = configureStore({
   reducer: {
     chains: chainsReducer,
     modals: modalsReducer,
     theme: themeReducer,
     route: routeReducer,
+    account: accountReducer,
   },
 });
 

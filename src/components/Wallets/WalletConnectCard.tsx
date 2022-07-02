@@ -4,6 +4,8 @@ import { RootState } from "../../app/store";
 import { hooks, walletConnect } from "../../connectors/walletConnect";
 import { CHAINS, getAddChainParameters, URLS } from "../../chains";
 import walletConnectIcon from "../../assets/img/wallets/walletConnect.svg";
+import { useDispatch } from "react-redux";
+import { changeWallet } from "../../features/account/accountSlice";
 function WalletConnectCard() {
   const {
     useChainId,
@@ -24,7 +26,7 @@ function WalletConnectCard() {
       console.debug("Failed to connect eagerly to metamask");
     });
   }, []);
-
+  const dispatch = useDispatch();
   return (
     <div
       className="flex items-center justify-between border-[1px] rounded-xl border-[#D3D3D3] px-[12px] py-[15px] bg-[#edeef2] mb-2 cursor-pointer"
@@ -36,7 +38,10 @@ function WalletConnectCard() {
           : () =>
               walletConnect
                 .activate(chainId)
-                .then(() => setError(undefined))
+                .then(() => {
+                  setError(undefined);
+                  dispatch(changeWallet("walletconnect"));
+                })
                 .catch(setError)
       }
     >
