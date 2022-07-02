@@ -24,11 +24,7 @@ function MetaMaskCard() {
   // );
 
   // attempt to connect eagerly on mount
-  useEffect(() => {
-    void metaMask.connectEagerly().catch(() => {
-      console.debug("Failed to connect eagerly to metamask");
-    });
-  }, []);
+  
   const dispatch = useDispatch();
   return (
     <div

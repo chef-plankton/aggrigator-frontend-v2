@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import CloseIcon from "../../assets/img/close.png";
 import MetaMaskCard from "../Wallets/MetaMaskCard";
 import DisconnectWallet from "../Wallets/DisconnectWallet";
 import WalletConnectCard from "../Wallets/WalletConnectCard";
-import { hooks as metamaskhooks } from "../../connectors/metaMask";
+import { hooks as metamaskhooks, metaMask } from "../../connectors/metaMask";
 import { hooks as walletconnecthooks } from "../../connectors/walletConnect";
 import { useDispatch } from "react-redux";
 import { changeModalStatus } from "../../features/modals/modalsSlice";
@@ -23,6 +23,13 @@ function ConnectWalletModal() {
   } = walletconnecthooks;
   const walletconnectIsActive = walletconnectUseIsActive();
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
+  console.log("metamask=",metamaskIsActive);
+  console.log("walletconnect=",walletconnectIsActive);
+  useEffect(() => {
+    void metaMask.connectEagerly().catch(() => {
+      console.debug("Failed to connect eagerly to metamask");
+    });
+  }, []);
   return (
     <>
       <div className="flex justify-between items-center mb-5 pr-5 pl-5 pt-5 pb-2">

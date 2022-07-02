@@ -10,16 +10,16 @@ function ToNetworklist() {
 
   return (
     <>
-      <div className="flex justify-between mb-5 pt-5 pr-5 pl-5">
+      <div className="flex justify-between items-center mb-5 pt-5 pr-5 pl-5">
         <div>
-          <h4 className="font-bold">Select your network</h4>
+          <h4 className="font-medium">Select your network</h4>
         </div>
         <div>
           <img
             src={CloseIcon}
             alt=""
             onClick={() => dispatch(changeModalStatus(false))}
-            className="cursor-pointer w-[20px]"
+            className="cursor-pointer w-[15px]"
           />
         </div>
       </div>

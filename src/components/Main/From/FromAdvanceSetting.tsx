@@ -8,16 +8,16 @@ function FromAdvanceSetting() {
   const dispatch = useDispatch();
   return (
     <>
-      <div className="flex justify-between mb-5 pt-5 pr-5 pl-5">
+      <div className="flex justify-between items-center mb-5 pt-5 pr-5 pl-5">
         <div>
-          <h4 className="font-bold">Trade Settings</h4>
+          <h4 className="font-medium">Trade Settings</h4>
         </div>
         <div>
           <img
             src={CloseIcon}
             alt=""
             onClick={() => dispatch(changeModalStatus(false))}
-            className="cursor-pointer w-[20px]"
+            className="cursor-pointer w-[15px]"
           />
         </div>
       </div>{" "}
@@ -25,7 +25,7 @@ function FromAdvanceSetting() {
         <div className="flex justify-start items-center">
           <img
             src={SlippageImage}
-            alt="sdasds"
+            alt="slippageimg"
             className="w-[24px] h-[24px] rounded-[50%] mr-2"
           />
           <span>Slippage tolerance</span>

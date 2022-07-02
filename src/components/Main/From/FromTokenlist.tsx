@@ -40,7 +40,7 @@ function FromTokenlist() {
 
   return (
     <>
-      <div className="flex justify-between mb-5 pt-5 pr-5 pl-5">
+      <div className="flex justify-between items-center mb-5 pt-5 pr-5 pl-5">
         <div>
           <h4 className="font-medium">Select a token</h4>
         </div>

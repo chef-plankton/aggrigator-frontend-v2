@@ -15,18 +15,10 @@ function DisconnectWallet() {
 
   const disconnectwallet = () => {
     if (isActive && walletName === "metamask") {
-      if (metaMask?.deactivate) {
-        void metaMask.deactivate();
-      } else {
-        void metaMask.resetState();
-      }
+      void metaMask.resetState();
     }
     if (isActive && walletName === "walletconnect") {
-      if (walletConnect?.deactivate) {
-        void walletConnect.deactivate();
-      } else {
-        void walletConnect.resetState();
-      }
+      void walletConnect.deactivate();
     } else {
       console.log("else");
     }
@@ -36,7 +28,7 @@ function DisconnectWallet() {
       className="flex items-center justify-between border-[1px] rounded-xl border-[#D3D3D3] px-[12px] py-[15px] bg-[#edeef2] mb-2 cursor-pointer"
       onClick={() => disconnectwallet()}
     >
-      <h6 className="font-semibold text-[16px]">
+      <h6 className="font-medium text-[16px]">
         You Need to disconnect your current wallet before connect with a new
         wallet
       </h6>
