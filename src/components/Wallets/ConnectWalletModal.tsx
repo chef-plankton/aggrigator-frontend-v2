@@ -27,15 +27,6 @@ function ConnectWalletModal() {
   const walletconnectIsActive = walletconnectUseIsActive();
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
 
-  // Connect to Metamask wallet automatically after refreshing the page (attempt to connect eagerly on mount)
-  useEffect(() => {
-    void metaMask.connectEagerly().catch(() => {
-      console.debug("Failed to connect eagerly to metamask");
-    });
-    void walletConnect.connectEagerly().catch(() => {
-      console.debug("Failed to connect eagerly to metamask");
-    });
-  }, []);
   return (
     <>
       <div className="flex justify-between items-center mb-5 pr-5 pl-5 pt-5 pb-2">

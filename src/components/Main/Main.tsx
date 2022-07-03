@@ -4,11 +4,22 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { RootState } from "../../app/store";
 import useWallet from "../../components/Wallets/useWallet";
+import { metaMask } from "../../connectors/metaMask";
+import { walletConnect } from "../../connectors/walletConnect";
 import { useERC20 } from "../../hooks/useContract";
 import FromBox from "./From/FromBox";
 import ToBox from "./To/ToBox";
 
 function Main() {
+  // Connect to Metamask wallet automatically after refreshing the page (attempt to connect eagerly on mount)
+  useEffect(() => {
+    void metaMask.connectEagerly().catch(() => {
+      console.debug("Failed to connect eagerly to metamask");
+    });
+    void walletConnect.connectEagerly().catch(() => {
+      console.debug("Failed to connect eagerly to metamask");
+    });
+  }, []);
   // const hooks = useWallet();
   // const { useIsActivating, useIsActive } = hooks;
   // const isActive = useIsActive();
