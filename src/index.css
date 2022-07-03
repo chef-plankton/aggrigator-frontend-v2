@@ -2,8 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500&display=swap");
+
 html {
+  box-sizing: border-box;
   font-family: "Ubuntu", sans-serif;
+}
+
+button {
+  padding: 0;
+  background: none;
+  border: none;
+  outline: none;
 }
 .chainslistbtn {
   position: relative;

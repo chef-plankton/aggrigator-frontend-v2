@@ -3,7 +3,7 @@ import { changeModalStatus } from "../../features/modals/modalsSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import ConnectWalletModal from "./ConnectWalletModal";
+import ConnectWalletModal from "../Wallets/ConnectWalletModal";
 import FromTokenlist from "../Main/From/FromTokenlist";
 import FromNetworklist from "../Main/From/FromNetworklist";
 import ToTokenlist from "../Main/To/ToTokenlist";

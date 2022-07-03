@@ -20,12 +20,7 @@ function WalletConnectCard() {
   const isActive = useIsActive();
   const [error, setError] = useState(undefined);
 
-  // attempt to connect eagerly on mount
-  // useEffect(() => {
-  //   void walletConnect.connectEagerly().catch(() => {
-  //     console.debug("Failed to connect eagerly to metamask");
-  //   });
-  // }, []);
+
   const dispatch = useDispatch();
   return (
     <div

@@ -1,10 +1,13 @@
 import React, { useEffect } from "react";
 import CloseIcon from "../../assets/img/close.png";
-import MetaMaskCard from "../Wallets/MetaMaskCard";
-import DisconnectWallet from "../Wallets/DisconnectWallet";
-import WalletConnectCard from "../Wallets/WalletConnectCard";
+import MetaMaskCard from "./MetaMaskCard";
+import DisconnectWallet from "./DisconnectWallet";
+import WalletConnectCard from "./WalletConnectCard";
 import { hooks as metamaskhooks, metaMask } from "../../connectors/metaMask";
-import { hooks as walletconnecthooks } from "../../connectors/walletConnect";
+import {
+  hooks as walletconnecthooks,
+  walletConnect,
+} from "../../connectors/walletConnect";
 import { useDispatch } from "react-redux";
 import { changeModalStatus } from "../../features/modals/modalsSlice";
 import { useSelector } from "react-redux";
@@ -23,10 +26,13 @@ function ConnectWalletModal() {
   } = walletconnecthooks;
   const walletconnectIsActive = walletconnectUseIsActive();
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
-  console.log("metamask=",metamaskIsActive);
-  console.log("walletconnect=",walletconnectIsActive);
+
+  // Connect to Metamask wallet automatically after refreshing the page (attempt to connect eagerly on mount)
   useEffect(() => {
     void metaMask.connectEagerly().catch(() => {
+      console.debug("Failed to connect eagerly to metamask");
+    });
+    void walletConnect.connectEagerly().catch(() => {
       console.debug("Failed to connect eagerly to metamask");
     });
   }, []);
