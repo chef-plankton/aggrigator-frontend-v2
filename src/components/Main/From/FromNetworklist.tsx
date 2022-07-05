@@ -12,6 +12,7 @@ import { changeChain } from "../../../features/chains/chainsSlice";
 import { changeModalStatus } from "../../../features/modals/modalsSlice";
 import bnblightIcon from "../../../assets/img/chains/binance-light.svg";
 import polygonIcon from "../../../assets/img/chains/polygon.svg";
+import { changeFromChain } from "../../../features/route/routeSlice";
 function FromNetworklist() {
   const dispatch = useDispatch();
   
@@ -53,6 +54,7 @@ function FromNetworklist() {
             <div
               onClick={() => {
                 changeChainId(56);
+                dispatch(changeFromChain(56));
                 dispatch(changeModalStatus(false));
               }}
               className="flex flex-col items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-md dark:hover:text-white cursor-pointer"
@@ -65,12 +67,26 @@ function FromNetworklist() {
             <div
               onClick={() => {
                 changeChainId(137);
+                dispatch(changeFromChain(137));
                 dispatch(changeModalStatus(false));
               }}
               className="flex flex-col items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-md dark:hover:text-white cursor-pointer"
             >
               <img src={polygonIcon} alt="" className="w-[56px] mb-2" />
               <span>Polygon</span>
+            </div>
+          </li>
+          <li className="m-2">
+            <div
+              onClick={() => {
+                changeChainId(97);
+                dispatch(changeFromChain(97));
+                dispatch(changeModalStatus(false));
+              }}
+              className="flex flex-col items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-md dark:hover:text-white cursor-pointer"
+            >
+              <img src={bnblightIcon} alt="" className="w-[56px] mb-2" />
+              <span>BNB Chain Testnet</span>
             </div>
           </li>
         </ul>

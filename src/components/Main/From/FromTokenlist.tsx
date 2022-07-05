@@ -36,6 +36,9 @@ function FromTokenlist() {
     if (chainId === 137) {
       return axios.get("http://localhost:4000/polygon");
     }
+    if (chainId === 97) {
+      return axios.get("http://localhost:4000/BSC-testnet");
+    }
   });
   return (
     <>

@@ -28,9 +28,10 @@ const StyledButton = styled.div<{ backgroundColor: string }>`
   }
 `;
 const ToChangeNetworkButton: FC<{
+  imageSrc: string;
   coinName: string;
   chain: string;
-}> = ({ coinName, chain }) => {
+}> = ({ imageSrc, coinName, chain }) => {
   const dispatch = useDispatch();
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   return (
@@ -39,7 +40,7 @@ const ToChangeNetworkButton: FC<{
       onClick={() => dispatch(ToNetworklistStatus(true))}
     >
       <div>
-        <img src={bnblightIcon} alt="" />
+        <img src={imageSrc} alt="" />
       </div>
       <div className="mx-5">
         <h3>{coinName}</h3>

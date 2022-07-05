@@ -1,8 +1,25 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { changeModalStatus } from "../../../features/modals/modalsSlice";
+import { changeFromToken } from "../../../features/route/routeSlice";
 
 function FromToken({ token, index }) {
+  const dispatch = useDispatch();
   return (
-    <div key={index} className="flex items-center justify-between my-1 cursor-pointer hover:bg-slate-200 px-3 py-2 m-2 rounded-md">
+    <div
+      key={index}
+      className="flex items-center justify-between my-1 cursor-pointer hover:bg-slate-200 px-3 py-2 m-2 rounded-md"
+      onClick={() => {
+        dispatch(
+          changeFromToken({
+            name: token.name,
+            adress: token.address,
+            image: token.logoURI,
+          })
+        );
+        dispatch(changeModalStatus(false));
+      }}
+    >
       <div className="w-[10%] flex justify-start">
         <img
           className="w-[24px] h-[24px] rounded-[50%]"

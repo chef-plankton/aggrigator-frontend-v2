@@ -1,5 +1,5 @@
 import { formatEther } from "@ethersproject/units";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { RootState } from "../../app/store";
@@ -8,8 +8,12 @@ import { metaMask } from "../../connectors/metaMask";
 import { walletConnect } from "../../connectors/walletConnect";
 import { useERC20 } from "../../hooks/useContract";
 import FromBox from "./From/FromBox";
+import ReceiverBox from "./Receiver/ReceiverBox";
 import ToBox from "./To/ToBox";
-
+import plusIcon from "../../assets/plus.png";
+import { bool, node } from "prop-types";
+import { useTransition, animated } from "react-spring";
+import styled from "styled-components";
 function Main() {
   // Connect to Metamask wallet automatically after refreshing the page (attempt to connect eagerly on mount)
   useEffect(() => {
@@ -40,8 +44,68 @@ function Main() {
   //     name();
   //   }
   // }, [isActive]);
+  /** The children of this component will slide down on mount and will slide up on unmount */
+  const visibleStyle = { height: "auto", opacity: 1, overflow: "visible", width: "100%" };
+  const hiddenStyle = { opacity: 0, height: 0, overflow: "hidden" };
+  function getElementHeight(ref) {
+    return ref.current ? ref.current.getBoundingClientRect().height : 0;
+  }
+  const Inner = styled.div`
+    &:before,
+    &:after {
+      content: "";
+      display: table;
+    }
+  `;
+  const SlideToggleContent = ({ isVisible, children, forceSlideIn }) => {
+    const isVisibleOnMount = useRef(isVisible && !forceSlideIn);
+    const containerRef = useRef(null);
+    const innerRef = useRef(null);
+    const transitions = useTransition(isVisible, {
+      enter: () => async (next, cancel) => {
+        const height = getElementHeight(innerRef);
 
+        cancel();
+
+        await next({ height, opacity: 1, overflow: "hidden" });
+        await next(visibleStyle);
+      },
+      leave: () => async (next, cancel) => {
+        const height = getElementHeight(containerRef);
+
+        cancel();
+
+        await next({ height, overflow: "hidden" });
+        await next(hiddenStyle);
+
+        isVisibleOnMount.current = false;
+      },
+      from: isVisibleOnMount.current ? visibleStyle : hiddenStyle,
+      unique: true,
+    });
+    return transitions(
+      (styles, item) =>
+        item && (
+          <animated.div ref={containerRef} style={styles}>
+            <Inner ref={innerRef}>{children}</Inner>
+          </animated.div>
+        )
+    );
+  };
+  SlideToggleContent.defaultProps = {
+    forceSlideIn: false,
+  };
+
+  SlideToggleContent.propTypes = {
+    /** Should the component mount it's childeren and slide down */
+    isVisible: bool.isRequired,
+    /** Makes sure the component always slides in on mount. Otherwise it will be immediately visible if isVisible is true on mount */
+    forceSlideIn: bool,
+    /** The slidable content elements */
+    children: node.isRequired,
+  };
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
+  const [isVisible, setIsVisible] = useState(false);
   return (
     <main
       className={`${
@@ -51,6 +115,16 @@ function Main() {
       <div className="max-w-6xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[100px] pt-[50px] md:pt-[100px]">
         <FromBox />
         <ToBox />
+        <div className="w-[100%] flex mb-[30px] mt-0 pl-[5px] items-center">
+          <button className="w-[100%] flex items-center" onClick={() => setIsVisible(!isVisible)}>
+            Send To
+            <img src={plusIcon} alt="" className="w-[14px] h-[14px] ml-[6px]" />
+          </button>
+        </div>
+        <SlideToggleContent isVisible={isVisible}>
+          <ReceiverBox />
+        </SlideToggleContent>
+
         <Link
           to="/24"
           className={`mt-[20px] py-4 w-[100%] text-center font-medium text-lg text-white rounded-[10px] ${

@@ -52,6 +52,7 @@ function GeneralModal() {
             right: "auto",
             bottom: "auto",
             width: "500px",
+            minWidth: "500px",
             height: "auto",
             maxWidth: "420px",
             maxHeight: "90vh",

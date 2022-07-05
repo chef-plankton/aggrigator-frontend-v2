@@ -5,6 +5,7 @@ import CloseIcon from "../../../assets/img/close.png";
 import { changeModalStatus } from "../../../features/modals/modalsSlice";
 import bnblightIcon from "../../../assets/img/chains/binance-light.svg";
 import polygonIcon from "../../../assets/img/chains/polygon.svg";
+import { changeToChain } from "../../../features/route/routeSlice";
 function ToNetworklist() {
   const dispatch = useDispatch();
 
@@ -28,6 +29,7 @@ function ToNetworklist() {
           <li className="m-2">
             <div
               onClick={() => {
+                dispatch(changeToChain(56));
                 dispatch(changeModalStatus(false));
               }}
               className="flex flex-col items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-md dark:hover:text-white cursor-pointer"
@@ -39,12 +41,25 @@ function ToNetworklist() {
           <li className="m-2">
             <div
               onClick={() => {
+                dispatch(changeToChain(137));
                 dispatch(changeModalStatus(false));
               }}
               className="flex flex-col items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-md dark:hover:text-white cursor-pointer"
             >
               <img src={polygonIcon} alt="" className="w-[56px] mb-2" />
               <span>Polygon</span>
+            </div>
+          </li>
+          <li className="m-2">
+            <div
+              onClick={() => {
+                dispatch(changeToChain(97));
+                dispatch(changeModalStatus(false));
+              }}
+              className="flex flex-col items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-md dark:hover:text-white cursor-pointer"
+            >
+              <img src={bnblightIcon} alt="" className="w-[56px] mb-2" />
+              <span>BNB Chain Testnet</span>
             </div>
           </li>
         </ul>

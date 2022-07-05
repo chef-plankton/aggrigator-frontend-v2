@@ -59,6 +59,19 @@ function ChainsDropdown({ setDropdown }: Props) {
             Polygon
           </div>
         </li>
+
+        <li>
+          <div
+            onClick={() => {
+              changeChainId(97);
+              setDropdown(false);
+            }}
+            className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+          >
+            <img src={bnblightIcon} alt="" className="w-[24px] mr-2" />
+            BSC Testnet
+          </div>
+        </li>
       </ul>
     </div>
   );

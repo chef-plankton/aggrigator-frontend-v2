@@ -58,11 +58,13 @@ function FromBox() {
           <FromChangeNetworkButton
             imageSrc={`${chainId === 56 ? bnblightIcon : ""}${
               chainId === 137 ? polygonIcon : ""
-            }`}
+            }${chainId === 97 ? bnblightIcon : ""}`}
             coinName={`${chainId === 1 ? "Ethereum" : ""}
             ${chainId === 56 ? "BNB Chain" : ""}
-            ${chainId === 137 ? "Polygon" : ""}`}
-            chain={"mainnet"}
+            ${chainId === 137 ? "Polygon" : ""}${
+              chainId === 97 ? "BNB Chain" : ""
+            }`}
+            chain={chainId === 97 ? "testnet" : "mainnet"}
           />
           {/* from token */}
           <FromChangeTokenButton

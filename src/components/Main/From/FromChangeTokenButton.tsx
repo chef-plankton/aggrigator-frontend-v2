@@ -6,7 +6,9 @@ import { RootState } from "../../../app/store";
 import ArrowDownFont from "../../../assets/arrow-down-sign-to-navigate.png";
 import tokenImage from "../../../assets/img/token.png";
 import { fromTokenlistStatus } from "../../../features/modals/modalsSlice";
-const StyledButton = styled.div<HTMLAttributes<HTMLElement> & { backgroundColor: string }>`
+const StyledButton = styled.div<
+  HTMLAttributes<HTMLElement> & { backgroundColor: string }
+>`
   width: 50%;
   height: 100%;
   display: flex;
@@ -33,6 +35,7 @@ const FromChangeChainButton: FC<{
 }> = ({ imageSrc, coinName, chain }) => {
   const dispatch = useDispatch();
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
+  const fromToken = useSelector(({ route }: RootState) => route.fromToken);
   return (
     <StyledButton
       backgroundColor={themeMode === "light" ? "#EEEEEE" : "#393E46"}
@@ -46,10 +49,14 @@ const FromChangeChainButton: FC<{
         <h6>{chain}</h6>
       </div> */}
       <div>
-        <img src={tokenImage} alt="" className="w-[42px]" />
+        <img
+          src={fromToken.image === "" ? tokenImage : fromToken.image}
+          alt=""
+          className="w-[42px]"
+        />
       </div>
       <div className="mx-5">
-        <h2>Select Token</h2>
+        <h2>{fromToken.name === "" ? "Select Token" : fromToken.name}</h2>
       </div>
       <div>
         <img src={ArrowDownFont} alt="" />

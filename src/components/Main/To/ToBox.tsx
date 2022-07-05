@@ -6,6 +6,8 @@ import ToChangeNetworkButton from "./ToChangeNetworkButton";
 import ToInput from "./ToInput";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
+import bnblightIcon from "../../../assets/img/chains/binance-light.svg";
+import polygonIcon from "../../../assets/img/chains/polygon.svg";
 const StyledToBox = styled.div<{ color: string; backgroundColor: string }>`
   background: ${({ backgroundColor }) =>
     backgroundColor ? backgroundColor : "rgba(255, 255, 255, 0.25)"};
@@ -16,7 +18,7 @@ const StyledToBox = styled.div<{ color: string; backgroundColor: string }>`
   border: 1px solid rgba(255, 255, 255, 0.18);
   width: 100%;
   min-height: 200px;
-  margin-bottom: 50px;
+  margin-bottom: 35px;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -25,6 +27,7 @@ const StyledToBox = styled.div<{ color: string; backgroundColor: string }>`
 `;
 function ToBox() {
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
+  const chainId = useSelector(({ route }: RootState) => route.toChain);
   return (
     <StyledToBox
       color={themeMode === "light" ? "black" : "white"}
@@ -41,8 +44,15 @@ function ToBox() {
       <div className="px-3 py-5 flex justify-between flex-col md:flex-row">
         <div className="md:w-[50%] w-[100%} flex justify-between">
           <ToChangeNetworkButton
-            coinName={"BNB Chain"}
-            chain={"mainnet"}
+            imageSrc={`${chainId === 56 ? bnblightIcon : ""}${
+              chainId === 137 ? polygonIcon : ""
+            }${chainId === 97 ? bnblightIcon : ""}`}
+            coinName={`${chainId === 1 ? "Ethereum" : ""}
+            ${chainId === 56 ? "BNB Chain" : ""}
+            ${chainId === 137 ? "Polygon" : ""}${
+              chainId === 97 ? "BNB Chain" : ""
+            }`}
+            chain={chainId === 97 ? "testnet" : "mainnet"}
           />
           <ToChangeChainButton
             imageSrc={

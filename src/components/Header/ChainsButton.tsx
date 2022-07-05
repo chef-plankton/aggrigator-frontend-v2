@@ -29,12 +29,13 @@ const ChainsButton: FC<{
         <img
           src={`${chainId === 56 ? bnblightIcon : ""}${
             chainId === 137 ? polygonIcon : ""
-          }`}
+          }${chainId === 97 ? bnblightIcon : ""}`}
           alt=""
           className="w-[32px] h-[32px] mr-2"
         />
         {chainId === 56 ? "BNB Chain" : ""}
         {chainId === 137 ? "Polygon" : ""}
+        {chainId === 97 ? "BNB Chain Testnet" : ""}
         <img
           src={ArrowDownFont}
           alt=""

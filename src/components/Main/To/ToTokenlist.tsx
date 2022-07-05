@@ -1,8 +1,13 @@
+import axios from "axios";
 import React, { HTMLAttributes } from "react";
+import { useQuery } from "react-query";
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import { RootState } from "../../../app/store";
 import CloseIcon from "../../../assets/img/close.png";
 import { changeModalStatus } from "../../../features/modals/modalsSlice";
+import FromTokenlistIsLoading from "../From/FromTokenlistIsLoading";
 import ToToken from "./ToToken";
 const StyledInput = styled.input<HTMLAttributes<HTMLInputElement>>`
   width: 100%;
@@ -22,6 +27,18 @@ const StyledInput = styled.input<HTMLAttributes<HTMLInputElement>>`
 `;
 function ToTokenlist() {
   const dispatch = useDispatch();
+  const chainId = useSelector(({ route }: RootState) => route.toChain);
+  const { isLoading, data, refetch } = useQuery("tokens", () => {
+    if (chainId === 56) {
+      return axios.get("http://localhost:4000/BSC");
+    }
+    if (chainId === 137) {
+      return axios.get("http://localhost:4000/polygon");
+    }
+    if (chainId === 97) {
+      return axios.get("http://localhost:4000/BSC-testnet");
+    }
+  });
   return (
     <>
       <div className="flex justify-between items-center mb-5 pt-5 pr-5 pl-5">
@@ -41,10 +58,14 @@ function ToTokenlist() {
         <StyledInput type="text" placeholder="Search name or paste address" />
       </div>
       <div className="flex flex-col w-[100%] overflow-y-scroll px-5">
-        <ToToken />
-        <ToToken />
-        <ToToken />
-        <ToToken />
+        {isLoading ? (
+          // is Loading Component
+          <FromTokenlistIsLoading />
+        ) : (
+          data.data.map((token, index) => (
+            <ToToken token={token} index={index} />
+          ))
+        )}
       </div>
       <div className="w-[100%] border-[1px] rounded-xl px-[12px] py-[15px] bg-[#edeef2] mt-2 cursor-pointer">
         <p className="text-[14px] text-center">Manage Tokenlist</p>
