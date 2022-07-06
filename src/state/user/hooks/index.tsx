@@ -6,7 +6,6 @@ import { useCallback, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from "../../../config/constants";
 // import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useOfficialsAndUserAddedTokens } from "../../../hooks/Tokens";
 import { AppState, useAppDispatch } from "../../index";
 import {
   addSerializedPair,

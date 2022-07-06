@@ -15,12 +15,7 @@ import {
 import storage from "redux-persist/lib/storage";
 import IndexedDBStorage from "../utils/IndexedDBStorage";
 import { updateVersion } from "./global/actions";
-import infoReducer from "./info";
-import lists from "./lists/reducer";
-import mint from "./mint/reducer";
-import multicall from "./multicall/reducer";
 import swap from "./swap/reducer";
-import transactions from "./transactions/reducer";
 import user from "./user/reducer";
 
 const PERSISTED_KEYS: string[] = ["user", "transactions"];
@@ -63,15 +58,9 @@ const ListsConfig = {
 const persistedReducer = persistReducer(
   persistConfig,
   combineReducers({
-    info: infoReducer,
-
     // Exchange
     user,
-    transactions,
     swap,
-    mint,
-    multicall,
-    lists: persistReducer(ListsConfig, lists),
   })
 );
 

@@ -7,8 +7,10 @@ import WETH_ABI from "../config/abi/weth.json";
 import { getBep20Contract } from "../utils/contractHelpers";
 import { getContract, getProviderOrSigner } from "../utils";
 import { hooks } from "../connectors/metaMask";
-import { Erc20, Erc20Bytes32, Weth } from "../config/abi/types";
+import { Erc20, Erc20Bytes32, Multicall, Weth } from "../config/abi/types";
 import { WETH } from "@pancakeswap/sdk";
+import multiCallAbi from '../config/abi/Multicall.json'
+import { getMulticallAddress } from "../utils/addressHelpers";
 /**
  * Helper hooks to get specific contracts (by ABI)
  */
@@ -80,4 +82,7 @@ export function useBytes32TokenContract(
     ERC20_BYTES32_ABI,
     withSignerIfPossible
   );
+}
+export function useMulticallContract() {
+  return useContract<Multicall>(getMulticallAddress(), multiCallAbi, false);
 }
