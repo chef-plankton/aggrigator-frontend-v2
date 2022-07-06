@@ -33,6 +33,7 @@ const ToChangeChainButton: FC<{
 }> = ({ imageSrc, coinName, chain }) => {
   const dispatch = useDispatch();
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
+  const toToken = useSelector(({ route }: RootState) => route.toToken);
   return (
     <StyledButton
       backgroundColor={themeMode === "light" ? "#EEEEEE" : "#393E46"}
@@ -46,13 +47,17 @@ const ToChangeChainButton: FC<{
         <h6>{chain}</h6>
       </div> */}
       <div>
-        <img src={tokenImage} alt="" className="w-[42px]" />
+        <img
+          src={toToken.image === "" ? tokenImage : toToken.image}
+          alt=''
+          className='w-[42px]'
+        />
       </div>
-      <div className="mx-5">
-        <h2>Select Token</h2>
+      <div className='mx-5'>
+        <h2>{toToken.name === "" ? "Select Token" : toToken.name}</h2>
       </div>
       <div>
-        <img src={ArrowDownFont} alt="" />
+        <img src={ArrowDownFont} alt='' />
       </div>
     </StyledButton>
   );

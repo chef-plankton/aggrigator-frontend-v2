@@ -34,7 +34,7 @@ function FromAdvanceSetting() {
           <input type="text" placeholder="0.01" className="w-[100%] p-2 border border-slate-300 rounded-md focus:outline-none" />
         </div>
       </div>
-      <div className="flex items-center justify-between my-1 px-5 py-3">
+      {/* <div className="flex items-center justify-between my-1 px-5 py-3">
         <div className="flex justify-start items-center">
           <img
             src={TimeImage}
@@ -46,7 +46,7 @@ function FromAdvanceSetting() {
         <div className="w-[30%]">
           <input type="text" placeholder="15min" className="w-[100%] p-2 border border-slate-300 rounded-md focus:outline-none" />
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

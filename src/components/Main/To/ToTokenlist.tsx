@@ -57,7 +57,7 @@ function ToTokenlist() {
       <div className="px-5">
         <StyledInput type="text" placeholder="Search name or paste address" />
       </div>
-      <div className="flex flex-col w-[100%] overflow-y-scroll px-5">
+      <div className="flex flex-col w-[100%] overflow-y-scroll h-[500px] scrollbar">
         {isLoading ? (
           // is Loading Component
           <FromTokenlistIsLoading />

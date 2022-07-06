@@ -129,7 +129,7 @@ function Main() {
           to="/24"
           className={`mt-[20px] py-4 w-[100%] text-center font-medium text-lg text-white rounded-[10px] ${
             themeMode === "light"
-              ? "bg-[#4ECCA3] hover:bg-[#79d8b8]"
+              ? "bg-[#111111] hover:bg-[transparent] hover:text-[#111111] hover:shadow-none hover:border-[1px] hover:border-black"
               : "bg-[#4ECCA3] hover:bg-[#79d8b8]"
           } transition duration-300 shadow-[0_8px_32px_#23293176]`}
         >

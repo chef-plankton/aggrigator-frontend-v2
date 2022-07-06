@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { RootState } from "../../../app/store";
@@ -36,7 +36,15 @@ const StyledInput = styled.input`
 `;
 function ToInput() {
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
-  return <StyledInput color={themeMode === "light" ? "black" : "white"} placeholder="You will recieve" disabled />;
+  const recieve = useSelector(({ route }: RootState) => route.recieve);
+  return (
+    <StyledInput
+      color={themeMode === "light" ? "black" : "white"}
+      placeholder='You will recieve'
+      value={recieve}
+      disabled
+    />
+  );
 }
 
 export default ToInput;

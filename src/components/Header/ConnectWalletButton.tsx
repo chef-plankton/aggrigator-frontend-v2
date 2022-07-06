@@ -28,7 +28,7 @@ function ConnectWalletButton() {
       }}
       className={`py-2 px-2 font-medium text-white ${
         themeMode === "light"
-          ? "bg-[#4ECCA3] hover:bg-[#79d8b8]"
+          ? "bg-[#111111] hover:bg-[#ffffff] hover:text-[#111111]"
           : "bg-[#4ECCA3] hover:bg-[#79d8b8]"
       } rounded transition duration-300`}
     >
