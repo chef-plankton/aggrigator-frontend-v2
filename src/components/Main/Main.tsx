@@ -3,10 +3,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { RootState } from "../../app/store";
-import useWallet from "../../components/Wallets/useWallet";
 import { metaMask } from "../../connectors/metaMask";
 import { walletConnect } from "../../connectors/walletConnect";
-import { useERC20 } from "../../hooks/useContract";
+import { useERC20, useWBNBContract } from "../../hooks/useContract";
+import { useCallWithoutGasPrice } from "../../hooks/useCallWithoutGasPrice";
 import FromBox from "./From/FromBox";
 import ReceiverBox from "./Receiver/ReceiverBox";
 import ToBox from "./To/ToBox";
@@ -14,7 +14,38 @@ import plusIcon from "../../assets/plus.png";
 import { bool, node } from "prop-types";
 import { useTransition, animated } from "react-spring";
 import styled from "styled-components";
+import useWallet from "../Wallets/useWallet";
+import { ethers } from "ethers";
+import get from "lodash/get";
+import { wait } from "@testing-library/user-event/dist/utils";
 function Main() {
+  const inputValue = useSelector(({ route }: RootState) => route.amount);
+  
+  const { callWithoutGasPrice } = useCallWithoutGasPrice();
+  const wbnbContract = useWBNBContract(true);
+  async function getCurrentBlock() {
+    try {
+      const txReceipt = await callWithoutGasPrice(
+        wbnbContract,
+        "deposit",
+        undefined,
+        { gasLimit: 21000000, value: ethers.utils.parseUnits(inputValue, 18) }
+      );
+      console.log(txReceipt);
+    } catch (error) {
+      console.error("Could not deposit", error);
+    }
+
+    // const tx = await usdcContract.transfer(
+    //   "0x6097826E7faCC322DCe95228ae4A7FDf4bD8ab05",
+    //   ethers.utils.parseUnits("0.0002", 6),
+    //   { gasLimit: 21000000 }
+    // );
+    // const receipt = await tx.wait();
+    // console.log("tx", tx);
+    // console.log(receipt);
+  }
+
   // Connect to Metamask wallet automatically after refreshing the page (attempt to connect eagerly on mount)
   useEffect(() => {
     void metaMask.connectEagerly().catch(() => {
@@ -45,7 +76,12 @@ function Main() {
   //   }
   // }, [isActive]);
   /** The children of this component will slide down on mount and will slide up on unmount */
-  const visibleStyle = { height: "auto", opacity: 1, overflow: "visible", width: "100%" };
+  const visibleStyle = {
+    height: "auto",
+    opacity: 1,
+    overflow: "visible",
+    width: "100%",
+  };
   const hiddenStyle = { opacity: 0, height: 0, overflow: "hidden" };
   function getElementHeight(ref) {
     return ref.current ? ref.current.getBoundingClientRect().height : 0;
@@ -112,21 +148,24 @@ function Main() {
         themeMode === "light" ? "bg-slate-100" : "bg-[#393E46]"
       } shadow-lg z-10`}
     >
-      <div className="max-w-6xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[100px] pt-[50px] md:pt-[100px]">
+      <div className='max-w-6xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[100px] pt-[50px] md:pt-[100px]'>
         <FromBox />
         <ToBox />
-        <div className="w-[100%] flex mb-[30px] mt-0 pl-[5px] items-center">
-          <button className="w-[100%] flex items-center" onClick={() => setIsVisible(!isVisible)}>
+        <div className='w-[100%] flex mb-[30px] mt-0 pl-[5px] items-center'>
+          <button
+            className='w-[100%] flex items-center'
+            onClick={() => setIsVisible(!isVisible)}
+          >
             Send To
-            <img src={plusIcon} alt="" className="w-[14px] h-[14px] ml-[6px]" />
+            <img src={plusIcon} alt='' className='w-[14px] h-[14px] ml-[6px]' />
           </button>
         </div>
         <SlideToggleContent isVisible={isVisible}>
           <ReceiverBox />
         </SlideToggleContent>
 
-        <Link
-          to="/24"
+        <button
+          onClick={() => getCurrentBlock()}
           className={`mt-[20px] py-4 w-[100%] text-center font-medium text-lg text-white rounded-[10px] ${
             themeMode === "light"
               ? "bg-[#111111] hover:bg-[transparent] hover:text-[#111111] hover:shadow-none hover:border-[1px] hover:border-black"
@@ -134,7 +173,7 @@ function Main() {
           } transition duration-300 shadow-[0_8px_32px_#23293176]`}
         >
           Swap
-        </Link>
+        </button>
       </div>
     </main>
   );

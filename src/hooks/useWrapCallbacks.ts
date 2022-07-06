@@ -12,7 +12,6 @@ import { useEffect, useMemo } from "react";
 import tryParseAmount from "../utils/tryParseAmount";
 
 import { useERC20, useWBNBContract } from "./useContract";
-import { useCallWithGasPrice } from "./useCallWithGasPrice";
 import useWallet from "../components/Wallets/useWallet";
 import { formatEther } from "@ethersproject/units";
 
@@ -39,7 +38,7 @@ export default function useWrapCallback(
   inputError?: string;
 } {
   const chainId = 97;
-  const { callWithGasPrice } = useCallWithGasPrice();
+
   const wbnbContract = useWBNBContract();
 
   // we can always parse the amount typed as the input currency, since wrapping is 1:1
@@ -56,46 +55,46 @@ export default function useWrapCallback(
       inputCurrency === ETHER &&
       currencyEquals(WETH[chainId], outputCurrency)
     ) {
-      return {
-        wrapType: WrapType.WRAP,
-        execute: inputAmount
-          ? async () => {
-              try {
-                const txReceipt = await callWithGasPrice(
-                  wbnbContract,
-                  "deposit",
-                  undefined,
-                  {
-                    value: `0x${inputAmount.raw.toString(16)}`,
-                  }
-                );
-              } catch (error) {
-                console.error("Could not deposit", error);
-              }
-            }
-          : undefined,
-      };
+      // return {
+      //   wrapType: WrapType.WRAP,
+      //   execute: inputAmount
+      //     ? async () => {
+      //         try {
+      //           const txReceipt = await callWithGasPrice(
+      //             wbnbContract,
+      //             "deposit",
+      //             undefined,
+      //             {
+      //               value: `0x${inputAmount.raw.toString(16)}`,
+      //             }
+      //           );
+      //         } catch (error) {
+      //           console.error("Could not deposit", error);
+      //         }
+      //       }
+      //     : undefined,
+      // };
     }
     if (
       currencyEquals(WETH[chainId], inputCurrency) &&
       outputCurrency === ETHER
     ) {
-      return {
-        wrapType: WrapType.UNWRAP,
-        execute: inputAmount
-          ? async () => {
-              try {
-                const txReceipt = await callWithGasPrice(
-                  wbnbContract,
-                  "withdraw",
-                  [`0x${inputAmount.raw.toString(16)}`]
-                );
-              } catch (error) {
-                console.error("Could not withdraw", error);
-              }
-            }
-          : undefined,
-      };
+      // return {
+      //   wrapType: WrapType.UNWRAP,
+      //   execute: inputAmount
+      //     ? async () => {
+      //         try {
+      //           const txReceipt = await callWithGasPrice(
+      //             wbnbContract,
+      //             "withdraw",
+      //             [`0x${inputAmount.raw.toString(16)}`]
+      //           );
+      //         } catch (error) {
+      //           console.error("Could not withdraw", error);
+      //         }
+      //       }
+      //     : undefined,
+      // };
     }
     return NOT_APPLICABLE;
   }, [
@@ -105,6 +104,5 @@ export default function useWrapCallback(
     outputCurrency,
     inputAmount,
     balance,
-    callWithGasPrice,
   ]);
 }

@@ -14,7 +14,7 @@ interface RouteState {
   fromToken: FromtokenType;
   toChain: number;
   toToken: totokenType;
-  amount: number | string;
+  amount: string;
   recieve: number | string;
   // slippageTolerance: number;
 }
