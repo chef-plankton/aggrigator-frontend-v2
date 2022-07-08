@@ -5,8 +5,9 @@ import WETH_ABI from "../config/abi/weth.json";
 import { getBep20Contract } from "../utils/contractHelpers";
 import { getContract, getProviderOrSigner } from "../utils";
 import { hooks } from "../connectors/metaMask";
-import { Weth } from "../config/abi/types";
+import { Erc20, Weth } from "../config/abi/types";
 import { WETH } from "@pancakeswap/sdk";
+import ERC20_ABI from "../config/abi/erc20.json";
 // returns null on errors
 function useContract<T extends Contract = Contract>(
   address: string | undefined,
@@ -17,8 +18,7 @@ function useContract<T extends Contract = Contract>(
   const library = useProvider();
   const account = useAccount();
   const signer = useMemo(
-    () =>
-      withSignerIfPossible ? getProviderOrSigner(library, account) : null,
+    () => (withSignerIfPossible ? getProviderOrSigner(library, account) : null),
     [withSignerIfPossible, library, account]
   );
 
@@ -60,4 +60,10 @@ export function useWBNBContract(
     WETH_ABI,
     withSignerIfPossible
   );
+}
+export function useTokenContract(
+  tokenAddress?: string,
+  withSignerIfPossible?: boolean
+) {
+  return useContract<Erc20>(tokenAddress, ERC20_ABI, withSignerIfPossible);
 }

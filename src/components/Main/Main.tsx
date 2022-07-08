@@ -18,32 +18,38 @@ import useWallet from "../Wallets/useWallet";
 import { ethers } from "ethers";
 import get from "lodash/get";
 import { wait } from "@testing-library/user-event/dist/utils";
+import { useApprove } from "../../hooks/useApprove";
+import { getSigner } from "../../utils";
 function Main() {
   const inputValue = useSelector(({ route }: RootState) => route.amount);
-  
   const { callWithoutGasPrice } = useCallWithoutGasPrice();
+  const { approve } = useApprove();
   const wbnbContract = useWBNBContract(true);
+  const { useProvider, useAccount } = useWallet("metamask");
+  const library = useProvider();
+  const account = useAccount();
   async function getCurrentBlock() {
-    try {
-      const txReceipt = await callWithoutGasPrice(
-        wbnbContract,
-        "deposit",
-        undefined,
-        { gasLimit: 21000000, value: ethers.utils.parseUnits(inputValue, 18) }
-      );
-      console.log(txReceipt);
-    } catch (error) {
-      console.error("Could not deposit", error);
-    }
-
-    // const tx = await usdcContract.transfer(
-    //   "0x6097826E7faCC322DCe95228ae4A7FDf4bD8ab05",
-    //   ethers.utils.parseUnits("0.0002", 6),
-    //   { gasLimit: 21000000 }
+    // const contractWithSigner = wbnbContract.connect(
+    //   getSigner(library, account)
     // );
-    // const receipt = await tx.wait();
-    // console.log("tx", tx);
-    // console.log(receipt);
+    // contractWithSigner.approve(
+    //   "0x0F6702D890d250b236DDDd4C55A035431Eb8a899",
+    //   ethers.utils.parseUnits(inputValue, 18),
+    //   {
+    //     gasLimit: 21000000,
+    //   }
+    // );
+    // try {
+    //   const txReceipt = await callWithoutGasPrice(
+    //     wbnbContract,
+    //     "deposit",
+    //     undefined,
+    //     { gasLimit: 21000000, value: ethers.utils.parseUnits(inputValue, 18) }
+    //   );
+    //   console.log(txReceipt);
+    // } catch (error) {
+    //   console.error("Could not deposit", error);
+    // }
   }
 
   // Connect to Metamask wallet automatically after refreshing the page (attempt to connect eagerly on mount)

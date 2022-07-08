@@ -6,18 +6,19 @@ import {
   changeModalStatus,
   connectWalletStatus,
 } from "../../features/modals/modalsSlice";
+import summarizeString from "../../hooks/summarizeString";
 
 function ConnectWalletButton() {
   const {
     useChainId,
-    useAccounts,
+    useAccount,
     useIsActivating,
     useIsActive,
     useProvider,
     useENSNames,
   } = hooks;
   const isActive = useIsActive();
-  const accounts = useAccounts();
+  const account = useAccount();
 
   const dispatch = useDispatch();
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
@@ -32,7 +33,7 @@ function ConnectWalletButton() {
           : "bg-[#4ECCA3] hover:bg-[#79d8b8]"
       } rounded transition duration-300`}
     >
-      {isActive ? accounts : "Connnect Wallet"}
+      {isActive ? summarizeString(account, 6, "...") : "Connnect Wallet"}
     </button>
   );
 }

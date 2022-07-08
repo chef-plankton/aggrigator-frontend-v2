@@ -5,7 +5,7 @@ import get from "lodash/get";
 import * as Sentry from "@sentry/react";
 import { ethers } from "ethers";
 import useWallet from "../components/Wallets/useWallet";
-export function useCallWithoutGasPrice() {
+export function useApprove() {
   /**
    * Perform a contract call with a gas price returned from useGasPrice
    * @param contract Used to perform the call
@@ -14,7 +14,7 @@ export function useCallWithoutGasPrice() {
    * @param overrides An overrides object to pass to the method. gasPrice passed in here will take priority over the price returned by useGasPrice
    * @returns https://docs.ethers.io/v5/api/providers/types/#providers-TransactionReceipt
    */
-  const callWithoutGasPrice = useCallback(
+  const approve = useCallback(
     async (
       contract: Contract,
       methodName: string,
@@ -28,5 +28,5 @@ export function useCallWithoutGasPrice() {
     []
   );
 
-  return { callWithoutGasPrice };
+  return { approve };
 }
