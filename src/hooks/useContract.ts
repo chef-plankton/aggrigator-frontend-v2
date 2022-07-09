@@ -53,7 +53,7 @@ export const useERC20 = (address: string, withSignerIfPossible = true) => {
 };
 export function useWBNBContract(
   withSignerIfPossible?: boolean
-): Contract | null {
+): ReturnType<typeof useContract<Weth>> | null {
   const chainId = 97;
   return useContract<Weth>(
     chainId ? WETH[chainId].address : undefined,

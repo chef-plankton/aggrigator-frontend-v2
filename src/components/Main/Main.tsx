@@ -20,36 +20,85 @@ import get from "lodash/get";
 import { wait } from "@testing-library/user-event/dist/utils";
 import { useApprove } from "../../hooks/useApprove";
 import { getSigner } from "../../utils";
+import Swal from "sweetalert2";
+import { useDispatch } from "react-redux";
+import { changeAmount, changeRecieve } from "../../features/route/routeSlice";
+import { Weth } from "../../config/abi/types";
 function Main() {
   const inputValue = useSelector(({ route }: RootState) => route.amount);
-  const { callWithoutGasPrice } = useCallWithoutGasPrice();
+  const fromToken = useSelector(({ route }: RootState) => route.fromToken);
+  const toToken = useSelector(({ route }: RootState) => route.toToken);
+  const fromChain = useSelector(({ route }: RootState) => route.fromChain);
+  const toChain = useSelector(({ route }: RootState) => route.toChain);
+  const { callWithoutGasPrice } = useCallWithoutGasPrice<Weth>();
   const { approve } = useApprove();
   const wbnbContract = useWBNBContract(true);
   const { useProvider, useAccount } = useWallet("metamask");
   const library = useProvider();
   const account = useAccount();
+  const dispatch = useDispatch();
   async function getCurrentBlock() {
     // const contractWithSigner = wbnbContract.connect(
     //   getSigner(library, account)
     // );
-    // contractWithSigner.approve(
-    //   "0x0F6702D890d250b236DDDd4C55A035431Eb8a899",
-    //   ethers.utils.parseUnits(inputValue, 18),
-    //   {
+    // contractWithSigner
+    //   .allowance(account, "0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3", {
     //     gasLimit: 21000000,
-    //   }
-    // );
-    // try {
-    //   const txReceipt = await callWithoutGasPrice(
-    //     wbnbContract,
-    //     "deposit",
-    //     undefined,
-    //     { gasLimit: 21000000, value: ethers.utils.parseUnits(inputValue, 18) }
-    //   );
-    //   console.log(txReceipt);
-    // } catch (error) {
-    //   console.error("Could not deposit", error);
-    // }
+    //   })
+    //   .then((result) => {
+    //     console.log(ethers.utils.parseUnits(inputValue).toString());
+    //     console.log(result.toString());
+
+    //     if (result < ethers.utils.parseUnits(inputValue)) {
+    //       const contractWithSigner = wbnbContract.connect(
+    //         getSigner(library, account)
+    //       );
+    //       contractWithSigner.approve(
+    //         "0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3",
+    //         ethers.utils.parseUnits(inputValue, 18),
+    //         {
+    //           gasLimit: 21000000,
+    //         }
+    //       );
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+
+    if (
+      fromChain === 97 &&
+      toChain === 97 &&
+      fromToken.adress === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" &&
+      toToken.adress === "0xae13d989dac2f0debff460ac112a837c89baa7cd" &&
+      inputValue !== ""
+    ) {
+      try {
+        const txReceipt = await callWithoutGasPrice(
+          wbnbContract,
+          "deposit",
+          undefined,
+          { gasLimit: 21000000, value: ethers.utils.parseUnits(inputValue, 18) }
+        );
+        dispatch(changeAmount(""));
+        dispatch(changeRecieve(""));
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: `Your Tx hash is ${txReceipt.hash}`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong! \n Please make sure your wallet is connected to our website",
+          footer: '<a href="">Why do I have this issue?</a>',
+        });
+        console.error("Could not deposit", error);
+      }
+    }
   }
 
   // Connect to Metamask wallet automatically after refreshing the page (attempt to connect eagerly on mount)
@@ -137,7 +186,6 @@ function Main() {
   SlideToggleContent.defaultProps = {
     forceSlideIn: false,
   };
-
   SlideToggleContent.propTypes = {
     /** Should the component mount it's childeren and slide down */
     isVisible: bool.isRequired,
@@ -146,6 +194,7 @@ function Main() {
     /** The slidable content elements */
     children: node.isRequired,
   };
+
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   const [isVisible, setIsVisible] = useState(false);
   return (
@@ -154,16 +203,16 @@ function Main() {
         themeMode === "light" ? "bg-slate-100" : "bg-[#393E46]"
       } shadow-lg z-10`}
     >
-      <div className='max-w-6xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[100px] pt-[50px] md:pt-[100px]'>
+      <div className="max-w-6xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[100px] pt-[50px] md:pt-[100px]">
         <FromBox />
         <ToBox />
-        <div className='w-[100%] flex mb-[30px] mt-0 pl-[5px] items-center'>
+        <div className="w-[100%] flex mb-[30px] mt-0 pl-[5px] items-center">
           <button
-            className='w-[100%] flex items-center'
+            className="w-[100%] flex items-center"
             onClick={() => setIsVisible(!isVisible)}
           >
             Send To
-            <img src={plusIcon} alt='' className='w-[14px] h-[14px] ml-[6px]' />
+            <img src={plusIcon} alt="" className="w-[14px] h-[14px] ml-[6px]" />
           </button>
         </div>
         <SlideToggleContent isVisible={isVisible}>

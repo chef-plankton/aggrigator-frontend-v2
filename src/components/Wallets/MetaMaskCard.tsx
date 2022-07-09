@@ -10,6 +10,7 @@ import { parseEther } from "@ethersproject/units";
 import { useERC20 } from "../../hooks/useContract";
 import { useDispatch } from "react-redux";
 import { changeWallet } from "../../features/account/accountSlice";
+import { changeModalStatus } from "../../features/modals/modalsSlice";
 
 function MetaMaskCard() {
   const { useIsActivating, useIsActive } = hooks;
@@ -24,7 +25,7 @@ function MetaMaskCard() {
   // );
 
   // attempt to connect eagerly on mount
-  
+
   const dispatch = useDispatch();
   return (
     <div
@@ -40,6 +41,10 @@ function MetaMaskCard() {
                 .then(() => {
                   setError(undefined);
                   dispatch(changeWallet("metamask"));
+                  dispatch(changeModalStatus(false));
+                  void metaMask.connectEagerly().catch(() => {
+                    console.debug("Failed to connect eagerly to metamask");
+                  });
                 })
                 .catch(setError)
       }
