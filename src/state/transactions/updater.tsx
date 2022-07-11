@@ -46,20 +46,19 @@ export default function Updater(): null {
               })
             );
 
-            const toast =
-              receipt.status === 1
-                ? Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: `Confirmed`,
-                    showConfirmButton: false,
-                    timer: 1500,
-                  })
-                : Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "Something went wrong!",
-                  });
+            receipt.status === 1
+              ? Swal.fire({
+                  position: "top-end",
+                  icon: "success",
+                  title: `Confirmed`,
+                  showConfirmButton: false,
+                  timer: 1500,
+                })
+              : Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "Something went wrong!",
+                });
           } else {
             dispatch(checkedTransaction({ chainId, hash }));
           }

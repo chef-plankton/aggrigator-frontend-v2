@@ -51,10 +51,10 @@ function FromInput() {
       onChange={(e) => {
         dispatch(changeAmount(e.target.value));
         if (
-          (fromToken.name === "BNB Native Token" &&
-            toToken.name === "Wraped BNB Token") ||
-          (fromToken.name === "Wraped BNB Token" &&
-            toToken.name === "BNB Native Token")
+          (fromToken.name === "BNB" &&
+            toToken.name === "WBNB") ||
+          (fromToken.name === "WBNB" &&
+            toToken.name === "BNB")
         ) {
           dispatch(changeRecieve(e.target.value));
         }
