@@ -1,6 +1,5 @@
 import { createAction } from '@reduxjs/toolkit'
 import { ChainId } from '@pancakeswap/sdk'
-import { Order } from '@gelatonetwork/limit-orders-lib'
 
 export type TransactionType =
   | 'approve'
@@ -31,7 +30,6 @@ export const addTransaction = createAction<{
   claim?: { recipient: string }
   summary?: string
   type?: TransactionType
-  order?: Order
 }>('transactions/addTransaction')
 export const clearAllTransactions = createAction<{ chainId: ChainId }>('transactions/clearAllTransactions')
 export const finalizeTransaction = createAction<{
@@ -42,5 +40,4 @@ export const finalizeTransaction = createAction<{
 export const checkedTransaction = createAction<{
   chainId: ChainId
   hash: string
-  blockNumber: number
 }>('transactions/checkedTransaction')

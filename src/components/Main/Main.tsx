@@ -1,5 +1,5 @@
 import { formatEther } from "@ethersproject/units";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { RootState } from "../../app/store";
@@ -15,7 +15,7 @@ import { bool, node } from "prop-types";
 import { useTransition, animated } from "react-spring";
 import styled from "styled-components";
 import useWallet from "../Wallets/useWallet";
-import { ethers } from "ethers";
+import { ethers, utils } from "ethers";
 import get from "lodash/get";
 import { wait } from "@testing-library/user-event/dist/utils";
 import { useApprove } from "../../hooks/useApprove";
@@ -24,6 +24,7 @@ import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
 import { changeAmount, changeRecieve } from "../../features/route/routeSlice";
 import { Weth } from "../../config/abi/types";
+import useWrapCallback from "../../hooks/useWrapCallback";
 function Main() {
   const inputValue = useSelector(({ route }: RootState) => route.amount);
   const fromToken = useSelector(({ route }: RootState) => route.fromToken);
@@ -37,6 +38,8 @@ function Main() {
   const library = useProvider();
   const account = useAccount();
   const dispatch = useDispatch();
+  const wrapCallback = useWrapCallback("BNB", "WBNB");
+
   async function getCurrentBlock() {
     // const contractWithSigner = wbnbContract.connect(
     //   getSigner(library, account)
@@ -74,21 +77,22 @@ function Main() {
       inputValue !== ""
     ) {
       try {
-        const txReceipt = await callWithoutGasPrice(
-          wbnbContract,
-          "deposit",
-          undefined,
-          { gasLimit: 21000000, value: ethers.utils.parseUnits(inputValue, 18) }
-        );
-        dispatch(changeAmount(""));
-        dispatch(changeRecieve(""));
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: `Your Tx hash is ${txReceipt.hash}`,
-          showConfirmButton: false,
-          timer: 1500,
-        });
+        wrapCallback.execute();
+        // const txReceipt = await callWithoutGasPrice(
+        //   wbnbContract,
+        //   "deposit",
+        //   undefined,
+        //   { gasLimit: 21000000, value: ethers.utils.parseUnits(inputValue, 18) }
+        // );
+        // dispatch(changeAmount(""));
+        // dispatch(changeRecieve(""));
+        // Swal.fire({
+        //   position: "top-end",
+        //   icon: "success",
+        //   title: `Your Tx hash is ${txReceipt.hash}`,
+        //   showConfirmButton: false,
+        //   timer: 1500,
+        // });
       } catch (error) {
         Swal.fire({
           icon: "error",

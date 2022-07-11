@@ -1178,7 +1178,7 @@
   ],
   "BSC-testnet": [
     {
-      "name": "BNB Native Token",
+      "name": "BNB",
       "symbol": "BNB",
       "address": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
       "chainId": 56,
@@ -1186,7 +1186,7 @@
       "logoURI": "https://www.freelogovectors.net/wp-content/uploads/2022/05/bnb_logo_freelogovectors.net_.png"
     },
     {
-      "name": "Wraped BNB Token",
+      "name": "WBNB",
       "symbol": "WBNB",
       "address": "0xae13d989dac2f0debff460ac112a837c89baa7cd",
       "chainId": 56,

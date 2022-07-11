@@ -28,3 +28,26 @@ export function getContract(
 ): Contract {
   return new Contract(address, ABI, signer);
 }
+
+export function getBscScanLink(
+  data: string | number,
+  type: "transaction" | "token" | "address" | "block" | "countdown",
+): string {
+  switch (type) {
+    case "transaction": {
+      return `${'https://testnet.bscscan.com'}/tx/${data}`;
+    }
+    case "token": {
+      return `${'https://testnet.bscscan.com'}/token/${data}`;
+    }
+    case "block": {
+      return `${'https://testnet.bscscan.com'}/block/${data}`;
+    }
+    case "countdown": {
+      return `${'https://testnet.bscscan.com'}/block/countdown/${data}`;
+    }
+    default: {
+      return `${'https://testnet.bscscan.com'}/address/${data}`;
+    }
+  }
+}

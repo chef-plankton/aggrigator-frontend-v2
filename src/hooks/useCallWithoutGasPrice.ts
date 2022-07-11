@@ -2,7 +2,6 @@ import { useCallback } from "react";
 import { TransactionResponse } from "@ethersproject/providers";
 import { Contract, CallOverrides } from "@ethersproject/contracts";
 import get from "lodash/get";
-import * as Sentry from "@sentry/react";
 import { ethers } from "ethers";
 import useWallet from "../components/Wallets/useWallet";
 export function useCallWithoutGasPrice<T extends Contract>() {
