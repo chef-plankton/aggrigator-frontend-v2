@@ -46,14 +46,6 @@ const persistConfig = {
   migrate: createMigrate(migrations, { debug: false }),
 }
 
-const ListsConfig = {
-  key: 'lists',
-  version: 1,
-  serialize: false,
-  deserialize: false,
-  storage: IndexedDBStorage('lists'),
-}
-
 const persistedReducer = persistReducer(
   persistConfig,
   combineReducers({

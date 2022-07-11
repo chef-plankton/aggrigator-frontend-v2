@@ -22,6 +22,7 @@ import {
 } from "./connectors/walletConnect";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import Updater from "./state/transactions/updater";
 const queryClient = new QueryClient();
 const connectors: [MetaMask | WalletConnect | Network, Web3ReactHooks][] = [
   [metaMask, metaMaskHooks],
@@ -39,6 +40,7 @@ root.render(
       <QueryClientProvider client={queryClient}>
         <Router>
           <Web3ReactProvider connectors={connectors}>
+            <Updater />
             <App />
           </Web3ReactProvider>
         </Router>
