@@ -7,6 +7,7 @@ import FromChangeNetworkButton from "./FromChangeNetworkButton";
 import FromInput from "./FromInput";
 import bnblightIcon from "../../../assets/img/chains/binance-light.svg";
 import polygonIcon from "../../../assets/img/chains/polygon.svg";
+import fantomIcon from "../../../assets/img/chains/fantom.svg";
 import FromAdvanceSetting from "./FromAdvanceSettingButton";
 import FromRefresh from "./FromRefresh";
 
@@ -57,11 +58,11 @@ function FromBox() {
           {/* from network */}
           <FromChangeNetworkButton
             imageSrc={`${chainId === 56 ? bnblightIcon : ""}${
-              chainId === 137 ? polygonIcon : ""
+              chainId === 250 ? fantomIcon : ""
             }${chainId === 97 ? bnblightIcon : ""}`}
-            coinName={`${chainId === 1 ? "Ethereum" : ""}
+            coinName={`
             ${chainId === 56 ? "BNB Chain" : ""}
-            ${chainId === 137 ? "Polygon" : ""}${
+            ${chainId === 250 ? "Fantom" : ""}${
               chainId === 97 ? "BNB Chain" : ""
             }`}
             chain={chainId === 97 ? "testnet" : "mainnet"}

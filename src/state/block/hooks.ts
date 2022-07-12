@@ -12,7 +12,8 @@ export const usePollBlockNumber = () => {
   const { cache, mutate } = useSWRConfig()
   const hooks=useWallet('metamask')
   const {useProvider}=hooks
-  const provider=useProvider<StaticJsonRpcProvider>('https://data-seed-prebsc-1-s1.binance.org:8545/')
+  // const provider=useProvider<StaticJsonRpcProvider>('https://data-seed-prebsc-2-s1.binance.org:8545/')
+  const provider=useProvider()
   const { data } = useSWR(
     'blockNumber',
     async () => {

@@ -9,6 +9,7 @@ import {
 import { getAddChainParameters } from "../../chains";
 import bnblightIcon from "../../assets/img/chains/binance-light.svg";
 import polygonIcon from "../../assets/img/chains/polygon.svg";
+import fantomIcon from "../../assets/img/chains/fantom.svg";
 interface Props {
   setDropdown: (value: boolean) => void;
 }
@@ -50,13 +51,13 @@ function ChainsDropdown({ setDropdown }: Props) {
         <li>
           <div
             onClick={() => {
-              changeChainId(137);
+              changeChainId(250);
               setDropdown(false);
             }}
             className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
           >
-            <img src={polygonIcon} alt="" className="w-[24px] mr-2" />
-            Polygon
+            <img src={fantomIcon} alt="" className="w-[24px] mr-2" />
+            Fantom
           </div>
         </li>
 

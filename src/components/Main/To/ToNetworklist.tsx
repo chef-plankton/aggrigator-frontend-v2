@@ -5,6 +5,7 @@ import CloseIcon from "../../../assets/img/close.png";
 import { changeModalStatus } from "../../../features/modals/modalsSlice";
 import bnblightIcon from "../../../assets/img/chains/binance-light.svg";
 import polygonIcon from "../../../assets/img/chains/polygon.svg";
+import fantomIcon from "../../../assets/img/chains/fantom.svg";
 import { changeToChain } from "../../../features/route/routeSlice";
 function ToNetworklist() {
   const dispatch = useDispatch();
@@ -41,13 +42,13 @@ function ToNetworklist() {
           <li className="m-2">
             <div
               onClick={() => {
-                dispatch(changeToChain(137));
+                dispatch(changeToChain(250));
                 dispatch(changeModalStatus(false));
               }}
               className="flex flex-col items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-md dark:hover:text-white cursor-pointer"
             >
-              <img src={polygonIcon} alt="" className="w-[56px] mb-2" />
-              <span>Polygon</span>
+              <img src={fantomIcon} alt="" className="w-[56px] mb-2" />
+              <span>Fantom</span>
             </div>
           </li>
           <li className="m-2">

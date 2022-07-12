@@ -4,6 +4,7 @@ import ReactTooltip from "react-tooltip";
 import { RootState } from "../../app/store";
 import bnblightIcon from "../../assets/img/chains/binance-light.svg";
 import polygonIcon from "../../assets/img/chains/polygon.svg";
+import fantomIcon from "../../assets/img/chains/fantom.svg";
 const ChainsButton: FC<{
   ArrowDownFont: string;
   setDropdown: (value: boolean) => void;
@@ -28,13 +29,13 @@ const ChainsButton: FC<{
       >
         <img
           src={`${chainId === 56 ? bnblightIcon : ""}${
-            chainId === 137 ? polygonIcon : ""
+            chainId === 250 ? fantomIcon : ""
           }${chainId === 97 ? bnblightIcon : ""}`}
           alt=""
           className="w-[32px] h-[32px] mr-2"
         />
         {chainId === 56 ? "BNB Chain" : ""}
-        {chainId === 137 ? "Polygon" : ""}
+        {chainId === 250 ? "Fantom" : ""}
         {chainId === 97 ? "BNB Chain Testnet" : ""}
         <img
           src={ArrowDownFont}
