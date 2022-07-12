@@ -23,6 +23,7 @@ import {
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import Updater from "./state/transactions/updater";
+import { usePollBlockNumber } from "./state/block/hooks";
 const queryClient = new QueryClient();
 const connectors: [MetaMask | WalletConnect | Network, Web3ReactHooks][] = [
   [metaMask, metaMaskHooks],
@@ -33,13 +34,18 @@ const connectors: [MetaMask | WalletConnect | Network, Web3ReactHooks][] = [
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+function GlobalHooks() {
+  usePollBlockNumber()
 
+  return null
+}
 root.render(
   <>
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <Router>
           <Web3ReactProvider connectors={connectors}>
+            <GlobalHooks/>
             <Updater />
             <App />
           </Web3ReactProvider>

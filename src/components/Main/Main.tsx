@@ -1,7 +1,5 @@
-import { formatEther } from "@ethersproject/units";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import { RootState } from "../../app/store";
 import { metaMask } from "../../connectors/metaMask";
 import { walletConnect } from "../../connectors/walletConnect";
@@ -15,16 +13,20 @@ import { bool, node } from "prop-types";
 import { useTransition, animated } from "react-spring";
 import styled from "styled-components";
 import useWallet from "../Wallets/useWallet";
-import { ethers, utils } from "ethers";
-import get from "lodash/get";
-import { wait } from "@testing-library/user-event/dist/utils";
 import { useApprove } from "../../hooks/useApprove";
-import { getSigner } from "../../utils";
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
-import { changeAmount, changeRecieve } from "../../features/route/routeSlice";
 import { Weth } from "../../config/abi/types";
 import useWrapCallback from "../../hooks/useWrapCallback";
+
+import useSWRImmutable from 'swr/immutable'
+
+
+export const useCurrentBlock = (): number => {
+  const { data: currentBlock = 0 } = useSWRImmutable('blockNumber')
+  return currentBlock
+}
+
 function Main() {
   const inputValue = useSelector(({ route }: RootState) => route.amount);
   const fromToken = useSelector(({ route }: RootState) => route.fromToken);
@@ -34,12 +36,13 @@ function Main() {
   const { callWithoutGasPrice } = useCallWithoutGasPrice<Weth>();
   const { approve } = useApprove();
   const wbnbContract = useWBNBContract(true);
-  const { useProvider, useAccount } = useWallet("metamask");
+  const { useProvider, useAccount, useChainId } = useWallet("metamask");
   const library = useProvider();
   const account = useAccount();
   const dispatch = useDispatch();
   const wrapCallback = useWrapCallback("BNB", "WBNB");
-
+  const currentBlock = useCurrentBlock()
+  
   async function getCurrentBlock() {
     // const contractWithSigner = wbnbContract.connect(
     //   getSigner(library, account)
@@ -68,6 +71,7 @@ function Main() {
     //   .catch((err) => {
     //     console.log(err);
     //   });
+    console.log(currentBlock);
 
     if (
       fromChain === 97 &&
@@ -76,23 +80,10 @@ function Main() {
       toToken.adress === "0xae13d989dac2f0debff460ac112a837c89baa7cd" &&
       inputValue !== ""
     ) {
+      console.log('man tu if am');
+      
       try {
         wrapCallback.execute();
-        // const txReceipt = await callWithoutGasPrice(
-        //   wbnbContract,
-        //   "deposit",
-        //   undefined,
-        //   { gasLimit: 21000000, value: ethers.utils.parseUnits(inputValue, 18) }
-        // );
-        // dispatch(changeAmount(""));
-        // dispatch(changeRecieve(""));
-        // Swal.fire({
-        //   position: "top-end",
-        //   icon: "success",
-        //   title: `Your Tx hash is ${txReceipt.hash}`,
-        //   showConfirmButton: false,
-        //   timer: 1500,
-        // });
       } catch (error) {
         Swal.fire({
           icon: "error",
