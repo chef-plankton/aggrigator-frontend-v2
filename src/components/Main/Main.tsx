@@ -18,13 +18,18 @@ import useWallet from "../Wallets/useWallet";
 import { ethers, utils } from "ethers";
 import get from "lodash/get";
 import { wait } from "@testing-library/user-event/dist/utils";
-import { useApprove } from "../../hooks/useApprove";
 import { getSigner } from "../../utils";
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
 import { changeAmount, changeRecieve } from "../../features/route/routeSlice";
 import { Weth } from "../../config/abi/types";
 import useWrapCallback from "../../hooks/useWrapCallback";
+import useTokenAllowance from "../../hooks/useTokenAllowance";
+import { CurrencyAmount, Token } from "@pancakeswap/sdk";
+import {
+  ApprovalState,
+  useApproveCallbackFromTrade,
+} from "../../hooks/useApproveCallback";
 function Main() {
   const inputValue = useSelector(({ route }: RootState) => route.amount);
   const fromToken = useSelector(({ route }: RootState) => route.fromToken);
@@ -32,13 +37,25 @@ function Main() {
   const fromChain = useSelector(({ route }: RootState) => route.fromChain);
   const toChain = useSelector(({ route }: RootState) => route.toChain);
   const { callWithoutGasPrice } = useCallWithoutGasPrice<Weth>();
-  const { approve } = useApprove();
   const wbnbContract = useWBNBContract(true);
   const { useProvider, useAccount } = useWallet("metamask");
   const library = useProvider();
   const account = useAccount();
   const dispatch = useDispatch();
   const wrapCallback = useWrapCallback("BNB", "WBNB");
+  // check whether the user has approved the router on the input token
+  const [approval, approveCallback] = useApproveCallbackFromTrade(
+    "0x78867BbEeF44f2326bF8DDd1941a4439382EF2A7",
+    inputValue
+  );
+  // check if user has gone through approval process, used to show two step buttons, reset on token change
+  const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false);
+  // mark when a user has submitted an approval, reset onTokenSelection for input field
+  useEffect(() => {
+    if (approval === ApprovalState.PENDING) {
+      setApprovalSubmitted(true);
+    }
+  }, [approval, approvalSubmitted]);
 
   async function getCurrentBlock() {
     // const contractWithSigner = wbnbContract.connect(
@@ -207,24 +224,23 @@ function Main() {
         themeMode === "light" ? "bg-slate-100" : "bg-[#393E46]"
       } shadow-lg z-10`}
     >
-      <div className="max-w-6xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[100px] pt-[50px] md:pt-[100px]">
+      <div className='max-w-6xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[100px] pt-[50px] md:pt-[100px]'>
         <FromBox />
         <ToBox />
-        <div className="w-[100%] flex mb-[30px] mt-0 pl-[5px] items-center">
+        <div className='w-[100%] flex mb-[30px] mt-0 pl-[5px] items-center'>
           <button
-            className="w-[100%] flex items-center"
+            className='w-[100%] flex items-center'
             onClick={() => setIsVisible(!isVisible)}
           >
             Send To
-            <img src={plusIcon} alt="" className="w-[14px] h-[14px] ml-[6px]" />
+            <img src={plusIcon} alt='' className='w-[14px] h-[14px] ml-[6px]' />
           </button>
         </div>
         <SlideToggleContent isVisible={isVisible}>
           <ReceiverBox />
         </SlideToggleContent>
-
+        <div onClick={approveCallback}>click me</div>
         <button
-          onClick={() => getCurrentBlock()}
           className={`mt-[20px] py-4 w-[100%] text-center font-medium text-lg text-white rounded-[10px] ${
             themeMode === "light"
               ? "bg-[#111111] hover:bg-[transparent] hover:text-[#111111] hover:shadow-none hover:border-[1px] hover:border-black"

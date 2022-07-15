@@ -45,6 +45,7 @@ export default function Updater(): null {
                 },
               })
             );
+            
             receipt.status === 1
               ? Swal.fire({
                   position: "top-end",

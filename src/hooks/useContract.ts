@@ -41,12 +41,12 @@ function useContract<T extends Contract = Contract>(
  * Helper hooks to get specific contracts (by ABI)
  */
 export const useERC20 = (address: string, withSignerIfPossible = true) => {
-  const { useAccounts, useProvider } = hooks;
+  const { useAccount, useProvider } = hooks;
   const library = useProvider();
-  const account = useAccounts();
+  const account = useAccount();
   const signer = useMemo(
     () =>
-      withSignerIfPossible ? getProviderOrSigner(library, account[0]) : null,
+      withSignerIfPossible ? getProviderOrSigner(library, account) : null,
     [withSignerIfPossible, library, account]
   );
   return useMemo(() => getBep20Contract(address, signer), [address, signer]);
