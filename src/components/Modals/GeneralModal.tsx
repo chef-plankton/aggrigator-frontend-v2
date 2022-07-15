@@ -43,7 +43,7 @@ function GeneralModal() {
         onRequestClose={() => dispatch(changeModalStatus(false))}
         style={{
           overlay: {
-            backgroundColor: "rgba(0, 0, 0, 0.815)",
+            backgroundColor: "rgba(0, 0, 0, 0.9)",
           },
           content: {
             top: "50%",

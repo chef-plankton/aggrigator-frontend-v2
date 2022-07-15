@@ -12,6 +12,7 @@ import { changeChain } from "../../../features/chains/chainsSlice";
 import { changeModalStatus } from "../../../features/modals/modalsSlice";
 import bnblightIcon from "../../../assets/img/chains/binance-light.svg";
 import polygonIcon from "../../../assets/img/chains/polygon.svg";
+import fantomIcon from "../../../assets/img/chains/fantom.svg";
 import { changeFromChain } from "../../../features/route/routeSlice";
 function FromNetworklist() {
   const dispatch = useDispatch();
@@ -67,13 +68,13 @@ function FromNetworklist() {
             <div
               onClick={() => {
                 changeChainId(137);
-                dispatch(changeFromChain(137));
+                dispatch(changeFromChain(250));
                 dispatch(changeModalStatus(false));
               }}
               className="flex flex-col items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-md dark:hover:text-white cursor-pointer"
             >
-              <img src={polygonIcon} alt="" className="w-[56px] mb-2" />
-              <span>Polygon</span>
+              <img src={fantomIcon} alt="" className="w-[56px] mb-2" />
+              <span>Fantom</span>
             </div>
           </li>
           <li className="m-2">

@@ -62,7 +62,7 @@ export const CHAINS: {
     name: "BSC Mainnet",
   },
   // Polygon
-  137: {
+  250: {
     urls: [
       process.env.infuraKey
         ? `https://polygon-mainnet.infura.io/v3/${process.env.infuraKey}`
