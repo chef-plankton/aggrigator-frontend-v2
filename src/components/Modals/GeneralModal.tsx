@@ -44,6 +44,7 @@ function GeneralModal() {
         style={{
           overlay: {
             backgroundColor: "rgba(0, 0, 0, 0.9)",
+            zIndex: 100,
           },
           content: {
             top: "50%",
