@@ -31,14 +31,13 @@ import {
   useApproveCallbackFromTrade,
 } from "../../hooks/useApproveCallback";
 
-import useSWRImmutable from 'swr/immutable'
-
+import useSWRImmutable from "swr/immutable";
+import Route from "./Route/Route";
 
 export const useCurrentBlock = (): number => {
-  const { data: currentBlock = 0 } = useSWRImmutable('blockNumber')
-  return currentBlock
-}
-
+  const { data: currentBlock = 0 } = useSWRImmutable("blockNumber");
+  return currentBlock;
+};
 
 function Main() {
   const inputValue = useSelector(({ route }: RootState) => route.amount);
@@ -67,8 +66,7 @@ function Main() {
     }
   }, [approval, approvalSubmitted]);
 
-
-  const currentBlock = useCurrentBlock()
+  const currentBlock = useCurrentBlock();
 
   async function getCurrentBlock() {
     // const contractWithSigner = wbnbContract.connect(
@@ -107,8 +105,8 @@ function Main() {
       toToken.adress === "0xae13d989dac2f0debff460ac112a837c89baa7cd" &&
       inputValue !== ""
     ) {
-      console.log('man tu if am');
-      
+      console.log("man tu if am");
+
       try {
         wrapCallback.execute();
       } catch (error) {
@@ -225,23 +223,24 @@ function Main() {
         themeMode === "light" ? "bg-slate-100" : "bg-[#393E46]"
       } shadow-lg z-10`}
     >
-      <div className='max-w-6xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[100px] pt-[50px] md:pt-[100px]'>
+      <div className="max-w-6xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[100px] pt-[50px] md:pt-[100px]">
         <FromBox />
         <ToBox />
-        <div className='w-[100%] flex mb-[30px] mt-0 pl-[5px] items-center'>
+        <div className="w-[100%] flex mb-[30px] mt-0 pl-[5px] items-center">
           <button
-            className='w-[100%] flex items-center'
+            className="w-[100%] flex items-center"
             onClick={() => setIsVisible(!isVisible)}
           >
             Send To
-            <img src={plusIcon} alt='' className='w-[14px] h-[14px] ml-[6px]' />
+            <img src={plusIcon} alt="" className="w-[14px] h-[14px] ml-[6px]" />
           </button>
         </div>
         <SlideToggleContent isVisible={isVisible}>
           <ReceiverBox />
         </SlideToggleContent>
-        <div onClick={approveCallback}>click me</div>
+        <Route />
         <button
+          onClick={approveCallback}
           className={`mt-[20px] py-4 w-[100%] text-center font-medium text-lg text-white rounded-[10px] ${
             themeMode === "light"
               ? "bg-[#111111] hover:bg-[transparent] hover:text-[#111111] hover:shadow-none hover:border-[1px] hover:border-black"

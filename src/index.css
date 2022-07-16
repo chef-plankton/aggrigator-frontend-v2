@@ -38,3 +38,31 @@ button {
   /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
   background-color: #a8a8a8;
 }
+/* css bad */
+.index-module__item {
+  border-radius: 8px;
+  box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  flex: 1;
+  position: relative;
+  user-select: none;
+  z-index: 2;
+}
+
+
+.index-module__menus .index-module__menu-arrow {
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: #bdbdbd;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: center;
+  -webkit-transform: rotate(270deg);
+  transform: rotate(270deg);
+  width: 40px;
+}
