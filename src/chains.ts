@@ -11,6 +11,16 @@ const MATIC: AddEthereumChainParameter["nativeCurrency"] = {
   symbol: "MATIC",
   decimals: 18,
 };
+const BNB: AddEthereumChainParameter["nativeCurrency"] = {
+  name: "Bnb",
+  symbol: "BNB",
+  decimals: 18,
+};
+const FTM: AddEthereumChainParameter["nativeCurrency"] = {
+  name: "Ftm",
+  symbol: "FTM",
+  decimals: 18,
+};
 
 interface BasicChainInformation {
   urls: string[];
@@ -50,26 +60,33 @@ export const CHAINS: {
 } = {
   // BSC
   56: {
-    urls: [
-      "https://rpc.ankr.com/bsc",
-    ].filter((url) => url !== undefined),
+    urls: ["https://rpc.ankr.com/bsc"].filter((url) => url !== undefined),
     name: "BSC Mainnet",
+    nativeCurrency: BNB,
+    blockExplorerUrls: ["https://bscscan.com"],
   },
   // Fantom
   250: {
-    urls: [
-      "https://rpc.ankr.com/fantom",
-    ].filter((url) => url !== undefined),
-    name: "Polygon Mainnet",
-    nativeCurrency: MATIC,
-    blockExplorerUrls: ["https://polygonscan.com"],
+    urls: ["https://rpc.ankr.com/fantom"].filter((url) => url !== undefined),
+    name: "Fantom Mainnet",
+    nativeCurrency: FTM,
+    blockExplorerUrls: ["https://ftmscan.com"],
   },
   // BSC Testnet
   97: {
-    urls: [
-      "https://data-seed-prebsc-2-s3.binance.org:8545/",
-    ].filter((url) => url !== undefined),
-    name: "BSC testnet",
+    urls: ["https://data-seed-prebsc-2-s3.binance.org:8545/"].filter(
+      (url) => url !== undefined
+    ),
+    name: "BSC Testnet",
+    blockExplorerUrls: ["https://testnet.bscscan.com"],
+  },
+  // Fantom Testnet
+  4002: {
+    urls: ["https://rpc.ankr.com/fantom_testnet"].filter(
+      (url) => url !== undefined
+    ),
+    name: "Fantom Testnet",
+    blockExplorerUrls: ["https://testnet.ftmscan.com"],
   },
 };
 
