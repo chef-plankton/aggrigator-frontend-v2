@@ -1,14 +1,6 @@
 import { MaxUint256 } from "@ethersproject/constants";
 import { TransactionResponse } from "@ethersproject/providers";
-import {
-  Trade,
-  TokenAmount,
-  CurrencyAmount,
-  ETHER,
-  Token,
-} from "@pancakeswap/sdk";
 import { useCallback, useMemo } from "react";
-import { useWeb3React } from "@web3-react/core";
 import useTokenAllowance from "./useTokenAllowance";
 import {
   useTransactionAdder,
@@ -16,7 +8,6 @@ import {
 } from "../state/transactions/hooks";
 import { useTokenContract } from "./useContract";
 import { useCallWithoutGasPrice } from "./useCallWithoutGasPrice";
-import { parseEther } from "@ethersproject/units";
 import { BigNumber, ethers } from "ethers";
 
 export enum ApprovalState {

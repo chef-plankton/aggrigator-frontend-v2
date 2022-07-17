@@ -51,23 +51,14 @@ export const CHAINS: {
   // BSC
   56: {
     urls: [
-      process.env.REACT_APP_INFURA_KEY
-        ? `https://mainnet.infura.io/v3/${process.env.REACT_APP_INFURA_KEY}`
-        : undefined,
-      process.env.REACT_APP_ALCHEMY_KEY
-        ? `https://eth-mainnet.alchemyapi.io/v2/${process.env.REACT_APP_ALCHEMY_KEY}`
-        : undefined,
-      "https://cloudflare-eth.com",
+      "https://rpc.ankr.com/bsc",
     ].filter((url) => url !== undefined),
     name: "BSC Mainnet",
   },
-  // Polygon
+  // Fantom
   250: {
     urls: [
-      process.env.infuraKey
-        ? `https://polygon-mainnet.infura.io/v3/${process.env.infuraKey}`
-        : undefined,
-      "https://polygon-rpc.com",
+      "https://rpc.ankr.com/fantom",
     ].filter((url) => url !== undefined),
     name: "Polygon Mainnet",
     nativeCurrency: MATIC,
@@ -76,13 +67,7 @@ export const CHAINS: {
   // BSC Testnet
   97: {
     urls: [
-      process.env.REACT_APP_INFURA_KEY
-        ? `https://mainnet.infura.io/v3/${process.env.REACT_APP_INFURA_KEY}`
-        : undefined,
-      process.env.REACT_APP_ALCHEMY_KEY
-        ? `https://eth-mainnet.alchemyapi.io/v2/${process.env.REACT_APP_ALCHEMY_KEY}`
-        : undefined,
-      "https://cloudflare-eth.com",
+      "https://data-seed-prebsc-2-s3.binance.org:8545/",
     ].filter((url) => url !== undefined),
     name: "BSC testnet",
   },
