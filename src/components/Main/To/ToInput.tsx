@@ -37,11 +37,14 @@ const StyledInput = styled.input`
 function ToInput() {
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   const recieve = useSelector(({ route }: RootState) => route.recieve);
+  const responseData = useSelector(
+    ({ route }: RootState) => route.responseData
+  );
   return (
     <StyledInput
       color={themeMode === "light" ? "black" : "white"}
       placeholder='You will recieve'
-      value={recieve}
+      value={responseData.data.return_amount}
       disabled
     />
   );

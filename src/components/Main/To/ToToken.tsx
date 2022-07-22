@@ -1,10 +1,13 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import { RootState } from "../../../app/store";
 import { changeModalStatus } from "../../../features/modals/modalsSlice";
 import { changeToToken } from "../../../features/route/routeSlice";
 
 function ToToken({ token, index }) {
   const dispatch = useDispatch();
+  const toChain = useSelector(({ route }: RootState) => route.toChain);
   return (
     <div
       key={index}
@@ -13,8 +16,7 @@ function ToToken({ token, index }) {
         dispatch(
           changeToToken({
             name: token.name,
-            adress: token.address,
-            image: token.logoURI,
+            adress: token.contract_addr,
           })
         );
         dispatch(changeModalStatus(false));
@@ -24,7 +26,7 @@ function ToToken({ token, index }) {
         <img
           className="w-[24px] h-[24px] rounded-[50%]"
           alt=""
-          src={token.logoURI}
+          src={`https://assets-cdn.trustwallet.com/blockchains/${toChain === 56 || toChain === 97 ? "smartchain" : toChain === 250 ? "fantom" : ""}/assets/${token.contract_addr}/logo.png`}
         />
       </div>
 

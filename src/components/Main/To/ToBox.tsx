@@ -7,7 +7,7 @@ import ToInput from "./ToInput";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
 import bnblightIcon from "../../../assets/img/chains/binance-light.svg";
-import polygonIcon from "../../../assets/img/chains/polygon.svg";
+import fantomIcon from "../../../assets/img/chains/fantom.svg";
 const StyledToBox = styled.div<{ color: string; backgroundColor: string }>`
   background: ${({ backgroundColor }) =>
     backgroundColor ? backgroundColor : "rgba(255, 255, 255, 0.25)"};
@@ -37,19 +37,18 @@ function ToBox() {
           : "rgba(255, 255, 255, 0.25)"
       }
     >
-      <div className="px-3 py-1 w-[100%] flex justify-between">
+      <div className='px-3 py-1 w-[100%] flex justify-between'>
         <div>To</div>
         <ToBalance />
       </div>
-      <div className="px-3 py-5 flex justify-between flex-col md:flex-row">
-        <div className="md:w-[50%] w-[100%} flex justify-between">
+      <div className='px-3 py-5 flex justify-between flex-col md:flex-row'>
+        <div className='md:w-[50%] w-[100%} flex justify-between'>
           <ToChangeNetworkButton
             imageSrc={`${chainId === 56 ? bnblightIcon : ""}${
-              chainId === 137 ? polygonIcon : ""
+              chainId === 250 ? fantomIcon : ""
             }${chainId === 97 ? bnblightIcon : ""}`}
-            coinName={`${chainId === 1 ? "Ethereum" : ""}
-            ${chainId === 56 ? "BNB Chain" : ""}
-            ${chainId === 137 ? "Polygon" : ""}${
+            coinName={`${chainId === 56 ? "BNB Chain" : ""}
+            ${chainId === 250 ? "Fantom" : ""}${
               chainId === 97 ? "BNB Chain" : ""
             }`}
             chain={chainId === 97 ? "testnet" : "mainnet"}
@@ -62,7 +61,7 @@ function ToBox() {
             chain={"mainnet"}
           />
         </div>
-        <div className="md:w-[50%] w-[100%} mt-[50px] md:mt-0 flex justify-center">
+        <div className='md:w-[50%] w-[100%} mt-[50px] md:mt-0 flex justify-center'>
           <ToInput />
         </div>
       </div>

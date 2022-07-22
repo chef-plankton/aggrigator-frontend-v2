@@ -67,7 +67,7 @@ function FromNetworklist() {
           <li className="m-2">
             <div
               onClick={() => {
-                changeChainId(137);
+                changeChainId(250);
                 dispatch(changeFromChain(250));
                 dispatch(changeModalStatus(false));
               }}

@@ -2,6 +2,7 @@ import { useMemo } from "react";
 // Imports below migrated from Exchange useContract.ts
 import { Contract } from "@ethersproject/contracts";
 import WETH_ABI from "../config/abi/weth.json";
+import AKKA_ABI from "../config/abi/Aggr.json";
 import { getBep20Contract } from "../utils/contractHelpers";
 import { getContract, getProviderOrSigner } from "../utils";
 import { hooks } from "../connectors/metaMask";
@@ -58,6 +59,15 @@ export function useWBNBContract(
   return useContract<Weth>(
     chainId ? WETH[chainId].address : undefined,
     WETH_ABI,
+    withSignerIfPossible
+  );
+}
+export function useAkkaContract(
+  withSignerIfPossible?: boolean
+): ReturnType<typeof useContract> | null {
+  return useContract(
+    "0x0918241fE47232d67dcBebCF33e287B87922C301",
+    AKKA_ABI,
     withSignerIfPossible
   );
 }

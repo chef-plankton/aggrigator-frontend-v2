@@ -16,6 +16,19 @@ interface RouteState {
   toToken: totokenType;
   amount: string;
   recieve: number | string;
+  showRoute: boolean;
+  responseData: {
+    data: {
+      return_amount: number;
+      routes: [
+        {
+          operations: [];
+          operations_seperated: [];
+        }
+      ];
+    };
+  };
+
   // slippageTolerance: number;
 }
 const initialState: RouteState = {
@@ -25,6 +38,18 @@ const initialState: RouteState = {
   toToken: { name: "", adress: "", image: "" },
   amount: "",
   recieve: "",
+  showRoute: true,
+  responseData: {
+    data: {
+      return_amount: undefined,
+      routes: [
+        {
+          operations: undefined,
+          operations_seperated: undefined,
+        },
+      ],
+    },
+  },
   // slippageTolerance: 0.01,
 };
 export const chainsSlice = createSlice({
@@ -49,6 +74,12 @@ export const chainsSlice = createSlice({
     changeRecieve: (state, action) => {
       state.recieve = action.payload;
     },
+    changeShowRoute: (state, action) => {
+      state.showRoute = action.payload;
+    },
+    changeResponseData: (state, action) => {
+      state.responseData = action.payload;
+    },
     // changeSlippageTolerance: (state, action) => {
     //   state.slippageTolerance = action.payload;
     // },
@@ -63,6 +94,8 @@ export const {
   changeToToken,
   changeAmount,
   changeRecieve,
+  changeShowRoute,
+  changeResponseData,
   // changeSlippageTolerance,
 } = chainsSlice.actions;
 

@@ -34,6 +34,7 @@ const ToChangeChainButton: FC<{
   const dispatch = useDispatch();
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   const toToken = useSelector(({ route }: RootState) => route.toToken);
+  const toChain = useSelector(({ route }: RootState) => route.toChain);
   return (
     <StyledButton
       backgroundColor={themeMode === "light" ? "#EEEEEE" : "#393E46"}
@@ -48,7 +49,7 @@ const ToChangeChainButton: FC<{
       </div> */}
       <div>
         <img
-          src={toToken.image === "" ? tokenImage : toToken.image}
+          src={`https://assets-cdn.trustwallet.com/blockchains/${toChain === 56 || toChain === 97 ? "smartchain" : toChain === 250 ? "fantom" : ""}/assets/${toToken.adress}/logo.png`}
           alt=''
           className='w-[42px]'
         />

@@ -1,4 +1,6 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect } from "react";
+import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
@@ -6,6 +8,8 @@ import { RootState } from "../../../app/store";
 import {
   changeAmount,
   changeRecieve,
+  changeResponseData,
+  changeShowRoute,
 } from "../../../features/route/routeSlice";
 const StyledInput = styled.input`
   position: relative;
@@ -43,7 +47,35 @@ function FromInput() {
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   const fromToken = useSelector(({ route }: RootState) => route.fromToken);
   const toToken = useSelector(({ route }: RootState) => route.toToken);
+  const fromChain = useSelector(({ route }: RootState) => route.fromChain);
+  const toChain = useSelector(({ route }: RootState) => route.toChain);
+  const amount = useSelector(({ route }: RootState) => route.amount);
   const dispatch = useDispatch();
+  useEffect(() => {
+    console.log(
+      `http://192.64.112.22:8084/route?token0=${fromToken.adress}&chain0=${
+        fromChain === 56 ? "bsc" : fromChain === 250 ? "fantom" : ""
+      }&token1=${toToken.adress}&chain1=${
+        toChain === 56 ? "bsc" : toChain === 250 ? "fantom" : ""
+      }&amount=${amount}`
+    );
+
+    if (fromToken.adress != "" && toToken.adress != "" && amount != "") {
+      axios
+        .get(
+          `http://192.64.112.22:8084/route?token0=${fromToken.adress}&chain0=${
+            fromChain === 56 ? "bsc" : fromChain === 250 ? "fantom" : ""
+          }&token1=${toToken.adress}&chain1=${
+            toChain === 56 ? "bsc" : toChain === 250 ? "fantom" : ""
+          }&amount=${amount}`
+        )
+        .then((data) => {
+          dispatch(changeResponseData(data));
+          dispatch(changeShowRoute(true));
+        });
+    }
+  }, [amount]);
+
   return (
     <StyledInput
       color={themeMode === "light" ? "black" : "white"}
@@ -51,10 +83,8 @@ function FromInput() {
       onChange={(e) => {
         dispatch(changeAmount(e.target.value));
         if (
-          (fromToken.name === "BNB" &&
-            toToken.name === "WBNB") ||
-          (fromToken.name === "WBNB" &&
-            toToken.name === "BNB")
+          (fromToken.name === "BNB" && toToken.name === "WBNB") ||
+          (fromToken.name === "WBNB" && toToken.name === "BNB")
         ) {
           dispatch(changeRecieve(e.target.value));
         }

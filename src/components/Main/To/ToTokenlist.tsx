@@ -30,10 +30,10 @@ function ToTokenlist() {
   const chainId = useSelector(({ route }: RootState) => route.toChain);
   const { isLoading, data, refetch } = useQuery("tokens", () => {
     if (chainId === 56) {
-      return axios.get("http://localhost:4000/BSC");
+      return axios.get("http://192.64.112.22:8084/tokens?chain=bsc");
     }
-    if (chainId === 137) {
-      return axios.get("http://localhost:4000/polygon");
+    if (chainId === 250) {
+      return axios.get("http://192.64.112.22:8084/tokens?chain=fantom");
     }
     if (chainId === 97) {
       return axios.get("http://localhost:4000/BSC-testnet");
