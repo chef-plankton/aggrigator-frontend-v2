@@ -1,7 +1,7 @@
 import { Currency, currencyEquals, ETHER, WETH } from "@pancakeswap/sdk";
 import { useMemo } from "react";
 import { useTransactionAdder } from "../state/transactions/hooks";
-import { useWBNBContract } from "./useContract";
+import { useAkkaContract, useWBNBContract } from "./useContract";
 import { useCallWithoutGasPrice } from "./useCallWithoutGasPrice";
 import useWallet from "../components/Wallets/useWallet";
 import { useSelector } from "react-redux";
@@ -33,13 +33,13 @@ export default function useAkkaCallback(
   const chainId = useChainId();
   const account = useAccount();
   const { callWithoutGasPrice } = useCallWithoutGasPrice();
-  const wbnbContract = useWBNBContract();
+  const akkaContract = useAkkaContract();
   // const balance = useCurrencyBalance(account ?? undefined, inputCurrency)
   // we can always parse the amount typed as the input currency, since wrapping is 1:1
   const addTransaction = useTransactionAdder();
   const inputAmount = useSelector(({ route }: RootState) => route.amount);
   return useMemo(() => {
-    if (!wbnbContract || !chainId || !inputCurrency || !outputCurrency)
+    if (!akkaContract || !chainId || !inputCurrency || !outputCurrency)
       return NOT_APPLICABLE;
     const sufficientBalance = inputAmount;
 
@@ -51,7 +51,7 @@ export default function useAkkaCallback(
             ? async () => {
                 try {
                   const txReceipt = await callWithoutGasPrice(
-                    wbnbContract,
+                    akkaContract,
                     "deposit",
                     undefined,
                     {
@@ -79,7 +79,7 @@ export default function useAkkaCallback(
             ? async () => {
                 try {
                   const txReceipt = await callWithoutGasPrice(
-                    wbnbContract,
+                    akkaContract,
                     "withdraw",
                     [`${inputAmount}`]
                   );
@@ -96,7 +96,7 @@ export default function useAkkaCallback(
     }
     return NOT_APPLICABLE;
   }, [
-    wbnbContract,
+    akkaContract,
     chainId,
     inputCurrency,
     outputCurrency,

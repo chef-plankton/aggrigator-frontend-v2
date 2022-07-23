@@ -3,7 +3,11 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { metaMask } from "../../connectors/metaMask";
 import { walletConnect } from "../../connectors/walletConnect";
-import { useERC20, useWBNBContract } from "../../hooks/useContract";
+import {
+  useAkkaContract,
+  useERC20,
+  useWBNBContract,
+} from "../../hooks/useContract";
 import { useCallWithoutGasPrice } from "../../hooks/useCallWithoutGasPrice";
 import FromBox from "./From/FromBox";
 import ReceiverBox from "./Receiver/ReceiverBox";
@@ -33,7 +37,6 @@ import {
 
 import useSWRImmutable from "swr/immutable";
 import Route from "./Route/Route";
-
 export const useCurrentBlock = (): number => {
   const { data: currentBlock = 0 } = useSWRImmutable("blockNumber");
   return currentBlock;
@@ -52,6 +55,7 @@ function Main() {
   const account = useAccount();
   const dispatch = useDispatch();
   const wrapCallback = useWrapCallback("BNB", "WBNB");
+
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallbackFromTrade(
     "0x78867BbEeF44f2326bF8DDd1941a4439382EF2A7",
@@ -223,22 +227,23 @@ function Main() {
         themeMode === "light" ? "bg-slate-100" : "bg-[#393E46]"
       } shadow-lg z-10`}
     >
-      <div className="max-w-6xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[100px] pt-[50px] md:pt-[100px]">
+      <div className='max-w-6xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[100px] pt-[50px] md:pt-[100px]'>
         <FromBox />
         <ToBox />
-        <div className="w-[100%] flex mb-[30px] mt-0 pl-[5px] items-center">
+        <div className='w-[100%] flex mb-[30px] mt-0 pl-[5px] items-center'>
           <button
-            className="w-[100%] flex items-center"
+            className='w-[100%] flex items-center'
             onClick={() => setIsVisible(!isVisible)}
           >
             Send To
-            <img src={plusIcon} alt="" className="w-[14px] h-[14px] ml-[6px]" />
+            <img src={plusIcon} alt='' className='w-[14px] h-[14px] ml-[6px]' />
           </button>
         </div>
         <SlideToggleContent isVisible={isVisible}>
           <ReceiverBox />
         </SlideToggleContent>
         <Route />
+
         <button
           onClick={approveCallback}
           className={`mt-[20px] py-4 w-[100%] text-center font-medium text-lg text-white rounded-[10px] ${

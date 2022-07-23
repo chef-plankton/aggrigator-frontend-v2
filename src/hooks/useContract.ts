@@ -46,8 +46,7 @@ export const useERC20 = (address: string, withSignerIfPossible = true) => {
   const library = useProvider();
   const account = useAccount();
   const signer = useMemo(
-    () =>
-      withSignerIfPossible ? getProviderOrSigner(library, account) : null,
+    () => (withSignerIfPossible ? getProviderOrSigner(library, account) : null),
     [withSignerIfPossible, library, account]
   );
   return useMemo(() => getBep20Contract(address, signer), [address, signer]);
@@ -71,6 +70,7 @@ export function useAkkaContract(
     withSignerIfPossible
   );
 }
+
 export function useTokenContract(
   tokenAddress?: string,
   withSignerIfPossible?: boolean
