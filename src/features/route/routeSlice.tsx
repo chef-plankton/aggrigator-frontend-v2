@@ -38,7 +38,7 @@ const initialState: RouteState = {
   toToken: { name: "", adress: "", image: "" },
   amount: "",
   recieve: "",
-  showRoute: true,
+  showRoute: false,
   responseData: {
     data: {
       return_amount: undefined,
