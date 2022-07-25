@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-export type WalletName = "metamask" | "walletconnect";
+export type WalletName = "metamask" | "walletconnect" | "";
 interface AccountState {
   wallet: WalletName;
   address: string;
 }
 const initialState: AccountState = {
-  wallet: "metamask",
+  wallet: "",
   address: "",
 };
 

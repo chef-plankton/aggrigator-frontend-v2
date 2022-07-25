@@ -28,7 +28,6 @@ function ChainsDropdown({ setDropdown }: Props) {
     if (walletconnectIsActive) {
       dispatch(changeChain(chainid));
       walletConnect.activate(chainid);
-      console.log(walletConnect.activate(chainid));
     } else {
       dispatch(changeChain(chainid));
     }

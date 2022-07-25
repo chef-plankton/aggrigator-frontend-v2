@@ -37,11 +37,18 @@ import {
 
 import useSWRImmutable from "swr/immutable";
 import Route from "./Route/Route";
+import { connectWalletStatus } from "../../features/modals/modalsSlice";
 export const useCurrentBlock = (): number => {
   const { data: currentBlock = 0 } = useSWRImmutable("blockNumber");
   return currentBlock;
 };
-
+const Inner = styled.div`
+  &:before,
+  &:after {
+    content: "";
+    display: table;
+  }
+`;
 function Main() {
   const inputValue = useSelector(({ route }: RootState) => route.amount);
   const fromToken = useSelector(({ route }: RootState) => route.fromToken);
@@ -50,15 +57,29 @@ function Main() {
   const toChain = useSelector(({ route }: RootState) => route.toChain);
   const { callWithoutGasPrice } = useCallWithoutGasPrice<Weth>();
   const wbnbContract = useWBNBContract(true);
-  const { useProvider, useAccount, useChainId } = useWallet("metamask");
+  const wallet = useSelector(({ account }: RootState) => account.wallet);
+  const {
+    useChainId,
+    useAccount,
+    useIsActivating,
+    useIsActive,
+    useProvider,
+    useENSNames,
+  } = useWallet(wallet);
+  const isActive = useIsActive();
   const library = useProvider();
   const account = useAccount();
   const dispatch = useDispatch();
   const wrapCallback = useWrapCallback("BNB", "WBNB");
-
+  const [text, setText] = useState("Connect Wallet");
+  useEffect(() => {
+    if (isActive) {
+      setText("Swap");
+    }
+  }, [isActive]);
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallbackFromTrade(
-    "0x78867BbEeF44f2326bF8DDd1941a4439382EF2A7",
+    "0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd",
     inputValue
   );
   // check if user has gone through approval process, used to show two step buttons, reset on token change
@@ -100,7 +121,6 @@ function Main() {
     //   .catch((err) => {
     //     console.log(err);
     //   });
-    console.log(currentBlock);
 
     if (
       fromChain === 97 &&
@@ -165,13 +185,7 @@ function Main() {
   function getElementHeight(ref) {
     return ref.current ? ref.current.getBoundingClientRect().height : 0;
   }
-  const Inner = styled.div`
-    &:before,
-    &:after {
-      content: "";
-      display: table;
-    }
-  `;
+
   const SlideToggleContent = ({ isVisible, children, forceSlideIn }) => {
     const isVisibleOnMount = useRef(isVisible && !forceSlideIn);
     const containerRef = useRef(null);
@@ -245,14 +259,20 @@ function Main() {
         <Route />
 
         <button
-          onClick={approveCallback}
+          onClick={() => {
+            if (!isActive) {
+              dispatch(connectWalletStatus(true));
+            } else {
+              approveCallback();
+            }
+          }}
           className={`mt-[20px] py-4 w-[100%] text-center font-medium text-lg text-white rounded-[10px] ${
             themeMode === "light"
               ? "bg-[#111111] hover:bg-[transparent] hover:text-[#111111] hover:shadow-none hover:border-[1px] hover:border-black"
               : "bg-[#4ECCA3] hover:bg-[#79d8b8]"
           } transition duration-300 shadow-[0_8px_32px_#23293176]`}
         >
-          Swap
+          {text}
         </button>
       </div>
     </main>

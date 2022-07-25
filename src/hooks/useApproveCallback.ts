@@ -9,7 +9,10 @@ import {
 import { useTokenContract } from "./useContract";
 import { useCallWithoutGasPrice } from "./useCallWithoutGasPrice";
 import { BigNumber, ethers } from "ethers";
-
+import { useSelector } from "react-redux";
+import { RootState } from "../app/store";
+import useWallet from "../components/Wallets/useWallet";
+import { parseUnits } from "@ethersproject/units";
 export enum ApprovalState {
   UNKNOWN,
   NOT_APPROVED,
@@ -23,7 +26,16 @@ export function useApproveCallback(
   amountToApprove?: BigNumber,
   spender?: string
 ): [ApprovalState, () => Promise<void>] {
-  const account = "0x0F6702D890d250b236DDDd4C55A035431Eb8a899";
+  const wallet = useSelector(({ account }: RootState) => account.wallet);
+  const {
+    useChainId,
+    useAccount,
+    useIsActivating,
+    useIsActive,
+    useProvider,
+    useENSNames,
+  } = useWallet(wallet);
+  const account = useAccount();
   const { callWithoutGasPrice } = useCallWithoutGasPrice();
 
   const token = amountToApprove;
@@ -32,15 +44,21 @@ export function useApproveCallback(
     account ?? undefined,
     spender
   );
-  const pendingApproval = useHasPendingApproval(tokenAddress, spender);
+  if (currentAllowance) {
+    console.log(ethers.utils.formatEther(currentAllowance));
+  }
 
+  const pendingApproval = useHasPendingApproval(tokenAddress, spender);
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
-    if (!amountToApprove || !spender) return ApprovalState.UNKNOWN;
+    if (!amountToApprove || !spender) {
+      return ApprovalState.UNKNOWN;
+    }
     // if (amountToApprove.currency === ETHER) return ApprovalState.APPROVED;
     // we might not have enough data to know whether or not we need to approve
-    if (!currentAllowance) return ApprovalState.UNKNOWN;
-
+    if (!currentAllowance) {
+      return ApprovalState.UNKNOWN;
+    }
     // amountToApprove will be defined if currentAllowance is
     return currentAllowance.lt(amountToApprove)
       ? pendingApproval
@@ -51,10 +69,7 @@ export function useApproveCallback(
 
   const tokenContract = useTokenContract(tokenAddress);
   const addTransaction = useTransactionAdder();
-
   const approve = useCallback(async (): Promise<void> => {
-    console.log(approvalState);
-    
     if (approvalState !== ApprovalState.NOT_APPROVED) {
       console.log("Error", "Approve was called unnecessarily");
       console.error("approve was called unnecessarily");
@@ -86,13 +101,11 @@ export function useApproveCallback(
       return;
     }
 
-    let useExact = false;
-
     // eslint-disable-next-line consistent-return
     return callWithoutGasPrice(
       tokenContract,
       "approve",
-      [spender, useExact ? amountToApprove : MaxUint256],
+      [spender, amountToApprove],
       {
         gasLimit: 21000000,
       }
@@ -138,6 +151,6 @@ export function useApproveCallbackFromTrade(
   return useApproveCallback(
     tokenAddress,
     amountToApprove,
-    "0x78867BbEeF44f2326bF8DDd1941a4439382EF2A7"
+    "0x08b7eacc12634644c0533f0a3f1616678920b249"
   );
 }

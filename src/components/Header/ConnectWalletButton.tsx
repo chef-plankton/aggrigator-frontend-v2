@@ -1,14 +1,15 @@
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { RootState } from "../../app/store";
-import { hooks, metaMask } from "../../connectors/metaMask";
 import {
   changeModalStatus,
   connectWalletStatus,
 } from "../../features/modals/modalsSlice";
 import summarizeString from "../../hooks/summarizeString";
+import useWallet from "../Wallets/useWallet";
 
 function ConnectWalletButton() {
+  const wallet = useSelector(({ account }: RootState) => account.wallet);
   const {
     useChainId,
     useAccount,
@@ -16,12 +17,13 @@ function ConnectWalletButton() {
     useIsActive,
     useProvider,
     useENSNames,
-  } = hooks;
+  } = useWallet(wallet);
   const isActive = useIsActive();
   const account = useAccount();
 
   const dispatch = useDispatch();
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
+
   return (
     <button
       onClick={() => {

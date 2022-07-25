@@ -20,7 +20,7 @@ function DisconnectWallet() {
     if (isActive && walletName === "walletconnect") {
       void walletConnect.deactivate();
     } else {
-      console.log("else");
+      console.log("");
     }
   };
   return (

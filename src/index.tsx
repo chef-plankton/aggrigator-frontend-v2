@@ -36,7 +36,6 @@ const root = ReactDOM.createRoot(
 );
 function GlobalHooks() {
   usePollBlockNumber()
-
   return null
 }
 root.render(
