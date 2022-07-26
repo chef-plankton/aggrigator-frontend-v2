@@ -34,6 +34,8 @@ import {
 import useSWRImmutable from "swr/immutable";
 import Route from "./Route/Route";
 import { connectWalletStatus } from "../../features/modals/modalsSlice";
+import { TransactionResponse } from "@ethersproject/providers";
+import { useAkkaEncodeSwapDescriptionCallback, useAkkaCalcLayerZeroFeeCallback, useAkkaAggrigatorSwapCallback } from "../../hooks/useAkkaCallback";
 export const useCurrentBlock = (): number => {
   const { data: currentBlock = 0 } = useSWRImmutable("blockNumber");
   return currentBlock;
@@ -52,7 +54,7 @@ function Main() {
   const fromChain = useSelector(({ route }: RootState) => route.fromChain);
   const toChain = useSelector(({ route }: RootState) => route.toChain);
   const amount = useSelector(({ route }: RootState) => route.amount);
-  const { callWithoutGasPrice } = useCallWithoutGasPrice<Weth>();
+  const { callWithoutGasPrice } = useCallWithoutGasPrice<Weth, TransactionResponse>();
   const wbnbContract = useWBNBContract(true);
   const wallet = useSelector(({ account }: RootState) => account.wallet);
   const approvevalue = useSelector(
@@ -72,6 +74,9 @@ function Main() {
   const dispatch = useDispatch();
   const wrapCallback = useWrapCallback("BNB", "WBNB");
   const [text, setText] = useState("Connect Wallet");
+  const { getBytes } = useAkkaEncodeSwapDescriptionCallback()
+  const { quoteLayerZeroFee } = useAkkaCalcLayerZeroFeeCallback()
+  const { aggrigatorSwap } = useAkkaAggrigatorSwapCallback()
   useEffect(() => {
     if (isActive) {
       console.log(Number(approvevalue));
@@ -149,7 +154,12 @@ function Main() {
       }
     }
   }
-
+  async function multiCallSwap(){
+    const payload = await getBytes()
+    const quote=await quoteLayerZeroFee(payload)
+    console.log(quote[0].toString());
+    aggrigatorSwap(quote[0],payload)
+  }
   // Connect to Metamask wallet automatically after refreshing the page (attempt to connect eagerly on mount)
   useEffect(() => {
     void metaMask.connectEagerly().catch(() => {
@@ -242,9 +252,8 @@ function Main() {
   const [isVisible, setIsVisible] = useState(false);
   return (
     <main
-      className={`${
-        themeMode === "light" ? "bg-slate-100" : "bg-[#393E46]"
-      } shadow-lg z-10`}
+      className={`${themeMode === "light" ? "bg-slate-100" : "bg-[#393E46]"
+        } shadow-lg z-10`}
     >
       <div className="max-w-6xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[100px] pt-[50px] md:pt-[80px]">
         <FromBox />
@@ -264,18 +273,18 @@ function Main() {
         <Route />
 
         <button
-          onClick={() => {
+          onClick={async () => {
             if (!isActive) {
               dispatch(connectWalletStatus(true));
             } else {
-              approveCallback();
+              // approveCallback();
+              multiCallSwap()
             }
           }}
-          className={`mt-[20px] py-4 w-[100%] text-center font-medium text-lg text-white rounded-[10px] ${
-            themeMode === "light"
-              ? "bg-[#111111] hover:bg-[transparent] hover:text-[#111111] hover:shadow-none hover:border-[1px] hover:border-black"
-              : "bg-[#4ECCA3] hover:bg-[#79d8b8]"
-          } transition duration-300 shadow-[0_8px_32px_#23293176]`}
+          className={`mt-[20px] py-4 w-[100%] text-center font-medium text-lg text-white rounded-[10px] ${themeMode === "light"
+            ? "bg-[#111111] hover:bg-[transparent] hover:text-[#111111] hover:shadow-none hover:border-[1px] hover:border-black"
+            : "bg-[#4ECCA3] hover:bg-[#79d8b8]"
+            } transition duration-300 shadow-[0_8px_32px_#23293176]`}
         >
           {text}
         </button>

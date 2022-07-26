@@ -1,14 +1,17 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 // Imports below migrated from Exchange useContract.ts
 import { Contract } from "@ethersproject/contracts";
 import WETH_ABI from "../config/abi/weth.json";
-import AKKA_ABI from "../config/abi/Aggr.json";
+import AKKA_ABI from "../config/abi/akkaAggrigator.json"
 import { getBep20Contract } from "../utils/contractHelpers";
 import { getContract, getProviderOrSigner } from "../utils";
 import { hooks } from "../connectors/metaMask";
-import { Erc20, Weth } from "../config/abi/types";
+import { AkkaAggrigator, Erc20, Weth } from "../config/abi/types";
 import { WETH } from "@pancakeswap/sdk";
 import ERC20_ABI from "../config/abi/erc20.json";
+import { useSelector } from "react-redux";
+import { RootState } from "../app/store";
+import { ca } from "date-fns/locale";
 // returns null on errors
 function useContract<T extends Contract = Contract>(
   address: string | undefined,
@@ -63,9 +66,25 @@ export function useWBNBContract(
 }
 export function useAkkaContract(
   withSignerIfPossible?: boolean
-): ReturnType<typeof useContract> | null {
+): ReturnType<typeof useContract<AkkaAggrigator>> | null {
+  const [contractAddress, setContractAddress] = useState<string>(null)
+  const chainId = useSelector(({ chains }: RootState) => chains.value);
+  useEffect(() => {
+    if (chainId) {
+      switch (chainId) {
+        case 56:
+        case 97:
+          setContractAddress(process.env.REACT_APP_BSC_AKKA_CONTRACT)
+          break;
+        case 250:
+          setContractAddress(process.env.REACT_APP_FTM_AKKA_CONTRACT)
+          break;
+      }
+    }
+  }, [chainId])
+  
   return useContract(
-    "0x0918241fE47232d67dcBebCF33e287B87922C301",
+    contractAddress,
     AKKA_ABI,
     withSignerIfPossible
   );

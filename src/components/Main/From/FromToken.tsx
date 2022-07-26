@@ -28,6 +28,8 @@ function FromToken({ token, index }) {
         <img
           className="w-[24px] h-[24px] rounded-[50%]"
           alt=""
+          loading="lazy"
+
           src={`https://assets-cdn.trustwallet.com/blockchains/${
             fromChain === 56 || fromChain === 97
               ? "smartchain"
