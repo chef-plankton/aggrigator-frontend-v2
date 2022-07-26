@@ -19,8 +19,6 @@ function DisconnectWallet() {
     }
     if (isActive && walletName === "walletconnect") {
       void walletConnect.deactivate();
-    } else {
-      console.log("");
     }
   };
   return (

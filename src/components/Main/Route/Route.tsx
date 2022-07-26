@@ -57,7 +57,7 @@ function Route() {
               routes, multiple hops, and the gas cost of each step.
             </div>
           </HeaderStyled>
-          {fromChain != toChain ? (
+          {fromChain !== toChain ? (
             <MenusStyled className='index-module__menus'>
               <div
                 onClick={() => setActive(1)}

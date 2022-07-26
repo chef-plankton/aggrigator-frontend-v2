@@ -8,7 +8,7 @@ import { changeFromToken } from "../../../features/route/routeSlice";
 function FromToken({ token, index }) {
   const dispatch = useDispatch();
   const fromChain = useSelector(({ route }: RootState) => route.fromChain);
-  
+
   return (
     <div
       key={index}
@@ -17,6 +17,7 @@ function FromToken({ token, index }) {
         dispatch(
           changeFromToken({
             name: token.name,
+            symbol: token.symbol,
             adress: token.contract_addr,
           })
         );
@@ -27,7 +28,13 @@ function FromToken({ token, index }) {
         <img
           className="w-[24px] h-[24px] rounded-[50%]"
           alt=""
-          src={`https://assets-cdn.trustwallet.com/blockchains/${fromChain === 56 || fromChain === 97 ? "smartchain" : fromChain === 250 ? "fantom" : ""}/assets/${token.contract_addr}/logo.png`}
+          src={`https://assets-cdn.trustwallet.com/blockchains/${
+            fromChain === 56 || fromChain === 97
+              ? "smartchain"
+              : fromChain === 250
+              ? "fantom"
+              : ""
+          }/assets/${token.contract_addr}/logo.png`}
         />
       </div>
 

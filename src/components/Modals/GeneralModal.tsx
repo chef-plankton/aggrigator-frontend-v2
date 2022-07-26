@@ -9,6 +9,7 @@ import FromNetworklist from "../Main/From/FromNetworklist";
 import ToTokenlist from "../Main/To/ToTokenlist";
 import ToNetworklist from "../Main/To/ToNetworklist";
 import FromAdvanceSetting from "../Main/From/FromAdvanceSetting";
+import { isMobile } from 'react-device-detect';
 
 Modal.setAppElement("#root");
 
@@ -52,8 +53,8 @@ function GeneralModal() {
             transform: "translate(-50%, -50%)",
             right: "auto",
             bottom: "auto",
-            width: "500px",
-            minWidth: "500px",
+            width: isMobile ? "300px" : "500px",
+            minWidth: isMobile ? "300px" : "500px",
             height: "auto",
             maxWidth: "420px",
             maxHeight: "90vh",

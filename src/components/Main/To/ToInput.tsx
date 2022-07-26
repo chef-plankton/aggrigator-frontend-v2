@@ -6,7 +6,7 @@ const StyledInput = styled.input`
   position: relative;
   text-overflow: ellipsis;
   font-weight: 400;
-  font-size: 35px;
+  font-size: 24px;
   padding: 0px;
   display: block;
   color: "palevioletred";
@@ -28,10 +28,10 @@ const StyledInput = styled.input`
   }
   ::placeholder,
   ::-webkit-input-placeholder {
-    font-size: 25px;
+    font-size: 18px;
   }
   :-ms-input-placeholder {
-    font-size: 25px;
+    font-size: 18px;
   }
 `;
 function ToInput() {

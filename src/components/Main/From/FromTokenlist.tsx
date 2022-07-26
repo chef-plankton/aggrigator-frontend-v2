@@ -29,7 +29,7 @@ function FromTokenlist() {
   const dispatch = useDispatch();
   const chainId = useSelector(({ chains }: RootState) => chains.value);
 
-  const { isLoading, data, refetch } = useQuery("tokens", () => {
+  const { isLoading, data } = useQuery("tokens", () => {
     if (chainId === 56) {
       return axios.get("http://192.64.112.22:8084/tokens?chain=bsc");
     }

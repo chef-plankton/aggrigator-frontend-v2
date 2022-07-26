@@ -17,6 +17,7 @@ function ToToken({ token, index }) {
           changeToToken({
             name: token.name,
             adress: token.contract_addr,
+            symbol: token.symbol,
           })
         );
         dispatch(changeModalStatus(false));

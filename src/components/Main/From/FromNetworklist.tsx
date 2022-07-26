@@ -13,10 +13,10 @@ import { changeModalStatus } from "../../../features/modals/modalsSlice";
 import bnblightIcon from "../../../assets/img/chains/binance-light.svg";
 import polygonIcon from "../../../assets/img/chains/polygon.svg";
 import fantomIcon from "../../../assets/img/chains/fantom.svg";
-import { changeFromChain } from "../../../features/route/routeSlice";
+import { changeFromChain, changeFromToken } from "../../../features/route/routeSlice";
 function FromNetworklist() {
   const dispatch = useDispatch();
-  
+
   const { useIsActive: metamaskUseIsActive } = metamaskhooks;
   const metamaskIsActive = metamaskUseIsActive();
   const { useIsActive: walletconnectUseIsActive } = walletconnecthooks;
@@ -29,7 +29,6 @@ function FromNetworklist() {
     if (walletconnectIsActive) {
       dispatch(changeChain(chainid));
       walletConnect.activate(chainid);
-      console.log(walletConnect.activate(chainid));
     } else {
       dispatch(changeChain(chainid));
     }
@@ -57,6 +56,7 @@ function FromNetworklist() {
                 changeChainId(56);
                 dispatch(changeFromChain(56));
                 dispatch(changeModalStatus(false));
+                dispatch(changeFromToken({ name: "", adress: "", image: "", symbol: "" }));
               }}
               className="flex flex-col items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-md dark:hover:text-white cursor-pointer"
             >
@@ -70,6 +70,7 @@ function FromNetworklist() {
                 changeChainId(250);
                 dispatch(changeFromChain(250));
                 dispatch(changeModalStatus(false));
+                dispatch(changeFromToken({ name: "", adress: "", image: "", symbol: "" }));
               }}
               className="flex flex-col items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-md dark:hover:text-white cursor-pointer"
             >
@@ -83,6 +84,7 @@ function FromNetworklist() {
                 changeChainId(97);
                 dispatch(changeFromChain(97));
                 dispatch(changeModalStatus(false));
+                dispatch(changeFromToken({ name: "", adress: "", image: "", symbol: "" }));
               }}
               className="flex flex-col items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-md dark:hover:text-white cursor-pointer"
             >

@@ -6,7 +6,7 @@ import { changeModalStatus } from "../../../features/modals/modalsSlice";
 import bnblightIcon from "../../../assets/img/chains/binance-light.svg";
 import polygonIcon from "../../../assets/img/chains/polygon.svg";
 import fantomIcon from "../../../assets/img/chains/fantom.svg";
-import { changeToChain } from "../../../features/route/routeSlice";
+import { changeToChain, changeToToken } from "../../../features/route/routeSlice";
 function ToNetworklist() {
   const dispatch = useDispatch();
 
@@ -32,6 +32,7 @@ function ToNetworklist() {
               onClick={() => {
                 dispatch(changeToChain(56));
                 dispatch(changeModalStatus(false));
+                dispatch(changeToToken({ name: "", adress: "", image: "", symbol: "" }));
               }}
               className="flex flex-col items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-md dark:hover:text-white cursor-pointer"
             >
@@ -44,6 +45,7 @@ function ToNetworklist() {
               onClick={() => {
                 dispatch(changeToChain(250));
                 dispatch(changeModalStatus(false));
+                dispatch(changeToToken({ name: "", adress: "", image: "", symbol: "" }));
               }}
               className="flex flex-col items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-md dark:hover:text-white cursor-pointer"
             >
@@ -56,6 +58,7 @@ function ToNetworklist() {
               onClick={() => {
                 dispatch(changeToChain(97));
                 dispatch(changeModalStatus(false));
+                dispatch(changeToToken({ name: "", adress: "", image: "", symbol: "" }));
               }}
               className="flex flex-col items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-md dark:hover:text-white cursor-pointer"
             >

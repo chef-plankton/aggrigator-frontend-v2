@@ -9,16 +9,10 @@ function useTokenAllowance(
   owner?: string,
   spender?: string
 ): BigNumber | undefined {
-  console.log("tokenAdress: ", tokenAdress);
-  console.log("owner: ", owner);
-  console.log("spender: ", spender);
-
   const contract = useERC20(tokenAdress);
   const [allowance, setAllowance] = useState<BigNumber>(undefined);
 
   useEffect(() => {
-    console.log("saaaaaaaalaaaaaaaaaaaaaaaaaam");
-    
     if (owner && tokenAdress && spender) {
       contract.allowance(owner, spender).then((data) => {
         setAllowance(data);

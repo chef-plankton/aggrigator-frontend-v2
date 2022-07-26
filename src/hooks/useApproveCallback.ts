@@ -13,6 +13,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
 import useWallet from "../components/Wallets/useWallet";
 import { parseUnits } from "@ethersproject/units";
+import { useDispatch } from "react-redux";
+import { changeApprovevalue } from "../features/account/accountSlice";
 export enum ApprovalState {
   UNKNOWN,
   NOT_APPROVED,
@@ -26,6 +28,7 @@ export function useApproveCallback(
   amountToApprove?: BigNumber,
   spender?: string
 ): [ApprovalState, () => Promise<void>] {
+  const dispatch = useDispatch();
   const wallet = useSelector(({ account }: RootState) => account.wallet);
   const {
     useChainId,
@@ -44,9 +47,6 @@ export function useApproveCallback(
     account ?? undefined,
     spender
   );
-  if (currentAllowance) {
-    console.log(ethers.utils.formatEther(currentAllowance));
-  }
 
   const pendingApproval = useHasPendingApproval(tokenAddress, spender);
   // check the current approval status
@@ -59,6 +59,7 @@ export function useApproveCallback(
     if (!currentAllowance) {
       return ApprovalState.UNKNOWN;
     }
+    dispatch(changeApprovevalue(currentAllowance));
     // amountToApprove will be defined if currentAllowance is
     return currentAllowance.lt(amountToApprove)
       ? pendingApproval

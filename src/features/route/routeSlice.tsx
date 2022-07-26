@@ -3,11 +3,13 @@ interface FromtokenType {
   name: string;
   adress: string;
   image: string;
+  symbol: string;
 }
 interface totokenType {
   name: string;
   adress: string;
   image: string;
+  symbol: string;
 }
 interface RouteState {
   fromChain: number;
@@ -17,6 +19,7 @@ interface RouteState {
   amount: string;
   recieve: number | string;
   showRoute: boolean;
+  counter: number;
   responseData: {
     data: {
       return_amount: number;
@@ -33,12 +36,13 @@ interface RouteState {
 }
 const initialState: RouteState = {
   fromChain: 56,
-  fromToken: { name: "", adress: "", image: "" },
+  fromToken: { name: "", adress: "", image: "", symbol: "" },
   toChain: 56,
-  toToken: { name: "", adress: "", image: "" },
+  toToken: { name: "", adress: "", image: "", symbol: "" },
   amount: "",
   recieve: "",
   showRoute: false,
+  counter: 0,
   responseData: {
     data: {
       return_amount: undefined,
@@ -80,6 +84,9 @@ export const chainsSlice = createSlice({
     changeResponseData: (state, action) => {
       state.responseData = action.payload;
     },
+    changeCounter: (state, action) => {
+      state.counter = action.payload;
+    },
     // changeSlippageTolerance: (state, action) => {
     //   state.slippageTolerance = action.payload;
     // },
@@ -96,6 +103,7 @@ export const {
   changeRecieve,
   changeShowRoute,
   changeResponseData,
+  changeCounter,
   // changeSlippageTolerance,
 } = chainsSlice.actions;
 

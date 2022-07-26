@@ -12,7 +12,7 @@ const StyledButton = styled.div<{ backgroundColor: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px 5px;
+  padding: 10px 25px;
   margin: 0 10px;
   text-decoration: none;
   border-radius: 15px;
@@ -20,7 +20,7 @@ const StyledButton = styled.div<{ backgroundColor: string }>`
     backgroundColor ? backgroundColor : "#EEEEEE"};
   border: 1px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(30px);
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
   @media (max-width: 768px) {
     padding: 10px 15px;
@@ -29,29 +29,23 @@ const StyledButton = styled.div<{ backgroundColor: string }>`
 const FromChangeNetworkButton: FC<{
   imageSrc: string;
   coinName: string;
-  chain: string;
-}> = ({ imageSrc, coinName, chain }) => {
+}> = ({ imageSrc, coinName }) => {
   const dispatch = useDispatch();
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   return (
     <>
       <StyledButton
-        backgroundColor={
-          themeMode === "light"
-            ? "#EEEEEE"
-            : "#393E46"
-        }
+        backgroundColor={themeMode === "light" ? "#EEEEEE" : "#393E46"}
         onClick={() => dispatch(fromNetworklistStatus(true))}
       >
-        <div>
-          <img src={imageSrc} alt="" />
+        <div className="w-[20%]">
+          <img src={imageSrc} alt="" className="w-[32px]" />
         </div>
-        <div className="mx-5">
+        <div className="mx-5 w-[60%] text-center">
           <h3>{coinName}</h3>
-          <h6>{chain}</h6>
         </div>
-        <div>
-          <img src={ArrowDownFont} alt="" />
+        <div className="w-[20%]">
+          <img src={ArrowDownFont} alt="" className="w-[24px]" />
         </div>
       </StyledButton>
     </>

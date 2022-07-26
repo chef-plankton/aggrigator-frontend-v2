@@ -17,24 +17,20 @@ import { bool, node } from "prop-types";
 import { useTransition, animated } from "react-spring";
 import styled from "styled-components";
 import useWallet from "../Wallets/useWallet";
-
 import { ethers, utils } from "ethers";
 import get from "lodash/get";
 import { wait } from "@testing-library/user-event/dist/utils";
 import { getSigner } from "../../utils";
-
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
 import { Weth } from "../../config/abi/types";
 import useWrapCallback from "../../hooks/useWrapCallback";
-
 import useTokenAllowance from "../../hooks/useTokenAllowance";
 import { CurrencyAmount, Token } from "@pancakeswap/sdk";
 import {
   ApprovalState,
   useApproveCallbackFromTrade,
 } from "../../hooks/useApproveCallback";
-
 import useSWRImmutable from "swr/immutable";
 import Route from "./Route/Route";
 import { connectWalletStatus } from "../../features/modals/modalsSlice";
@@ -55,9 +51,13 @@ function Main() {
   const toToken = useSelector(({ route }: RootState) => route.toToken);
   const fromChain = useSelector(({ route }: RootState) => route.fromChain);
   const toChain = useSelector(({ route }: RootState) => route.toChain);
+  const amount = useSelector(({ route }: RootState) => route.amount);
   const { callWithoutGasPrice } = useCallWithoutGasPrice<Weth>();
   const wbnbContract = useWBNBContract(true);
   const wallet = useSelector(({ account }: RootState) => account.wallet);
+  const approvevalue = useSelector(
+    ({ account }: RootState) => account.approvevalue
+  );
   const {
     useChainId,
     useAccount,
@@ -74,9 +74,16 @@ function Main() {
   const [text, setText] = useState("Connect Wallet");
   useEffect(() => {
     if (isActive) {
-      setText("Swap");
+      console.log(Number(approvevalue));
+      console.log(Number(amount));
+
+      if (Number(approvevalue) >= Number(amount)) {
+        setText("Swap");
+      } else {
+        setText("Approve");
+      }
     }
-  }, [isActive]);
+  }, [isActive, amount, approvevalue]);
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallbackFromTrade(
     "0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd",
@@ -129,8 +136,6 @@ function Main() {
       toToken.adress === "0xae13d989dac2f0debff460ac112a837c89baa7cd" &&
       inputValue !== ""
     ) {
-      console.log("man tu if am");
-
       try {
         wrapCallback.execute();
       } catch (error) {
@@ -241,16 +246,16 @@ function Main() {
         themeMode === "light" ? "bg-slate-100" : "bg-[#393E46]"
       } shadow-lg z-10`}
     >
-      <div className='max-w-6xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[100px] pt-[50px] md:pt-[100px]'>
+      <div className="max-w-6xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[100px] pt-[50px] md:pt-[80px]">
         <FromBox />
         <ToBox />
-        <div className='w-[100%] flex mb-[30px] mt-0 pl-[5px] items-center'>
+        <div className="w-[100%] flex mb-[30px] mt-0 pl-[5px] items-center">
           <button
-            className='w-[100%] flex items-center'
+            className="w-[100%] flex items-center"
             onClick={() => setIsVisible(!isVisible)}
           >
             Send To
-            <img src={plusIcon} alt='' className='w-[14px] h-[14px] ml-[6px]' />
+            <img src={plusIcon} alt="" className="w-[14px] h-[14px] ml-[6px]" />
           </button>
         </div>
         <SlideToggleContent isVisible={isVisible}>

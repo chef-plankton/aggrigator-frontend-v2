@@ -21,8 +21,8 @@ const StyledFromBox = styled.div<{ color: string; backgroundColor: string }>`
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   width: 100%;
-  min-height: 200px;
-  margin-bottom: 50px;
+  min-height: 180px;
+  margin-bottom: 40px;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -53,7 +53,7 @@ function FromBox() {
         </div>
       </div>
       {/* box datas */}
-      <div className="px-3 py-5 flex justify-between flex-col md:flex-row">
+      <div className="px-3 py-2 flex justify-between flex-col md:flex-row">
         <div className="md:w-[50%] w-[100%} flex justify-between ">
           {/* from network */}
           <FromChangeNetworkButton
@@ -65,7 +65,6 @@ function FromBox() {
             ${chainId === 250 ? "Fantom" : ""}${
               chainId === 97 ? "BNB Chain" : ""
             }`}
-            chain={chainId === 97 ? "testnet" : "mainnet"}
           />
           {/* from token */}
           <FromChangeTokenButton

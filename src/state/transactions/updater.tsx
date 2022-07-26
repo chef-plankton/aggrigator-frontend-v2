@@ -47,12 +47,7 @@ export default function Updater(): null {
   );
 
   useEffect(() => {
-    console.log("ghablesh");
-    
     if (!chainId || !library || !currentBlockNumber) return;
-
-    console.log("badesh");
-
     Object.keys(transactions)
       .filter((hash) => shouldCheck(currentBlockNumber, transactions[hash]))
       .forEach((hash) => {

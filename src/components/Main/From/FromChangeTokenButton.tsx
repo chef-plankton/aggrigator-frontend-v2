@@ -14,7 +14,7 @@ const StyledButton = styled.div<
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px 5px;
+  padding: 10px 25px;
   margin: 0 10px;
   text-decoration: none;
   border-radius: 15px;
@@ -22,7 +22,7 @@ const StyledButton = styled.div<
     backgroundColor ? backgroundColor : "#EEEEEE"};
   border: 1px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(30px);
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
   @media (max-width: 768px) {
     padding: 10px 15px;
@@ -32,7 +32,7 @@ const FromChangeChainButton: FC<{
   imageSrc: string;
   coinName: string;
   chain: string;
-}> = ({ imageSrc, coinName, chain }) => {
+}> = () => {
   const dispatch = useDispatch();
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   const fromToken = useSelector(({ route }: RootState) => route.fromToken);
@@ -42,24 +42,23 @@ const FromChangeChainButton: FC<{
       backgroundColor={themeMode === "light" ? "#EEEEEE" : "#393E46"}
       onClick={() => dispatch(fromTokenlistStatus(true))}
     >
-      {/* <div>
-        <img src={imageSrc} alt="" />
-      </div>
-      <div className="mx-5">
-        <h3>{coinName}</h3>
-        <h6>{chain}</h6>
-      </div> */}
-      <div>
+      <div className="w-[20%]">
         <img
-          src={`https://assets-cdn.trustwallet.com/blockchains/${fromChain === 56 || fromChain === 97 ? "smartchain" : fromChain === 250 ? "fantom" : ""}/assets/${fromToken.adress}/logo.png`}
+          src={`https://assets-cdn.trustwallet.com/blockchains/${
+            fromChain === 56 || fromChain === 97
+              ? "smartchain"
+              : fromChain === 250
+              ? "fantom"
+              : ""
+          }/assets/${fromToken.adress}/logo.png`}
           alt=""
-          className="w-[42px]"
+          className="w-[32px]"
         />
       </div>
-      <div className="mx-5">
-        <h2>{fromToken.name === "" ? "Select Token" : fromToken.name}</h2>
+      <div className="mx-5 w-[60%] text-center">
+        <h2>{fromToken.symbol === "" ? "Select Token" : fromToken.symbol}</h2>
       </div>
-      <div>
+      <div className="w-[20%]">
         <img src={ArrowDownFont} alt="" />
       </div>
     </StyledButton>

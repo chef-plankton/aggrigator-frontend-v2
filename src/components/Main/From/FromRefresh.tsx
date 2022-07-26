@@ -1,10 +1,23 @@
 import React from "react";
 import refreshImage from "../../../assets/img/refresh.png";
 import ReactTooltip from "react-tooltip";
+import { useDispatch } from "react-redux";
+import { changeCounter } from "../../../features/route/routeSlice";
+import { RootState } from "../../../app/store";
+import { useSelector } from "react-redux";
+
 function FromRefresh() {
+  const dispatch = useDispatch();
+  const counter = useSelector(({ route }: RootState) => route.counter);
+  const refresher = () => {
+    dispatch(changeCounter(counter + 1));
+  };
   return (
     <>
-      <div className="hover:bg-[#EEEEEE] p-2 rounded-md cursor-pointer">
+      <div
+        onClick={refresher}
+        className="hover:bg-[#EEEEEE] p-2 rounded-md cursor-pointer"
+      >
         <div>
           <img
             // data-tip
