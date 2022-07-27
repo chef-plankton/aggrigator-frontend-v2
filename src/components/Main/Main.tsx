@@ -255,7 +255,7 @@ function Main() {
       className={`${themeMode === "light" ? "bg-slate-100" : "bg-[#393E46]"
         } shadow-lg z-10`}
     >
-      <div className="max-w-6xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[100px] pt-[50px] md:pt-[80px]">
+      <div className="max-w-3xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[100px] pt-[50px] md:pt-[50px]">
         <FromBox />
         <ToBox />
         <div className="w-[100%] flex mb-[30px] mt-0 pl-[5px] items-center">

@@ -9,6 +9,7 @@ import {
   changeAmount,
   changeRecieve,
   changeResponseData,
+  changeResponseString,
   changeShowRoute,
 } from "../../../features/route/routeSlice";
 const StyledInput = styled.input`
@@ -37,10 +38,10 @@ const StyledInput = styled.input`
   }
   ::placeholder,
   ::-webkit-input-placeholder {
-    font-size: 18px;
+    font-size: 16px;
   }
   :-ms-input-placeholder {
-    font-size: 18px;
+    font-size: 16px;
   }
 `;
 function FromInput() {
@@ -63,7 +64,8 @@ function FromInput() {
             toChain === 56 ? "bsc" : toChain === 250 ? "fantom" : ""
           }&amount=${amount}`
         )
-        .then((data) => {
+        .then((data) => {          
+          dispatch(changeResponseString(JSON.stringify(data)));
           dispatch(changeResponseData(data));
           dispatch(changeShowRoute(true));
         });

@@ -91,7 +91,7 @@ function Route() {
                     />
                   </div>
                   <span className='text-[#000] text-[18px] font-[700] leading-[24px]'>
-                    {fromToken.name}
+                    {fromToken.symbol}
                   </span>
                 </div>
                 <div className='text-[#ebf0f7] text-[80px] font-[700] leading-[60px] absolute top-[14px] right-[16px]'>
@@ -133,7 +133,7 @@ function Route() {
                     />
                   </div>
                   <span className='text-[#000] text-[18px] font-[700] leading-[24px]'>
-                    {toToken.name}
+                    {toToken.symbol}
                   </span>
                 </div>
                 <div className='text-[#ebf0f7] text-[80px] font-[700] leading-[60px] absolute top-[14px] right-[16px]'>

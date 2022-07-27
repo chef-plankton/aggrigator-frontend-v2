@@ -31,6 +31,7 @@ interface RouteState {
       ];
     };
   };
+  responseString: string;
 
   // slippageTolerance: number;
 }
@@ -54,6 +55,7 @@ const initialState: RouteState = {
       ],
     },
   },
+  responseString: "",
   // slippageTolerance: 0.01,
 };
 export const chainsSlice = createSlice({
@@ -87,6 +89,9 @@ export const chainsSlice = createSlice({
     changeCounter: (state, action) => {
       state.counter = action.payload;
     },
+    changeResponseString: (state, action) => {
+      state.responseString = action.payload;
+    },
     // changeSlippageTolerance: (state, action) => {
     //   state.slippageTolerance = action.payload;
     // },
@@ -104,6 +109,7 @@ export const {
   changeShowRoute,
   changeResponseData,
   changeCounter,
+  changeResponseString,
   // changeSlippageTolerance,
 } = chainsSlice.actions;
 

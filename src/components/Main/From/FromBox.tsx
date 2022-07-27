@@ -21,9 +21,8 @@ const StyledFromBox = styled.div<{ color: string; backgroundColor: string }>`
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   width: 100%;
-  min-height: 180px;
   margin-bottom: 40px;
-  padding: 20px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -46,7 +45,7 @@ function FromBox() {
     >
       {/* box top bar */}
       <div className="px-3 py-1 w-[100%] flex justify-between">
-        <FromBalance />
+        From
         <div className="flex">
           <FromRefresh />
           <FromAdvanceSetting />
@@ -54,7 +53,7 @@ function FromBox() {
       </div>
       {/* box datas */}
       <div className="px-3 py-2 flex justify-between flex-col md:flex-row">
-        <div className="md:w-[50%] w-[100%} flex justify-between ">
+        <div className="md:w-[60%] w-[100%} flex justify-between ">
           {/* from network */}
           <FromChangeNetworkButton
             imageSrc={`${chainId === 56 ? bnblightIcon : ""}${
@@ -76,7 +75,7 @@ function FromBox() {
           />
         </div>
         {/* from input */}
-        <div className="md:w-[50%] w-[100%} mt-[30px] md:mt-0 flex justify-center">
+        <div className="md:w-[40%] w-[100%} mt-[30px] md:mt-0 flex justify-center">
           <FromInput />
         </div>
       </div>

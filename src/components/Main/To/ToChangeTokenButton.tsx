@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { RootState } from "../../../app/store";
 import ArrowDownFont from "../../../assets/arrow-down-sign-to-navigate.png";
 import { ToTokenlistStatus } from "../../../features/modals/modalsSlice";
-import tokenImage from "../../../assets/img/token.png";
+import tokenImage from "../../../assets/img/creation.png";
 const StyledButton = styled.div<
   HTMLAttributes<HTMLElement> & { backgroundColor: string }
 >`
@@ -14,7 +14,7 @@ const StyledButton = styled.div<
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px 25px;
+  padding: 10px 15px;
   margin: 0 10px;
   text-decoration: none;
   border-radius: 15px;
@@ -22,7 +22,7 @@ const StyledButton = styled.div<
     backgroundColor ? backgroundColor : "#EEEEEE"};
   border: 1px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(30px);
-  font-size: 13px;
+  font-size: 12px;
   cursor: pointer;
   @media (max-width: 768px) {
     padding: 10px 15px;
@@ -44,13 +44,17 @@ const ToChangeChainButton: FC<{
     >
       <div className="w-[20%]">
         <img
-          src={`https://assets-cdn.trustwallet.com/blockchains/${
-            toChain === 56 || toChain === 97
-              ? "smartchain"
-              : toChain === 250
-              ? "fantom"
-              : ""
-          }/assets/${toToken.adress}/logo.png`}
+          src={
+            toToken.adress
+              ? `https://assets-cdn.trustwallet.com/blockchains/${
+                  toChain === 56 || toChain === 97
+                    ? "smartchain"
+                    : toChain === 250
+                    ? "fantom"
+                    : ""
+                }/assets/${toToken.adress}/logo.png`
+              : tokenImage
+          }
           alt=""
           className="w-[32px]"
         />
@@ -59,7 +63,7 @@ const ToChangeChainButton: FC<{
         <h2>{toToken.symbol === "" ? "Select Token" : toToken.symbol}</h2>
       </div>
       <div className="w-[20%]">
-        <img src={ArrowDownFont} alt="" />
+        <img src={ArrowDownFont} alt="" className="w-[10px]" />
       </div>
     </StyledButton>
   );

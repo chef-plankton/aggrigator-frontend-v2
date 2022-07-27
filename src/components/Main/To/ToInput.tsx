@@ -28,10 +28,10 @@ const StyledInput = styled.input`
   }
   ::placeholder,
   ::-webkit-input-placeholder {
-    font-size: 18px;
+    font-size: 16px;
   }
   :-ms-input-placeholder {
-    font-size: 18px;
+    font-size: 16px;
   }
 `;
 function ToInput() {
@@ -43,8 +43,8 @@ function ToInput() {
   return (
     <StyledInput
       color={themeMode === "light" ? "black" : "white"}
-      placeholder='You will recieve'
-      value={responseData.data.return_amount}
+      placeholder="You will recieve"
+      value={Math.round(responseData.data.return_amount)}
       disabled
     />
   );

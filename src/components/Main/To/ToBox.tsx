@@ -17,9 +17,8 @@ const StyledToBox = styled.div<{ color: string; backgroundColor: string }>`
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   width: 100%;
-  min-height: 180px;
   margin-bottom: 35px;
-  padding: 20px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -42,7 +41,7 @@ function ToBox() {
         {/* <ToBalance /> */}
       </div>
       <div className='px-3 py-2 flex justify-between flex-col md:flex-row'>
-        <div className='md:w-[50%] w-[100%} flex justify-between'>
+        <div className='md:w-[60%] w-[100%} flex justify-between'>
           <ToChangeNetworkButton
             imageSrc={`${chainId === 56 ? bnblightIcon : ""}${
               chainId === 250 ? fantomIcon : ""
@@ -60,7 +59,7 @@ function ToBox() {
             chain={"mainnet"}
           />
         </div>
-        <div className='md:w-[50%] w-[100%} mt-[50px] md:mt-0 flex justify-center'>
+        <div className='md:w-[40%] w-[100%} mt-[50px] md:mt-0 flex justify-center'>
           <ToInput />
         </div>
       </div>

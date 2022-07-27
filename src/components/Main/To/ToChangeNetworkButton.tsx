@@ -11,7 +11,7 @@ const StyledButton = styled.div<{ backgroundColor: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px 25px;
+  padding: 10px 15px;
   margin: 0 10px;
   text-decoration: none;
   border-radius: 15px;
@@ -19,7 +19,7 @@ const StyledButton = styled.div<{ backgroundColor: string }>`
     backgroundColor ? backgroundColor : "#EEEEEE"};
   border: 1px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(30px);
-  font-size: 13px;
+  font-size: 12px;
   cursor: pointer;
   @media (max-width: 768px) {
     padding: 10px 15px;
@@ -43,7 +43,7 @@ const ToChangeNetworkButton: FC<{
         <h3>{coinName}</h3>
       </div>
       <div className="w-[20%]">
-        <img src={ArrowDownFont} alt="" className="w-[24px]" />
+        <img src={ArrowDownFont} alt="" className="w-[10px]" />
       </div>
     </StyledButton>
   );
