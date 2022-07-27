@@ -47,18 +47,18 @@ function Route() {
       {showRoute ? (
         <MainStyled>
           <HeaderStyled>
-            <div className='flex justify-between items-end mt-[8px]'>
-              <div className='text-[24px] text-black font-[700] leading-[28px]'>
+            <div className="flex justify-between items-end mt-[8px]">
+              <div className="text-[24px] text-black font-[700] leading-[28px]">
                 Smart Routing
               </div>
             </div>
-            <div className='text-[14px] leading-[16px] text-[#929292] mt-2'>
+            <div className="text-[14px] leading-[16px] text-[#929292] mt-2">
               This route optimizes your total output by considering split
               routes, multiple hops, and the gas cost of each step.
             </div>
           </HeaderStyled>
           {fromChain !== toChain ? (
-            <MenusStyled className='index-module__menus'>
+            <MenusStyled className="index-module__menus">
               <div
                 onClick={() => setActive(1)}
                 className={`${
@@ -67,20 +67,20 @@ function Route() {
                     : "border-none bg-[#f9f9f9]"
                 } index-module__item flex flex-col justify-start items-start py-[12px] px-[16px] cursor-pointer`}
               >
-                <span className='text-[#3d3d3d] text-[14px] font-[400] leading-[16px] mb-[8px]'>
+                <span className="text-[#3d3d3d] text-[14px] font-[400] leading-[16px] mb-[8px]">
                   {fromChain === 56 ? "BSC" : ""}
                   {fromChain === 250 ? "Fantom" : ""}
                   {fromChain === 97 ? "BSC testnet" : ""}
                 </span>
-                <div className='flex items-center justify-start'>
+                <div className="flex items-center justify-start">
                   <div
-                    data-testid='base-logo-wrapper'
-                    className='w-[32px] h-[32px] mr-[6px] bg-[#fff] rounded-[50%] box-border overflow-hidden inline-block'
+                    data-testid="base-logo-wrapper"
+                    className="w-[32px] h-[32px] mr-[6px] bg-[#fff] rounded-[50%] box-border overflow-hidden inline-block"
                   >
                     <img
-                      data-testid='base-logo'
-                      className='w-[100%] h-[100%]'
-                      alt=''
+                      data-testid="base-logo"
+                      className="w-[100%] h-[100%]"
+                      alt=""
                       src={`https://assets-cdn.trustwallet.com/blockchains/${
                         fromChain === 56 || fromChain === 97
                           ? "smartchain"
@@ -90,16 +90,16 @@ function Route() {
                       }/assets/${fromToken.adress}/logo.png`}
                     />
                   </div>
-                  <span className='text-[#000] text-[18px] font-[700] leading-[24px]'>
+                  <span className="text-[#000] text-[18px] font-[700] leading-[24px]">
                     {fromToken.symbol}
                   </span>
                 </div>
-                <div className='text-[#ebf0f7] text-[80px] font-[700] leading-[60px] absolute top-[14px] right-[16px]'>
+                <div className="text-[#ebf0f7] text-[80px] font-[700] leading-[60px] absolute top-[14px] right-[16px]">
                   1
                 </div>
               </div>
-              <span className='w-[50px] md:w-[100px]'>
-                <img src={bridgeIcon} alt='' />
+              <span className="w-[50px] md:w-[100px]">
+                <img src={bridgeIcon} alt="" />
               </span>
               <div
                 onClick={() => setActive(2)}
@@ -109,20 +109,20 @@ function Route() {
                     : "border-none bg-[#f9f9f9]"
                 } index-module__item flex flex-col justify-start items-start py-[12px] px-[16px] cursor-pointer`}
               >
-                <span className='text-[#3d3d3d] text-[14px] font-[400] leading-[16px] mb-[8px]'>
+                <span className="text-[#3d3d3d] text-[14px] font-[400] leading-[16px] mb-[8px]">
                   {toChain === 250 ? "Fantom" : ""}
                   {toChain === 56 ? "BSC" : ""}
                   {toChain === 97 ? "BSC testnet" : ""}
                 </span>
-                <div className='flex items-center justify-start'>
+                <div className="flex items-center justify-start">
                   <div
-                    data-testid='base-logo-wrapper'
-                    className='w-[32px] h-[32px] mr-[6px] bg-[#fff] rounded-[50%] box-border overflow-hidden inline-block'
+                    data-testid="base-logo-wrapper"
+                    className="w-[32px] h-[32px] mr-[6px] bg-[#fff] rounded-[50%] box-border overflow-hidden inline-block"
                   >
                     <img
-                      data-testid='base-logo'
-                      className='w-[100%] h-[100%]'
-                      alt=''
+                      data-testid="base-logo"
+                      className="w-[100%] h-[100%]"
+                      alt=""
                       src={`https://assets-cdn.trustwallet.com/blockchains/${
                         toChain === 56 || toChain === 97
                           ? "smartchain"
@@ -132,11 +132,11 @@ function Route() {
                       }/assets/${toToken.adress}/logo.png`}
                     />
                   </div>
-                  <span className='text-[#000] text-[18px] font-[700] leading-[24px]'>
+                  <span className="text-[#000] text-[18px] font-[700] leading-[24px]">
                     {toToken.symbol}
                   </span>
                 </div>
-                <div className='text-[#ebf0f7] text-[80px] font-[700] leading-[60px] absolute top-[14px] right-[16px]'>
+                <div className="text-[#ebf0f7] text-[80px] font-[700] leading-[60px] absolute top-[14px] right-[16px]">
                   2
                 </div>
               </div>
@@ -146,57 +146,159 @@ function Route() {
           )}
 
           <div>
-            <div className='flex items-center justify-between relative z-[1]'>
-              <div className='inline-block h-[36px] relative w-[36px]'>
-                <div className='w-[32px] h-[32px] absolute left-0 top-0 z-[1] bg-[#fff] rounded-[50%] box-border inline-block overflow-hidden'>
+            <div className="flex items-center justify-between relative z-[1]">
+              <div className="inline-block h-[36px] relative w-[36px]">
+                <div className="w-[32px] h-[32px] absolute left-0 top-0 z-[1] bg-[#fff] rounded-[50%] box-border inline-block overflow-hidden">
                   <img
-                    className='w-[100%] h-[100%]'
-                    alt=''
+                    className="w-[100%] h-[100%]"
+                    alt=""
                     src={`https://assets-cdn.trustwallet.com/blockchains/${
-                      fromChain === 56 || fromChain === 97
+                      (fromChain === 56 || fromChain === 97) &&
+                      active === 1 &&
+                      fromChain === toChain
                         ? "smartchain"
-                        : fromChain === 250
+                        : (fromChain === 56 || fromChain === 97) &&
+                          active === 1 &&
+                          fromChain !== toChain
+                        ? "smartchain"
+                        : (fromChain === 56 || fromChain === 97) &&
+                          active === 2 &&
+                          fromChain !== toChain
                         ? "fantom"
+                        : (fromChain === 250 || fromChain === 4002) &&
+                          active === 1 &&
+                          fromChain === toChain
+                        ? "fantom"
+                        : (fromChain === 250 || fromChain === 4002) &&
+                          active === 1 &&
+                          fromChain !== toChain
+                        ? "fantom"
+                        : (fromChain === 250 || fromChain === 4002) &&
+                          active === 2 &&
+                          fromChain !== toChain
+                        ? "smartchain"
                         : ""
-                    }/assets/${fromToken.adress}/logo.png`}
+                    }/assets/${
+                      active === 1
+                        ? masir[active === 1 ? 0 : active === 2 ? 2 : 0]
+                            ?.operations[0]?.offer_token[0]
+                        : active === 2
+                        ? masir[active === 2 ? 2 : active === 1 ? 0 : 0]
+                            ?.operations[0]?.ask_token[0]
+                        : ""
+                    }/logo.png`}
                   />
                 </div>
-                <div className='w-[18px] h-[18px] border-[1px] border-[#fff] bottom-0 absolute right-0 z-[2] rounded-[50%] box-border inline-block overflow-hidden'>
+                <div className="w-[18px] h-[18px] border-[1px] border-[#fff] bottom-0 absolute right-0 z-[2] rounded-[50%] box-border inline-block overflow-hidden">
                   <img
-                    className='w-[100%] h-[100%]'
-                    alt=''
+                    className="w-[100%] h-[100%]"
+                    alt=""
                     src={
-                      fromChain === 56 || fromChain === 97
+                      (fromChain === 56 || fromChain === 97) &&
+                      active === 1 &&
+                      fromChain === toChain
                         ? bnblightIcon
-                        : fromChain === 250
+                        : (fromChain === 56 || fromChain === 97) &&
+                          active === 1 &&
+                          fromChain !== toChain
+                        ? bnblightIcon
+                        : (fromChain === 56 || fromChain === 97) &&
+                          active === 2 &&
+                          fromChain !== toChain
                         ? fantomIcon
+                        : (fromChain === 250 || fromChain === 4002) &&
+                          active === 1 &&
+                          fromChain === toChain
+                        ? fantomIcon
+                        : (fromChain === 250 || fromChain === 4002) &&
+                          active === 1 &&
+                          fromChain !== toChain
+                        ? fantomIcon
+                        : (fromChain === 250 || fromChain === 4002) &&
+                          active === 2 &&
+                          fromChain !== toChain
+                        ? bnblightIcon
                         : ""
                     }
                   />
                 </div>
               </div>
-              <div className='inline-block h-[36px] relative w-[36px]'>
-                <div className='w-[32px] h-[32px] absolute left-0 top-0 z-[1] bg-[#fff] rounded-[50%] box-border inline-block overflow-hidden'>
+              <div className="inline-block h-[36px] relative w-[36px]">
+                <div className="w-[32px] h-[32px] absolute left-0 top-0 z-[1] bg-[#fff] rounded-[50%] box-border inline-block overflow-hidden">
                   <img
-                    className='w-[100%] h-[100%]'
-                    alt=''
+                    className="w-[100%] h-[100%]"
+                    alt=""
                     src={`https://assets-cdn.trustwallet.com/blockchains/${
-                      toChain === 56 || toChain === 97
+                      (toChain === 56 || toChain === 97) &&
+                      active === 1 &&
+                      fromChain === toChain
                         ? "smartchain"
-                        : toChain === 250
+                        : (toChain === 56 || toChain === 97) &&
+                          active === 1 &&
+                          fromChain !== toChain
+                        ? "fantom"
+                        : (toChain === 56 || toChain === 97) &&
+                          active === 2 &&
+                          fromChain !== toChain
+                        ? "smartchain"
+                        : (toChain === 250 || toChain === 4002) &&
+                          active === 1 &&
+                          fromChain === toChain
+                        ? "fantom"
+                        : (toChain === 250 || toChain === 4002) &&
+                          active === 1 &&
+                          fromChain !== toChain
+                        ? "smartchain"
+                        : (toChain === 250 || toChain === 4002) &&
+                          active === 2 &&
+                          fromChain !== toChain
                         ? "fantom"
                         : ""
-                    }/assets/${toToken.adress}/logo.png`}
+                    }/assets/${
+                      active === 1
+                        ? masir[active === 1 ? 0 : active === 2 ? 2 : 0]
+                            ?.operations[
+                            (masir[active === 1 ? 0 : active === 2 ? 2 : 0]
+                              ?.operations).length - 1
+                          ]?.ask_token[0]
+                        : active === 2
+                        ? masir[active === 2 ? 2 : active === 1 ? 0 : 0]
+                            ?.operations[
+                            (masir[active === 2 ? 2 : active === 1 ? 0 : 0]
+                              ?.operations).length - 1
+                          ]?.ask_token[0]
+                        : ""
+                    }/logo.png`}
                   />
                 </div>
-                <div className='w-[18px] h-[18px] border-[1px] border-[#fff] bottom-0 absolute right-0 z-[2] rounded-[50%] box-border inline-block overflow-hidden'>
+                <div className="w-[18px] h-[18px] border-[1px] border-[#fff] bottom-0 absolute right-0 z-[2] rounded-[50%] box-border inline-block overflow-hidden">
                   <img
-                    className='w-[100%] h-[100%]'
-                    alt=''
+                    className="w-[100%] h-[100%]"
+                    alt=""
                     src={
-                      toChain === 56 || toChain === 97
+                      (toChain === 56 || toChain === 97) &&
+                      active === 1 &&
+                      fromChain === toChain
                         ? bnblightIcon
-                        : toChain === 250
+                        : (toChain === 56 || toChain === 97) &&
+                          active === 1 &&
+                          fromChain !== toChain
+                        ? fantomIcon
+                        : (toChain === 56 || toChain === 97) &&
+                          active === 2 &&
+                          fromChain !== toChain
+                        ? bnblightIcon
+                        : (toChain === 250 || toChain === 4002) &&
+                          active === 1 &&
+                          fromChain === toChain
+                        ? fantomIcon
+                        : (toChain === 250 || toChain === 4002) &&
+                          active === 1 &&
+                          fromChain !== toChain
+                        ? bnblightIcon
+                        : (toChain === 250 || toChain === 4002) &&
+                          active === 2 &&
+                          fromChain !== toChain
                         ? fantomIcon
                         : ""
                     }
@@ -204,32 +306,32 @@ function Route() {
                 </div>
               </div>
             </div>
-            <div className='relative pr-[20px] pl-[16px] -mt-[10px]'>
-              <span className='okex_swap_iconfont icon_icon_Arrow_Carets1 index-module__down-arrow'></span>
-              <span className='okex_swap_iconfont icon_icon_Arrow_Carets1 index-module__up-arrow'></span>
-              <div className='relative'>
-                <div className='pr-[18px] relative pl-[92px]'>
-                  <div className='border-[1px] border-dashed border-[#bdbdbd] rounded-[8px] border-t-[transparent] bottom-[50%] left-0 absolute right-0 top-0'></div>
-                  <div className='absolute items-center bottom-[50%] flex h-[20px] justify-between max-w-[64px] translate-y-[10px] z-10 left-[18px] w-[66px]'>
-                    <div className='bg-[rgb(241,245,249)] text-[#000] text-[16px] font-[500] leading-[20px] px-[2px]'>
+            <div className="relative pr-[20px] pl-[16px] -mt-[10px]">
+              <span className="okex_swap_iconfont icon_icon_Arrow_Carets1 index-module__down-arrow"></span>
+              <span className="okex_swap_iconfont icon_icon_Arrow_Carets1 index-module__up-arrow"></span>
+              <div className="relative">
+                <div className="pr-[18px] relative pl-[92px]">
+                  <div className="border-[1px] border-dashed border-[#bdbdbd] rounded-[8px] border-t-[transparent] bottom-[50%] left-0 absolute right-0 top-0"></div>
+                  <div className="absolute items-center bottom-[50%] flex h-[20px] justify-between max-w-[64px] translate-y-[10px] z-10 left-[18px] w-[66px]">
+                    <div className="bg-[rgb(241,245,249)] text-[#000] text-[16px] font-[500] leading-[20px] px-[2px]">
                       100%
                     </div>
-                    <div className='flex h-[16px] justify-center w-[16px]'>
-                      <span className='okex_swap_iconfont icon_icon_Arrow_Carets1 index-module__icon -rotate-90'>
-                        <img src={ArrowDownFont} alt='' />
+                    <div className="flex h-[16px] justify-center w-[16px]">
+                      <span className="okex_swap_iconfont icon_icon_Arrow_Carets1 index-module__icon -rotate-90 w-[12px]">
+                        <img src={ArrowDownFont} alt="" />
                       </span>
                     </div>
                   </div>
-                  <div className='items-center flex justify-between'>
+                  <div className="items-center flex justify-between">
                     {masir[
                       active === 1 ? 0 : active === 2 ? 2 : 0
                     ]?.operations.map((element, index) => {
                       return (
                         <>
                           <DexBox element={element} key={index} />
-                          <div className='z-10 items-center flex h-[16px] justify-center w-[16px]'>
-                            <span className='okex_swap_iconfont icon_icon_Arrow_Carets1 index-module__icon -rotate-90'>
-                              <img src={ArrowDownFont} alt='' />
+                          <div className="z-10 items-center flex h-[16px] justify-center w-[16px]">
+                            <span className="okex_swap_iconfont icon_icon_Arrow_Carets1 index-module__icon -rotate-90 w-[12px]">
+                              <img src={ArrowDownFont} alt="" />
                             </span>
                           </div>
                         </>

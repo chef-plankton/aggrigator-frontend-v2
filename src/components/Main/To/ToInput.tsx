@@ -6,7 +6,7 @@ const StyledInput = styled.input`
   position: relative;
   text-overflow: ellipsis;
   font-weight: 400;
-  font-size: 24px;
+  font-size: 20px;
   padding: 0px;
   display: block;
   color: "palevioletred";
@@ -44,7 +44,7 @@ function ToInput() {
     <StyledInput
       color={themeMode === "light" ? "black" : "white"}
       placeholder="You will recieve"
-      value={Math.round(responseData.data.return_amount)}
+      value={responseData.data.return_amount ? Math.round(responseData.data.return_amount * 100000) / 100000 : ""}
       disabled
     />
   );

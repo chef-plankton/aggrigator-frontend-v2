@@ -56,7 +56,7 @@ const FromChangeChainButton: FC<{
               : tokenImage
           }
           alt=""
-          className="w-[32px]"
+          className="w-[32px] rounded-[50%]"
         />
       </div>
       <div className="mx-5 w-[60%] text-center">
