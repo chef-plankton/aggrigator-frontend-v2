@@ -27,24 +27,6 @@ function App() {
     });
   }, [chainId]);
 
-
-  const wallet = useSelector(({ account }: RootState) => account.wallet);
-  const approvevalue = useSelector(
-    ({ account }: RootState) => account.approvevalue
-  );
-  const {
-    useChainId,
-    useAccount,
-    useIsActivating,
-    useIsActive,
-    useProvider,
-    useENSNames,
-  } = useWallet(wallet);
-  const isActive=useIsActive()
-  const wc=useChainId()
-  console.log("matamask is active",isActive);
-    console.log("wallet chainId",wc);
-    console.log("app chainId",chainId);
   return (
     <>
       <Header />

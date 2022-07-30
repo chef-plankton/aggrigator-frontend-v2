@@ -15,6 +15,7 @@ import useAuth from "../../hooks/useAuth";
 function ConnectWalletModal() {
   const dispatch = useDispatch();
   const wallet = useSelector(({ account }: RootState) => account.wallet);
+  const web3Hooks = useWallet(wallet);
   const {
     useChainId,
     useAccount,
@@ -22,13 +23,13 @@ function ConnectWalletModal() {
     useIsActive,
     useProvider,
     useENSNames,
-  } = useWallet(wallet);
+  }=web3Hooks
   const isActive = useIsActive();
   const isActivating = useIsActivating();
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   const chainId = useSelector(({ chains }: RootState) => chains.value);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { login } = useAuth()
+  const { login } = useAuth(web3Hooks)
   const connectMetamaskHandler = async () => {
     await login(getAddChainParameters(chainId))
   };

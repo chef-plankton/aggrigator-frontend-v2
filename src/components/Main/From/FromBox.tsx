@@ -10,6 +10,8 @@ import polygonIcon from "../../../assets/img/chains/polygon.svg";
 import fantomIcon from "../../../assets/img/chains/fantom.svg";
 import FromAdvanceSetting from "./FromAdvanceSettingButton";
 import FromRefresh from "./FromRefresh";
+import FromToken from "./FromToken";
+import useTokenBalance from "../../../hooks/useTokenBalance";
 
 // From Box Styles
 const StyledFromBox = styled.div<{ color: string; backgroundColor: string }>`
@@ -34,6 +36,11 @@ function FromBox() {
   // Get data from redux
   const chainId = useSelector(({ chains }: RootState) => chains.value);
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
+  const fromToken = useSelector(({ route }: RootState) => route.fromToken);
+  const address = useSelector(({ account }: RootState) => account.address);
+  const balance = useTokenBalance(fromToken.adress, address)
+  
+  
   return (
     <StyledFromBox
       color={themeMode === "light" ? "black" : "white"}
@@ -45,7 +52,8 @@ function FromBox() {
     >
       {/* box top bar */}
       <div className="px-3 py-1 w-[100%] flex justify-between">
-        From
+        
+        From: {balance?.toString()}
         <div className="flex">
           <FromRefresh />
           <FromAdvanceSetting />
@@ -56,14 +64,12 @@ function FromBox() {
         <div className="md:w-[60%] w-[100%} flex justify-between ">
           {/* from network */}
           <FromChangeNetworkButton
-            imageSrc={`${chainId === 56 ? bnblightIcon : ""}${
-              chainId === 250 ? fantomIcon : ""
-            }${chainId === 97 ? bnblightIcon : ""}`}
+            imageSrc={`${chainId === 56 ? bnblightIcon : ""}${chainId === 250 ? fantomIcon : ""
+              }${chainId === 97 ? bnblightIcon : ""}`}
             coinName={`
             ${chainId === 56 ? "BNB Chain" : ""}
-            ${chainId === 250 ? "Fantom" : ""}${
-              chainId === 97 ? "BNB Chain" : ""
-            }`}
+            ${chainId === 250 ? "Fantom" : ""}${chainId === 97 ? "BNB Chain" : ""
+              }`}
           />
           {/* from token */}
           <FromChangeTokenButton

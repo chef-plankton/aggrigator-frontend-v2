@@ -17,7 +17,7 @@ const initialState: AccountState = {
   wallet: "",
   address: "",
   approvestate: ApprovalState.UNKNOWN,
-  approvevalue: BigNumber.from("0"),
+  approvevalue: null,
 };
 
 export const accountSlice = createSlice({

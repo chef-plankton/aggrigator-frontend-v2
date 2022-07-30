@@ -9,25 +9,30 @@ import { RootState } from "../app/store";
 import { getAddChainParameters } from "../chains";
 import { metaMask } from "../connectors/metaMask";
 import { walletConnect } from "../connectors/walletConnect";
-import { changeWallet, WalletName } from "../features/account/accountSlice";
+import { changeAddress, changeWallet, WalletName } from "../features/account/accountSlice";
 import { changeChain } from "../features/chains/chainsSlice";
 interface useAuthReturn {
     login: (desiredChainIdOrChainParameters?: number | AddEthereumChainParameter, chainId?: number, walletName?: WalletName) => Promise<void>
 }
 
 
-const useAuth = (): useAuthReturn => {
+const useAuth = ({useAccount}:Web3ReactHooks): useAuthReturn => {
 
     const dispatch = useDispatch();
+    const account = useAccount();
     const appChainId = useSelector(({ chains }: RootState) => chains.value);
 
     const login = useCallback(async (desiredChainIdOrChainParameters: number | AddEthereumChainParameter, chainId: number, walletName: WalletName) => {
         if (walletName === 'metamask') {
             const isWalletConnected = metaMask.provider.isConnected()
+            console.log(account);
+
             if (isWalletConnected) {
                 return await metaMask.activate(desiredChainIdOrChainParameters).then(async () => {
                     dispatch(changeChain(chainId))
                     dispatch(changeWallet(walletName))
+                    dispatch(changeAddress(account))
+                    
                     await wait(500)
                     void metaMask.connectEagerly().catch(() => {
                         console.debug("Failed to connect eagerly to metamask");
@@ -43,6 +48,7 @@ const useAuth = (): useAuthReturn => {
                 return await walletConnect.activate(chainId).then(async () => {
                     dispatch(changeChain(chainId))
                     dispatch(changeWallet(walletName))
+                    dispatch(changeAddress(account))
                     await wait(500)
                     void walletConnect.connectEagerly().catch(() => {
                         console.debug("Failed to connect eagerly to metamask");

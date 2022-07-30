@@ -21,9 +21,8 @@ function ChainsDropdown({ setDropdown, setHidden }: Props) {
   const chainId = useSelector(({ chains }: RootState) => chains.value);
 
   const wallet = useSelector(({ account }: RootState) => account.wallet);
-  const approvevalue = useSelector(
-    ({ account }: RootState) => account.approvevalue
-  );
+
+  const web3Hooks = useWallet(wallet);
   const {
     useChainId,
     useAccount,
@@ -31,13 +30,13 @@ function ChainsDropdown({ setDropdown, setHidden }: Props) {
     useIsActive,
     useProvider,
     useENSNames,
-  } = useWallet(wallet);
+  }=web3Hooks
   const { useIsActive: metamaskUseIsActive } = metamaskhooks;
   const isActive = useIsActive()
   
   const dispatch = useDispatch();
-  const { login } = useAuth()
-  console.log(wallet);
+  const { login } = useAuth(web3Hooks)
+
   
   const changeChainId = async (chainid: number) => {
     setHidden(true)
