@@ -29,8 +29,8 @@ export function shouldCheck(
 }
 
 export default function Updater(): null {
-  const walletName = useSelector((state: RootState) => state.account.wallet);
-  const hooks = useWallet(walletName);
+  const wallet = useSelector((state: RootState) => state.account.wallet);
+  const hooks = useWallet(wallet);
   const { useProvider, useChainId } = hooks;
   const chainId = useChainId();
   const library = useProvider();

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FC, MouseEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { hooks, metaMask } from "../../connectors/metaMask";
@@ -12,7 +12,9 @@ import { useDispatch } from "react-redux";
 import { changeWallet } from "../../features/account/accountSlice";
 import { changeModalStatus } from "../../features/modals/modalsSlice";
 
-function MetaMaskCard() {
+const MetaMaskCard: FC<{
+  handleClick: (e: MouseEvent<HTMLElement>) => void;
+}> = ({ handleClick }) => {
   const { useIsActivating, useIsActive } = hooks;
   const chainId = useSelector(({ chains }: RootState) => chains.value);
   const isActivating = useIsActivating();
@@ -30,24 +32,7 @@ function MetaMaskCard() {
   return (
     <div
       className="flex items-center justify-between border-[1px] rounded-xl border-[#D3D3D3] px-[12px] py-[15px] bg-[#edeef2] mb-2 cursor-pointer"
-      onClick={
-        isActive
-          ? undefined
-          : isActivating
-          ? undefined
-          : () =>
-              metaMask
-                .activate(getAddChainParameters(chainId))
-                .then(() => {
-                  setError(undefined);
-                  dispatch(changeWallet("metamask"));
-                  dispatch(changeModalStatus(false));
-                  void metaMask.connectEagerly().catch(() => {
-                    console.debug("Failed to connect eagerly to metamask");
-                  });
-                })
-                .catch(setError)
-      }
+      onClick={handleClick}
     >
       <h6 className="font-medium text-[16px]">MetaMask</h6>
       <div>
@@ -55,6 +40,6 @@ function MetaMaskCard() {
       </div>
     </div>
   );
-}
+};
 
 export default MetaMaskCard;

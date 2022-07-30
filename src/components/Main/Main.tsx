@@ -85,6 +85,7 @@ function Main() {
   const { getBytes } = useAkkaEncodeSwapDescriptionCallback();
   const { quoteLayerZeroFee } = useAkkaCalcLayerZeroFeeCallback();
   const { aggrigatorSwap } = useAkkaAggrigatorSwapCallback();
+  const chainId = useSelector(({ chains }: RootState) => chains.value);
   useEffect(() => {
     if (isActive) {
       if (Number(approvevalue) >= Number(amount)) {
@@ -173,7 +174,7 @@ function Main() {
     void walletConnect.connectEagerly().catch(() => {
       console.debug("Failed to connect eagerly to metamask");
     });
-  }, []);
+  }, [chainId]);
   // const hooks = useWallet();
   // const { useIsActivating, useIsActive } = hooks;
   // const isActive = useIsActive();
