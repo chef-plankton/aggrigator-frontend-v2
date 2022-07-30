@@ -2,15 +2,9 @@ import { FC, MouseEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { hooks, metaMask } from "../../connectors/metaMask";
-import { CHAINS, getAddChainParameters, URLS } from "../../chains";
 import metaMaskIcon from "../../assets/img/wallets/metamask.png";
-import { getWETHContract, getContract } from "../../utils/contractHelpers";
-import { ethers } from "ethers";
-import { parseEther } from "@ethersproject/units";
-import { useERC20 } from "../../hooks/useContract";
 import { useDispatch } from "react-redux";
-import { changeWallet } from "../../features/account/accountSlice";
-import { changeModalStatus } from "../../features/modals/modalsSlice";
+
 
 const MetaMaskCard: FC<{
   handleClick: (e: MouseEvent<HTMLElement>) => void;
@@ -20,15 +14,7 @@ const MetaMaskCard: FC<{
   const isActivating = useIsActivating();
   const isActive = useIsActive();
   const [error, setError] = useState(undefined);
-  // const provider = useProvider();
 
-  // console.log(
-  //   getWETHContract("0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", provider).deposit({value: parseEther("0.001")})
-  // );
-
-  // attempt to connect eagerly on mount
-
-  const dispatch = useDispatch();
   return (
     <div
       className="flex items-center justify-between border-[1px] rounded-xl border-[#D3D3D3] px-[12px] py-[15px] bg-[#edeef2] mb-2 cursor-pointer"

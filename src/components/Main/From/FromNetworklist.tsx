@@ -14,6 +14,10 @@ import bnblightIcon from "../../../assets/img/chains/binance-light.svg";
 import polygonIcon from "../../../assets/img/chains/polygon.svg";
 import fantomIcon from "../../../assets/img/chains/fantom.svg";
 import { changeFromChain, changeFromToken } from "../../../features/route/routeSlice";
+import useAuth from "../../../hooks/useAuth";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../app/store";
+import useWallet from "../../Wallets/useWallet";
 function FromNetworklist() {
   const dispatch = useDispatch();
 
@@ -21,18 +25,34 @@ function FromNetworklist() {
   const metamaskIsActive = metamaskUseIsActive();
   const { useIsActive: walletconnectUseIsActive } = walletconnecthooks;
   const walletconnectIsActive = walletconnectUseIsActive();
-  const changeChainId = (chainid: number) => {
-    if (metamaskIsActive) {
-      dispatch(changeChain(chainid));
-      metaMask.activate(getAddChainParameters(chainid));
-    }
-    if (walletconnectIsActive) {
-      dispatch(changeChain(chainid));
-      walletConnect.activate(chainid);
-    } else {
-      dispatch(changeChain(chainid));
-    }
+  const wallet = useSelector(({ account }: RootState) => account.wallet);
+  const web3Hooks = useWallet(wallet);
+  const {
+    useChainId,
+    useAccount,
+    useIsActivating,
+    useIsActive,
+    useProvider,
+    useENSNames,
+  } = web3Hooks
+  const isActive = useIsActive();
+  const { login } = useAuth(web3Hooks)
+  const changeChainId = async (chainid: number) => {
+
+    await login(getAddChainParameters(chainid), chainid, 'metamask')
+
+    // if (metamaskIsActive) {
+    //   dispatch(changeChain(chainid));
+    //   metaMask.activate(getAddChainParameters(chainid));
+    // }
+    // if (walletconnectIsActive) {
+    //   dispatch(changeChain(chainid));
+    //   walletConnect.activate(chainid);
+    // } else {
+    //   dispatch(changeChain(chainid));
+    // }
   };
+
   return (
     <>
       <div className="flex justify-between items-center mb-5 pt-5 pr-5 pl-5">
