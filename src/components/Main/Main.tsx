@@ -42,6 +42,8 @@ import {
 } from "../../hooks/useAkkaCallback";
 import { parseEther } from "@ethersproject/units";
 import FromToken from "./From/FromToken";
+import useTokenBalance from "../../hooks/useTokenBalance";
+import { setTextRange } from "typescript";
 export const useCurrentBlock = (): number => {
   const { data: currentBlock = 0 } = useSWRImmutable("blockNumber");
   return currentBlock;
@@ -53,6 +55,14 @@ const Inner = styled.div`
     display: table;
   }
 `;
+enum SwapButonStates {
+  CONNECT_TO_WALLET = "CONNECT_TO_WALLET",
+  ENTER_AMOUNT = "ENTER_AMOUNT",
+  APPROVE = "APPROVE",
+  LOADING = "LOADING",
+  SWAP = "SWAP",
+  WRAP = "WRAP",
+}
 function Main() {
   const inputValue = useSelector(({ route }: RootState) => route.amount);
   const fromToken = useSelector(({ route }: RootState) => route.fromToken);
@@ -82,21 +92,54 @@ function Main() {
   const account = useAccount();
   const dispatch = useDispatch();
   const wrapCallback = useWrapCallback("BNB", "WBNB");
-  const [text, setText] = useState("Connect Wallet");
+  const [swapButtonData, setSwapButtonData] = useState<{ text: string, isDisable?: boolean, state: SwapButonStates }>({ text: "", isDisable: false, state: null });
   const { getBytes } = useAkkaEncodeSwapDescriptionCallback();
   const { quoteLayerZeroFee } = useAkkaCalcLayerZeroFeeCallback();
   const { aggrigatorSwap } = useAkkaAggrigatorSwapCallback();
   const chainId = useSelector(({ chains }: RootState) => chains.value);
-  
+  const balance = useTokenBalance(fromToken.adress, account)
   useEffect(() => {
+    console.log(isActive);
+
     if (isActive) {
-      if (Number(approvevalue) >= Number(amount)) {
-        setText("Swap");
-      } else {
-        setText("Approve");
+      if (!amount) {
+        setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.ENTER_AMOUNT, text: "enter amount", isDisable: true }));
+        return
       }
+      if (
+        fromToken &&
+        toToken &&
+        fromChain &&
+        toChain &&
+        amount &&
+        amount && approvevalue && approvevalue?.lt(amount)) {
+        setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.APPROVE, text: "APPROVE" }));
+        return
+      }
+    } else {
+      setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.CONNECT_TO_WALLET, text: "connect to wallet" }));
     }
-  }, [isActive, amount, approvevalue]);
+
+
+
+    // if (approvevalue && approvevalue?.gte(parseEther(amount))) {
+    //   setText({te"Swap"});
+    //   return
+    // } else if (balance?.lt(parseEther(amount))) {
+    //   setText("Insufficient Balance");
+    //   return
+    // } else if (!amount) {
+    //   setText("Enter Amount");
+    //   return
+    // } else {
+    //   setText("Approve");
+    //   return
+    // }
+
+
+
+
+  }, [isActive, amount, approvevalue, balance]);
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallbackFromTrade(
     fromToken.adress,
@@ -246,7 +289,23 @@ function Main() {
     /** The slidable content elements */
     children: node.isRequired,
   };
-
+  const handleSwapButtonClick=async () => {
+    if (!isActive) {
+      dispatch(connectWalletStatus(true));
+    } else {
+      switch (swapButtonData.state) {
+        case SwapButonStates.APPROVE:
+          approveCallback();
+          break
+          case SwapButonStates.SWAP:
+            multiCallSwap();
+          break
+          case SwapButonStates.SWAP:
+            dispatch(connectWalletStatus(true))
+          break
+      }
+    }
+  }
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   const [isVisible, setIsVisible] = useState(false);
   return (
@@ -272,25 +331,13 @@ function Main() {
         <Route />
 
         <button
-          onClick={async () => {
-            if (!isActive) {
-              dispatch(connectWalletStatus(true));
-            } else {
-              if (approvevalue.lt(parseEther(amount))) {
-                console.log(fromToken.adress, parseEther(amount), process.env.APP_REACT_APP_BSC_AKKA_CONTRACT as string);
-                
-                approveCallback();
-              } else {
-                multiCallSwap();
-              }
-            }
-          }}
+          onClick={handleSwapButtonClick}
           className={`mt-[20px] py-4 w-[100%] text-center font-medium text-lg text-white rounded-[10px] ${themeMode === "light"
-              ? "bg-[#111111] hover:bg-[transparent] hover:text-[#111111] hover:shadow-none hover:border-[1px] hover:border-black"
-              : "bg-[#4ECCA3] hover:bg-[#79d8b8]"
+            ? "bg-[#111111] hover:bg-[transparent] hover:text-[#111111] hover:shadow-none hover:border-[1px] hover:border-black"
+            : "bg-[#4ECCA3] hover:bg-[#79d8b8]"
             } transition duration-300 shadow-[0_8px_32px_#23293176]`}
         >
-          {text}
+          {swapButtonData.text}
         </button>
       </div>
     </main>
