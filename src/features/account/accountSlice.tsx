@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { BigNumber } from "ethers";
 export type WalletName = "metamask" | "walletconnect" | "";
 export enum ApprovalState {
   UNKNOWN,
@@ -10,13 +11,13 @@ interface AccountState {
   wallet: WalletName;
   address: string;
   approvestate: ApprovalState;
-  approvevalue: string;
+  approvevalue: BigNumber;
 }
 const initialState: AccountState = {
   wallet: "",
   address: "",
   approvestate: ApprovalState.UNKNOWN,
-  approvevalue: "",
+  approvevalue: BigNumber.from("0"),
 };
 
 export const accountSlice = createSlice({

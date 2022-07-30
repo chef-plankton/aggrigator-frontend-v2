@@ -10,6 +10,7 @@ import { getAddChainParameters } from "../../chains";
 import bnblightIcon from "../../assets/img/chains/binance-light.svg";
 import polygonIcon from "../../assets/img/chains/polygon.svg";
 import fantomIcon from "../../assets/img/chains/fantom.svg";
+import { useRef } from "react";
 interface Props {
   setDropdown: (value: boolean) => void;
 }

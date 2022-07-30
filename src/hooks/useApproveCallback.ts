@@ -152,6 +152,6 @@ export function useApproveCallbackFromTrade(
   return useApproveCallback(
     tokenAddress,
     amountToApprove,
-    "0x08b7eacc12634644c0533f0a3f1616678920b249"
+    "0xa9e70F8134C500b09353Efb0b39f4f67cA2608eb"
   );
 }

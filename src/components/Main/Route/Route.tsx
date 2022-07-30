@@ -184,7 +184,7 @@ function Route() {
                             ?.operations[0]?.offer_token[0]
                         : active === 2
                         ? masir[active === 2 ? 2 : active === 1 ? 0 : 0]
-                            ?.operations[0]?.ask_token[0]
+                            ?.operations[0]?.offer_token[0]
                         : ""
                     }/logo.png`}
                   />
