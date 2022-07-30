@@ -12,6 +12,7 @@ import FromAdvanceSetting from "./FromAdvanceSettingButton";
 import FromRefresh from "./FromRefresh";
 import FromToken from "./FromToken";
 import useTokenBalance from "../../../hooks/useTokenBalance";
+import { formatEther, parseUnits } from "@ethersproject/units";
 
 // From Box Styles
 const StyledFromBox = styled.div<{ color: string; backgroundColor: string }>`
@@ -52,8 +53,8 @@ function FromBox() {
     >
       {/* box top bar */}
       <div className="px-3 py-1 w-[100%] flex justify-between">
-        
-        From: {balance?.toString()}
+
+        From: {balance ? formatEther(balance)?.toString() : 0}
         <div className="flex">
           <FromRefresh />
           <FromAdvanceSetting />
