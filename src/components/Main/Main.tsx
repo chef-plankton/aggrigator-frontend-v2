@@ -62,6 +62,7 @@ enum SwapButonStates {
   LOADING = "LOADING",
   SWAP = "SWAP",
   WRAP = "WRAP",
+  INSUFFICIENT_BALANCE = "INSUFFICIENT_BALANCE",
 }
 function Main() {
   const inputValue = useSelector(({ route }: RootState) => route.amount);
@@ -98,6 +99,8 @@ function Main() {
   const { aggrigatorSwap } = useAkkaAggrigatorSwapCallback();
   const chainId = useSelector(({ chains }: RootState) => chains.value);
   const balance = useTokenBalance(fromToken.adress, account)
+  console.log(balance&&formatEther(balance).toString());
+  
   useEffect(() => {
 
     if (isActive) {
@@ -110,10 +113,16 @@ function Main() {
         return
       }
       if (
+        balance && balance?.lt(parseEther(amount))) {
+        setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.INSUFFICIENT_BALANCE, text: "Insufficient Balance", isDisable: true }));
+        return
+      }
+      if (
         approvevalue && approvevalue?.lt(parseEther(amount))) {
         setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.APPROVE, text: "APPROVE" }));
         return
       }
+    
       if (
         approvevalue && approvevalue?.gte(parseEther(amount))) {
         setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.SWAP, text: "Swap" }));
@@ -303,7 +312,7 @@ function Main() {
         case SwapButonStates.SWAP:
           multiCallSwap();
           break
-        case SwapButonStates.SWAP:
+        case SwapButonStates.CONNECT_TO_WALLET:
           dispatch(connectWalletStatus(true))
           break
       }

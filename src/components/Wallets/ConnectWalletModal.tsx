@@ -31,7 +31,9 @@ function ConnectWalletModal() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { login } = useAuth(web3Hooks)
   const connectMetamaskHandler = async () => {
+    setIsLoading(true)
     await login(getAddChainParameters(chainId),chainId,'metamask')
+    setIsLoading(false)
   };
   return (
     <>
