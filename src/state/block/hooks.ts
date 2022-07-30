@@ -1,60 +1,63 @@
-import { StaticJsonRpcProvider } from '@ethersproject/providers'
-import useSWR, { useSWRConfig } from 'swr'
+import { StaticJsonRpcProvider } from "@ethersproject/providers";
+import { useSelector } from "react-redux";
+import useSWR, { useSWRConfig } from "swr";
 
-import useSWRImmutable from 'swr/immutable'
-import useWallet from '../../components/Wallets/useWallet'
+import useSWRImmutable from "swr/immutable";
+import { RootState } from "../../app/store";
+import useWallet from "../../components/Wallets/useWallet";
 
-const REFRESH_BLOCK_INTERVAL = 6000
+const REFRESH_BLOCK_INTERVAL = 6000;
 
 export const usePollBlockNumber = () => {
-
-  const FAST_INTERVAL=1000, SLOW_INTERVAL=5000
-  const { cache, mutate } = useSWRConfig()
-  const hooks=useWallet('metamask')
-  const {useProvider}=hooks
+  const FAST_INTERVAL = 1000,
+    SLOW_INTERVAL = 5000;
+  const { cache, mutate } = useSWRConfig();
+  const wallet = useSelector(({ account }: RootState) => account.wallet);
+  const hooks = useWallet(wallet);
+  const { useProvider } = hooks;
   // const provider=useProvider<StaticJsonRpcProvider>('https://data-seed-prebsc-2-s1.binance.org:8545/')
-  const provider=useProvider()
+  const provider = useProvider();
   const { data } = useSWR(
-    'blockNumber',
+    "blockNumber",
     async () => {
-      const blockNumber = await provider.getBlockNumber()
-      if (!cache.get('initialBlockNumber')) {
-        mutate('initialBlockNumber', blockNumber)
+      const blockNumber = await provider.getBlockNumber();
+      if (!cache.get("initialBlockNumber")) {
+        mutate("initialBlockNumber", blockNumber);
       }
-      return blockNumber
+      return blockNumber;
     },
     {
       refreshInterval: REFRESH_BLOCK_INTERVAL,
-    },
-  )
+    }
+  );
 
   useSWR(
-    [FAST_INTERVAL, 'blockNumber'],
+    [FAST_INTERVAL, "blockNumber"],
     async () => {
-      return data
+      return data;
     },
     {
       refreshInterval: FAST_INTERVAL,
-    },
-  )
+    }
+  );
 
   useSWR(
-    [SLOW_INTERVAL, 'blockNumber'],
+    [SLOW_INTERVAL, "blockNumber"],
     async () => {
-      return data
+      return data;
     },
     {
       refreshInterval: SLOW_INTERVAL,
-    },
-  )
-}
+    }
+  );
+};
 
 export const useCurrentBlock = (): number => {
-  const { data: currentBlock = 0 } = useSWRImmutable('blockNumber')
-  return currentBlock
-}
+  const { data: currentBlock = 0 } = useSWRImmutable("blockNumber");
+  return currentBlock;
+};
 
 export const useInitialBlock = (): number => {
-  const { data: initialBlock = 0 } = useSWRImmutable('initialBlockNumber')
-  return initialBlock
-}
+  const { data: initialBlock = 0 } = useSWRImmutable("initialBlockNumber");
+  return initialBlock;
+};

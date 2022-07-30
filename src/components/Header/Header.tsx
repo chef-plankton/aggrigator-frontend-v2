@@ -68,7 +68,7 @@ function Header() {
               />
               {dropdown ? <ChainsDropdown setDropdown={setDropdown} /> : ""}
             </div>
-            <button
+            {/* <button
               onClick={toggleMenu}
               className="outline-none mobile-menu-button"
             >
@@ -84,12 +84,12 @@ function Header() {
               >
                 <path d="M4 6h16M4 12h16M4 18h16"></path>
               </svg>
-            </button>
+            </button> */}
           </div>
         </div>
       </div>
       {/* mobile menu */}
-      <div className={`${toggle ? "hidden" : ""} mobile-menu`}>
+      {/* <div className={`${toggle ? "hidden" : ""} mobile-menu`}>
         <ul className="">
           <li className="active">
             <a
@@ -125,7 +125,7 @@ function Header() {
           </li>
           <li></li>
         </ul>
-      </div>
+      </div> */}
     </nav>
   );
 }
