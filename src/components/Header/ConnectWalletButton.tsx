@@ -23,7 +23,6 @@ function ConnectWalletButton() {
 
   const dispatch = useDispatch();
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
-
   return (
     <button
       onClick={() => {

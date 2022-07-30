@@ -11,6 +11,7 @@ import { metaMask } from "../../connectors/metaMask";
 import { getAddChainParameters } from "../../chains";
 import { changeWallet } from "../../features/account/accountSlice";
 import { useState } from "react";
+import useAuth from "../../hooks/useAuth";
 function ConnectWalletModal() {
   const dispatch = useDispatch();
   const wallet = useSelector(({ account }: RootState) => account.wallet);
@@ -27,28 +28,17 @@ function ConnectWalletModal() {
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   const chainId = useSelector(({ chains }: RootState) => chains.value);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const connectMetamaskHandler = () => {
-    setIsLoading(true)
-    metaMask
-      .activate(getAddChainParameters(chainId))
-      .then(() => {
-        dispatch(changeWallet("metamask"));
-        dispatch(changeModalStatus(false));
-        void metaMask.connectEagerly().catch(() => {
-          console.debug("Failed to connect eagerly to metamask");
-        });
-        setIsLoading(false)
-      })
-      .catch(console.error);
+  const { login } = useAuth()
+  const connectMetamaskHandler = async () => {
+    await login(getAddChainParameters(chainId))
   };
   return (
     <>
       <div className="flex justify-between items-center mb-5 pr-5 pl-5 pt-5 pb-2">
         <div>
           <h4
-            className={`font-medium ${
-              themeMode === "light" ? "text-black" : "text-white"
-            }`}
+            className={`font-medium ${themeMode === "light" ? "text-black" : "text-white"
+              }`}
           >
             Connect a Wallet
           </h4>

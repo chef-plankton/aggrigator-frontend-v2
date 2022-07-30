@@ -87,6 +87,7 @@ function Main() {
   const { quoteLayerZeroFee } = useAkkaCalcLayerZeroFeeCallback();
   const { aggrigatorSwap } = useAkkaAggrigatorSwapCallback();
   const chainId = useSelector(({ chains }: RootState) => chains.value);
+  
   useEffect(() => {
     if (isActive) {
       if (Number(approvevalue) >= Number(amount)) {
@@ -111,7 +112,6 @@ function Main() {
   }, [approval, approvalSubmitted]);
 
   const currentBlock = useCurrentBlock();
-
   async function getCurrentBlock() {
     // const contractWithSigner = wbnbContract.connect(
     //   getSigner(library, account)
@@ -168,14 +168,6 @@ function Main() {
     aggrigatorSwap(quote[0], payload);
   }
   // Connect to Metamask wallet automatically after refreshing the page (attempt to connect eagerly on mount)
-  useEffect(() => {
-    void metaMask.connectEagerly().catch(() => {
-      console.debug("Failed to connect eagerly to metamask");
-    });
-    void walletConnect.connectEagerly().catch(() => {
-      console.debug("Failed to connect eagerly to metamask");
-    });
-  }, [chainId]);
   // const hooks = useWallet();
   // const { useIsActivating, useIsActive } = hooks;
   // const isActive = useIsActive();

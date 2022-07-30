@@ -4,7 +4,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Provider } from "react-redux";
-import store from "./app/store";
+import store, { RootState } from "./app/store";
 import { Web3ReactHooks, Web3ReactProvider } from "@web3-react/core";
 import { MetaMask } from "@web3-react/metamask";
 import { Network } from "@web3-react/network";
@@ -19,6 +19,8 @@ import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import Updater from "./state/transactions/updater";
 import { usePollBlockNumber } from "./state/block/hooks";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 const queryClient = new QueryClient();
 const connectors: [MetaMask | WalletConnect | Network, Web3ReactHooks][] = [
   [metaMask, metaMaskHooks],
