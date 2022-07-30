@@ -22,7 +22,8 @@ export enum ApprovalState {
   APPROVED,
 }
 
-// returns a variable indicating the state of the approval and a function which approves if necessary or early returns
+// returns a variable indicating the state of the approval and a function which approves if necessary or early returns'
+export type ApproveParams = (tokenAddress: string, amountToApprove: BigNumber, spender: string) => Promise<void>
 export function useApproveCallback(
   tokenAddress?: string,
   amountToApprove?: BigNumber,
@@ -106,7 +107,7 @@ export function useApproveCallback(
     return callWithoutGasPrice(
       tokenContract,
       "approve",
-      [spender, amountToApprove],
+      [spender, amountToApprove,spender] as unknown as Parameters<ApproveParams>,
       {
         gasLimit: 21000000,
       }

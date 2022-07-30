@@ -54,6 +54,8 @@ export const useERC20 = (address: string, withSignerIfPossible = true) => {
   );
   return useMemo(() => getBep20Contract(address, signer), [address, signer]);
 };
+
+
 export function useWBNBContract(
   withSignerIfPossible?: boolean
 ): ReturnType<typeof useContract<Weth>> | null {

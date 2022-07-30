@@ -41,6 +41,7 @@ import {
   useAkkaAggrigatorSwapCallback,
 } from "../../hooks/useAkkaCallback";
 import { parseEther } from "@ethersproject/units";
+import FromToken from "./From/FromToken";
 export const useCurrentBlock = (): number => {
   const { data: currentBlock = 0 } = useSWRImmutable("blockNumber");
   return currentBlock;
@@ -257,9 +258,8 @@ function Main() {
   const [isVisible, setIsVisible] = useState(false);
   return (
     <main
-      className={`${
-        themeMode === "light" ? "bg-slate-100" : "bg-[#393E46]"
-      } shadow-lg z-10`}
+      className={`${themeMode === "light" ? "bg-slate-100" : "bg-[#393E46]"
+        } shadow-lg z-10`}
     >
       <div className="max-w-3xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[100px] pt-[50px] md:pt-[50px]">
         <FromBox />
@@ -284,17 +284,18 @@ function Main() {
               dispatch(connectWalletStatus(true));
             } else {
               if (approvevalue.lt(parseEther(amount))) {
+                console.log(fromToken.adress, parseEther(amount), process.env.APP_REACT_APP_BSC_AKKA_CONTRACT as string);
+                
                 approveCallback();
               } else {
                 multiCallSwap();
               }
             }
           }}
-          className={`mt-[20px] py-4 w-[100%] text-center font-medium text-lg text-white rounded-[10px] ${
-            themeMode === "light"
+          className={`mt-[20px] py-4 w-[100%] text-center font-medium text-lg text-white rounded-[10px] ${themeMode === "light"
               ? "bg-[#111111] hover:bg-[transparent] hover:text-[#111111] hover:shadow-none hover:border-[1px] hover:border-black"
               : "bg-[#4ECCA3] hover:bg-[#79d8b8]"
-          } transition duration-300 shadow-[0_8px_32px_#23293176]`}
+            } transition duration-300 shadow-[0_8px_32px_#23293176]`}
         >
           {text}
         </button>
