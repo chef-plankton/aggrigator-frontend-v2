@@ -213,7 +213,9 @@ export function useAkkaAggrigatorSwapCallback(): {
                 ? parsedResponseString.data.routes.operations_seperated[1]
                     .operations.offer_bridge_data.pool_id
                 : 0,
-              gasForSwap: 2105617,
+              gasForSwap:
+                parsedResponseString.data.routes.operations_seperated[0]
+                  .gas_fee,
               dstContractAddress: parsedResponseString.data.routes
                 .operations_seperated[0].operations[
                 parsedResponseString.data.routes.operations_seperated[0]
@@ -230,7 +232,7 @@ export function useAkkaAggrigatorSwapCallback(): {
                 parsedResponseString.data.routes.operations_seperated[0]
                   .operations
                   ? parsedResponseString.data.routes.operations_seperated[0].operations.forEach(
-                      (item) => ({
+                      (item: any) => ({
                         srcToken: item.offer_token[0],
                         dstToken: item.ask_token[0],
                         srcAmount: parsedResponseString.data.input_amount
@@ -243,9 +245,9 @@ export function useAkkaAggrigatorSwapCallback(): {
                               parsedResponseString.data.return_amount.toString()
                             )
                           : "",
-                        swapType: fromChain !== toChain ? 1 : 2,
-                        path: item.path,
-                        router: item.router,
+                        swapType: fromChain === toChain ? 1 : 2,
+                        path: [item.offer_token[0], item.ask_token[0]],
+                        router: item.router_addr ? item.router_addr : "",
                       })
                     )
                   : [],
@@ -260,7 +262,7 @@ export function useAkkaAggrigatorSwapCallback(): {
         );
         addTransaction(tx, {
           summary: `swap ${inputAmount}`,
-          type: "wrap",
+          type: "swap",
         });
         return tx as TransactionResponse;
       },
