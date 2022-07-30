@@ -40,7 +40,7 @@ import {
   useAkkaCalcLayerZeroFeeCallback,
   useAkkaAggrigatorSwapCallback,
 } from "../../hooks/useAkkaCallback";
-import { parseEther } from "@ethersproject/units";
+import { formatEther, parseEther } from "@ethersproject/units";
 import FromToken from "./From/FromToken";
 import useTokenBalance from "../../hooks/useTokenBalance";
 import { setTextRange } from "typescript";
@@ -99,25 +99,28 @@ function Main() {
   const chainId = useSelector(({ chains }: RootState) => chains.value);
   const balance = useTokenBalance(fromToken.adress, account)
   useEffect(() => {
-    console.log(isActive);
 
     if (isActive) {
-      if (!amount) {
-        setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.ENTER_AMOUNT, text: "enter amount", isDisable: true }));
+      if (!(fromToken.adress &&
+        toToken.adress &&
+        fromChain &&
+        toChain &&
+        amount)) {
+        setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.ENTER_AMOUNT, text: "Enter Amount", isDisable: true }));
         return
       }
       if (
-        fromToken &&
-        toToken &&
-        fromChain &&
-        toChain &&
-        amount &&
-        amount && approvevalue && approvevalue?.lt(amount)) {
+        approvevalue && approvevalue?.lt(parseEther(amount))) {
         setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.APPROVE, text: "APPROVE" }));
         return
       }
+      if (
+        approvevalue && approvevalue?.gte(parseEther(amount))) {
+        setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.SWAP, text: "Swap" }));
+        return
+      }
     } else {
-      setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.CONNECT_TO_WALLET, text: "connect to wallet" }));
+      setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.CONNECT_TO_WALLET, text: "Connect To Wallet" }));
     }
 
 
@@ -139,7 +142,7 @@ function Main() {
 
 
 
-  }, [isActive, amount, approvevalue, balance]);
+  }, [isActive, amount, approvevalue, balance, fromToken.adress, toToken.adress, toChain, fromChain]);
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallbackFromTrade(
     fromToken.adress,
@@ -289,7 +292,7 @@ function Main() {
     /** The slidable content elements */
     children: node.isRequired,
   };
-  const handleSwapButtonClick=async () => {
+  const handleSwapButtonClick = async () => {
     if (!isActive) {
       dispatch(connectWalletStatus(true));
     } else {
@@ -297,11 +300,11 @@ function Main() {
         case SwapButonStates.APPROVE:
           approveCallback();
           break
-          case SwapButonStates.SWAP:
-            multiCallSwap();
+        case SwapButonStates.SWAP:
+          multiCallSwap();
           break
-          case SwapButonStates.SWAP:
-            dispatch(connectWalletStatus(true))
+        case SwapButonStates.SWAP:
+          dispatch(connectWalletStatus(true))
           break
       }
     }
