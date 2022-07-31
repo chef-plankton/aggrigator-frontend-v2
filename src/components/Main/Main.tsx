@@ -45,6 +45,7 @@ import FromToken from "./From/FromToken";
 import useTokenBalance from "../../hooks/useTokenBalance";
 import { setTextRange } from "typescript";
 import { changeApprovalState } from "../../features/account/accountSlice";
+import { changeChain } from "../../features/chains/chainsSlice";
 export const useCurrentBlock = (): number => {
   const { data: currentBlock = 0 } = useSWRImmutable("blockNumber");
   return currentBlock;
@@ -90,6 +91,7 @@ function Main() {
     useENSNames,
   } = useWallet(wallet);
   const isActive = useIsActive();
+  const walletChainId = useChainId();
   const library = useProvider();
   const account = useAccount();
   const dispatch = useDispatch();
@@ -114,8 +116,11 @@ function Main() {
 
   const isButtonDisable = {
     disabled: swapButtonData.isDisable ? true : false,
-  };
-  console.log(isButtonDisable);
+  }
+  
+  useEffect(() => {
+    if (walletChainId) dispatch(changeChain(walletChainId));
+  }, [walletChainId]);
 
   useEffect(() => {
     if (isActive) {
