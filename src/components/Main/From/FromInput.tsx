@@ -64,7 +64,7 @@ function FromInput() {
             toChain === 56 ? "bsc" : toChain === 250 ? "fantom" : ""
           }&amount=${amount}`
         )
-        .then((data) => {
+        .then((data) => {                
           dispatch(changeResponseString(JSON.stringify(data)));
           dispatch(changeResponseData(data));
           dispatch(changeShowRoute(true));

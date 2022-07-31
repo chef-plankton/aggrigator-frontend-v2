@@ -1,16 +1,11 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Provider } from "react-redux";
-import store from "./app/store";
-import {
-  useWeb3React,
-  Web3ReactHooks,
-  Web3ReactProvider,
-} from "@web3-react/core";
+import store, { RootState } from "./app/store";
+import { Web3ReactHooks, Web3ReactProvider } from "@web3-react/core";
 import { MetaMask } from "@web3-react/metamask";
 import { Network } from "@web3-react/network";
 import { WalletConnect } from "@web3-react/walletconnect";
@@ -24,6 +19,8 @@ import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import Updater from "./state/transactions/updater";
 import { usePollBlockNumber } from "./state/block/hooks";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 const queryClient = new QueryClient();
 const connectors: [MetaMask | WalletConnect | Network, Web3ReactHooks][] = [
   [metaMask, metaMaskHooks],
@@ -34,17 +31,19 @@ const connectors: [MetaMask | WalletConnect | Network, Web3ReactHooks][] = [
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
 function GlobalHooks() {
-  usePollBlockNumber()
-  return null
+  usePollBlockNumber();
+  return null;
 }
+
 root.render(
   <>
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <Router>
           <Web3ReactProvider connectors={connectors}>
-            <GlobalHooks/>
+            <GlobalHooks />
             <Updater />
             <App />
           </Web3ReactProvider>

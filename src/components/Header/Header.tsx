@@ -11,6 +11,10 @@ import Menu from "./Menu";
 import ChangeThemeButton from "./ChangeThemeButton";
 import { RootState } from "../../app/store";
 import { useSelector } from "react-redux";
+import styled from "styled-components";
+
+
+
 function Header() {
   const [toggle, setToggle] = useState(true);
   const toggleMenu = () => {
@@ -19,11 +23,13 @@ function Header() {
   };
   const [dropdown, setDropdown] = useState(false);
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
+  const [hidden, setHidden] = useState<boolean>(false)
+  console.log("headerrrrr",hidden);
+  
   return (
     <nav
-      className={`${
-        themeMode === "light" ? "bg-white" : "bg-[#232931]"
-      } bg-white shadow-lg z-10`}
+      className={`${themeMode === "light" ? "bg-white" : "bg-[#232931]"
+        } bg-white shadow-lg z-10`}
     >
       <div className="max-w-full mx-auto px-4">
         <div className="flex justify-between">
@@ -40,7 +46,7 @@ function Header() {
             {/* <Menu /> */}
           </div>
           {/* Secondary Navbar items */}
-          <div className="hidden md:flex items-center space-x-3 ">
+          <div className={`hidden md:${hidden ? 'hidden' : 'flex'} items-center space-x-3 `}>
             {/* Chains Button Dropdown */}
             <ChainsButton
               ArrowDownFont={ArrowDownFont}
@@ -49,7 +55,7 @@ function Header() {
               setToggle={setToggle}
             />
             {/* Check showing dropdown */}
-            {dropdown ? <ChainsDropdown setDropdown={setDropdown} /> : ""}
+            {dropdown ? <ChainsDropdown setDropdown={setDropdown} setHidden={setHidden}/> : ""}
 
             {/* Connect wallet button */}
             <ConnectWalletButton />
@@ -66,9 +72,9 @@ function Header() {
                 dropdown={dropdown}
                 setToggle={setToggle}
               />
-              {dropdown ? <ChainsDropdown setDropdown={setDropdown} /> : ""}
+              {dropdown ? <ChainsDropdown setDropdown={setDropdown} setHidden={setHidden}/> : ""}
             </div>
-            <button
+            {/* <button
               onClick={toggleMenu}
               className="outline-none mobile-menu-button"
             >
@@ -84,12 +90,12 @@ function Header() {
               >
                 <path d="M4 6h16M4 12h16M4 18h16"></path>
               </svg>
-            </button>
+            </button> */}
           </div>
         </div>
       </div>
       {/* mobile menu */}
-      <div className={`${toggle ? "hidden" : ""} mobile-menu`}>
+      {/* <div className={`${toggle ? "hidden" : ""} mobile-menu`}>
         <ul className="">
           <li className="active">
             <a
@@ -125,7 +131,7 @@ function Header() {
           </li>
           <li></li>
         </ul>
-      </div>
+      </div> */}
     </nav>
   );
 }

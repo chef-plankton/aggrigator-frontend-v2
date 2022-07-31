@@ -1,6 +1,7 @@
 import { TransactionResponse } from "@ethersproject/providers";
 import { useCallback, useMemo } from "react";
 import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
 import useWallet from "../../components/Wallets/useWallet";
 import { AppState, useAppDispatch } from "../index";
 import { addTransaction, TransactionType } from "./actions";
@@ -62,7 +63,8 @@ export function useTransactionAdder(): (
 
 // returns all the transactions for the current chain
 export function useAllTransactions(): { [txHash: string]: TransactionDetails } {
-  const hooks = useWallet("metamask");
+  const wallet = useSelector(({ account }: RootState) => account.wallet);
+  const hooks = useWallet(wallet);
   const { useChainId } = hooks;
   const chainId = useChainId();
 

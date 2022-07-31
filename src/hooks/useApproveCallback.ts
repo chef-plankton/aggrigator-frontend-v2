@@ -15,6 +15,7 @@ import useWallet from "../components/Wallets/useWallet";
 import { parseUnits } from "@ethersproject/units";
 import { useDispatch } from "react-redux";
 import { changeApprovevalue } from "../features/account/accountSlice";
+import { Erc20 } from "../config/abi/types";
 export enum ApprovalState {
   UNKNOWN,
   NOT_APPROVED,
@@ -22,7 +23,8 @@ export enum ApprovalState {
   APPROVED,
 }
 
-// returns a variable indicating the state of the approval and a function which approves if necessary or early returns
+// returns a variable indicating the state of the approval and a function which approves if necessary or early returns'
+export type ApproveParams = (spender: string,amountToApprove: BigNumber) => Promise<void>
 export function useApproveCallback(
   tokenAddress?: string,
   amountToApprove?: BigNumber,
@@ -39,7 +41,7 @@ export function useApproveCallback(
     useENSNames,
   } = useWallet(wallet);
   const account = useAccount();
-  const { callWithoutGasPrice } = useCallWithoutGasPrice();
+  const { callWithoutGasPrice } = useCallWithoutGasPrice<Erc20, TransactionResponse>();
 
   const token = amountToApprove;
   const currentAllowance = useTokenAllowance(
@@ -106,9 +108,9 @@ export function useApproveCallback(
     return callWithoutGasPrice(
       tokenContract,
       "approve",
-      [spender, amountToApprove],
+      [spender, amountToApprove] as Parameters<ApproveParams>,
       {
-        gasLimit: 21000000,
+        gasLimit: 210000,
       }
     )
       .then((response: TransactionResponse) => {
@@ -152,6 +154,6 @@ export function useApproveCallbackFromTrade(
   return useApproveCallback(
     tokenAddress,
     amountToApprove,
-    "0x08b7eacc12634644c0533f0a3f1616678920b249"
+    "0x55d398326f99059fF775485246999027B3197955"// todo: make it dynamic
   );
 }

@@ -22,6 +22,9 @@ export function useCallWithoutGasPrice<T extends Contract, U>() {
       overrides: CallOverrides = null
     ): Promise<U | TransactionResponse> => {
       const contractMethod = get(contract, methodName);
+      console.log(contract);
+      console.log(methodName);
+      
       const tx = await contractMethod(...methodArgs, { ...overrides });
       return tx;
     },

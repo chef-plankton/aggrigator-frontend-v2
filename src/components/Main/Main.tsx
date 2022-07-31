@@ -17,7 +17,7 @@ import { bool, node } from "prop-types";
 import { useTransition, animated } from "react-spring";
 import styled from "styled-components";
 import useWallet from "../Wallets/useWallet";
-import { ethers, utils } from "ethers";
+import { BigNumber, ethers, utils } from "ethers";
 import get from "lodash/get";
 import { wait } from "@testing-library/user-event/dist/utils";
 import { getSigner } from "../../utils";
@@ -35,7 +35,15 @@ import useSWRImmutable from "swr/immutable";
 import Route from "./Route/Route";
 import { connectWalletStatus } from "../../features/modals/modalsSlice";
 import { TransactionResponse } from "@ethersproject/providers";
-import { useAkkaEncodeSwapDescriptionCallback, useAkkaCalcLayerZeroFeeCallback, useAkkaAggrigatorSwapCallback } from "../../hooks/useAkkaCallback";
+import {
+  useAkkaEncodeSwapDescriptionCallback,
+  useAkkaCalcLayerZeroFeeCallback,
+  useAkkaAggrigatorSwapCallback,
+} from "../../hooks/useAkkaCallback";
+import { formatEther, parseEther } from "@ethersproject/units";
+import FromToken from "./From/FromToken";
+import useTokenBalance from "../../hooks/useTokenBalance";
+import { setTextRange } from "typescript";
 export const useCurrentBlock = (): number => {
   const { data: currentBlock = 0 } = useSWRImmutable("blockNumber");
   return currentBlock;
@@ -47,6 +55,15 @@ const Inner = styled.div`
     display: table;
   }
 `;
+enum SwapButonStates {
+  CONNECT_TO_WALLET = "CONNECT_TO_WALLET",
+  ENTER_AMOUNT = "ENTER_AMOUNT",
+  APPROVE = "APPROVE",
+  LOADING = "LOADING",
+  SWAP = "SWAP",
+  WRAP = "WRAP",
+  INSUFFICIENT_BALANCE = "INSUFFICIENT_BALANCE",
+}
 function Main() {
   const inputValue = useSelector(({ route }: RootState) => route.amount);
   const fromToken = useSelector(({ route }: RootState) => route.fromToken);
@@ -54,7 +71,10 @@ function Main() {
   const fromChain = useSelector(({ route }: RootState) => route.fromChain);
   const toChain = useSelector(({ route }: RootState) => route.toChain);
   const amount = useSelector(({ route }: RootState) => route.amount);
-  const { callWithoutGasPrice } = useCallWithoutGasPrice<Weth, TransactionResponse>();
+  const { callWithoutGasPrice } = useCallWithoutGasPrice<
+    Weth,
+    TransactionResponse
+  >();
   const wbnbContract = useWBNBContract(true);
   const wallet = useSelector(({ account }: RootState) => account.wallet);
   const approvevalue = useSelector(
@@ -73,25 +93,68 @@ function Main() {
   const account = useAccount();
   const dispatch = useDispatch();
   const wrapCallback = useWrapCallback("BNB", "WBNB");
-  const [text, setText] = useState("Connect Wallet");
-  const { getBytes } = useAkkaEncodeSwapDescriptionCallback()
-  const { quoteLayerZeroFee } = useAkkaCalcLayerZeroFeeCallback()
-  const { aggrigatorSwap } = useAkkaAggrigatorSwapCallback()
+  const [swapButtonData, setSwapButtonData] = useState<{ text: string, isDisable?: boolean, state: SwapButonStates }>({ text: "", isDisable: false, state: null });
+  const { getBytes } = useAkkaEncodeSwapDescriptionCallback();
+  const { quoteLayerZeroFee } = useAkkaCalcLayerZeroFeeCallback();
+  const { aggrigatorSwap } = useAkkaAggrigatorSwapCallback();
+  const chainId = useSelector(({ chains }: RootState) => chains.value);
+  const balance = useTokenBalance(fromToken.adress, account)
+  console.log(balance&&formatEther(balance).toString());
+  
   useEffect(() => {
-    if (isActive) {
-      console.log(Number(approvevalue));
-      console.log(Number(amount));
 
-      if (Number(approvevalue) >= Number(amount)) {
-        setText("Swap");
-      } else {
-        setText("Approve");
+    if (isActive) {
+      if (!(fromToken.adress &&
+        toToken.adress &&
+        fromChain &&
+        toChain &&
+        amount)) {
+        setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.ENTER_AMOUNT, text: "Enter Amount", isDisable: true }));
+        return
       }
+      if (
+        balance && balance?.lt(parseEther(amount))) {
+        setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.INSUFFICIENT_BALANCE, text: "Insufficient Balance", isDisable: true }));
+        return
+      }
+      if (
+        approvevalue && approvevalue?.lt(parseEther(amount))) {
+        setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.APPROVE, text: "APPROVE" }));
+        return
+      }
+    
+      if (
+        approvevalue && approvevalue?.gte(parseEther(amount))) {
+        setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.SWAP, text: "Swap" }));
+        return
+      }
+    } else {
+      setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.CONNECT_TO_WALLET, text: "Connect To Wallet" }));
     }
-  }, [isActive, amount, approvevalue]);
+
+
+
+    // if (approvevalue && approvevalue?.gte(parseEther(amount))) {
+    //   setText({te"Swap"});
+    //   return
+    // } else if (balance?.lt(parseEther(amount))) {
+    //   setText("Insufficient Balance");
+    //   return
+    // } else if (!amount) {
+    //   setText("Enter Amount");
+    //   return
+    // } else {
+    //   setText("Approve");
+    //   return
+    // }
+
+
+
+
+  }, [isActive, amount, approvevalue, balance, fromToken.adress, toToken.adress, toChain, fromChain]);
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallbackFromTrade(
-    "0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd",
+    fromToken.adress,
     inputValue
   );
   // check if user has gone through approval process, used to show two step buttons, reset on token change
@@ -104,7 +167,6 @@ function Main() {
   }, [approval, approvalSubmitted]);
 
   const currentBlock = useCurrentBlock();
-
   async function getCurrentBlock() {
     // const contractWithSigner = wbnbContract.connect(
     //   getSigner(library, account)
@@ -154,21 +216,13 @@ function Main() {
       }
     }
   }
-  async function multiCallSwap(){
-    const payload = await getBytes()
-    const quote=await quoteLayerZeroFee(payload)
+  async function multiCallSwap() {
+    const payload = await getBytes();
+    const quote = await quoteLayerZeroFee(payload);
     console.log(quote[0].toString());
-    aggrigatorSwap(quote[0],payload)
+    aggrigatorSwap(quote[0], payload);
   }
   // Connect to Metamask wallet automatically after refreshing the page (attempt to connect eagerly on mount)
-  useEffect(() => {
-    void metaMask.connectEagerly().catch(() => {
-      console.debug("Failed to connect eagerly to metamask");
-    });
-    void walletConnect.connectEagerly().catch(() => {
-      console.debug("Failed to connect eagerly to metamask");
-    });
-  }, []);
   // const hooks = useWallet();
   // const { useIsActivating, useIsActive } = hooks;
   // const isActive = useIsActive();
@@ -247,7 +301,23 @@ function Main() {
     /** The slidable content elements */
     children: node.isRequired,
   };
-
+  const handleSwapButtonClick = async () => {
+    if (!isActive) {
+      dispatch(connectWalletStatus(true));
+    } else {
+      switch (swapButtonData.state) {
+        case SwapButonStates.APPROVE:
+          approveCallback();
+          break
+        case SwapButonStates.SWAP:
+          multiCallSwap();
+          break
+        case SwapButonStates.CONNECT_TO_WALLET:
+          dispatch(connectWalletStatus(true))
+          break
+      }
+    }
+  }
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   const [isVisible, setIsVisible] = useState(false);
   return (
@@ -273,20 +343,13 @@ function Main() {
         <Route />
 
         <button
-          onClick={async () => {
-            if (!isActive) {
-              dispatch(connectWalletStatus(true));
-            } else {
-              // approveCallback();
-              multiCallSwap()
-            }
-          }}
+          onClick={handleSwapButtonClick}
           className={`mt-[20px] py-4 w-[100%] text-center font-medium text-lg text-white rounded-[10px] ${themeMode === "light"
             ? "bg-[#111111] hover:bg-[transparent] hover:text-[#111111] hover:shadow-none hover:border-[1px] hover:border-black"
             : "bg-[#4ECCA3] hover:bg-[#79d8b8]"
             } transition duration-300 shadow-[0_8px_32px_#23293176]`}
         >
-          {text}
+          {swapButtonData.text}
         </button>
       </div>
     </main>

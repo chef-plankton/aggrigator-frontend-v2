@@ -3,7 +3,7 @@ import CloseIcon from "../../../assets/img/close.png";
 import { useDispatch } from "react-redux";
 import { changeModalStatus } from "../../../features/modals/modalsSlice";
 import SlippageImage from "../../../assets/img/slippage.svg";
-import TimeImage from "../../../assets/img/use-legacy-transactions.svg";
+
 function FromAdvanceSetting() {
   const dispatch = useDispatch();
   return (
