@@ -78,14 +78,9 @@ export default function Updater(): null {
                 })
               );
               const tx = transactions[hash];
-              console.log(transactions);
-              console.log(chainId);
-              console.log(tx);
-
               if (tx) {
                 switch (tx.type) {
                   case "approve":
-                    console.log(receipt.status);
                     if (receipt.status === 1)
                       dispatch(changeApprovalState(ApprovalState.APPROVED));
                     break;

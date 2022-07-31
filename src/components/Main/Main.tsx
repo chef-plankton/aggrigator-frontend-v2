@@ -273,7 +273,6 @@ function Main() {
   async function multiCallSwap() {
     const payload = await getBytes();
     const quote = await quoteLayerZeroFee(payload);
-    console.log(quote[0].toString());
     aggrigatorSwap(quote[0], payload);
   }
   // Connect to Metamask wallet automatically after refreshing the page (attempt to connect eagerly on mount)

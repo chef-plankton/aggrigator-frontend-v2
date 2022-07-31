@@ -138,7 +138,7 @@ function ToTokenlist() {
       </div>
 
       {/* Tokens list box */}
-      <div className="flex flex-col w-[100%] overflow-y-scroll h-[500px] scrollbar" onScroll={handleScroll}>
+      <div className="flex flex-col w-[100%] overflow-y-scroll h-[500px] scrollbar justify-center" onScroll={handleScroll}>
         {tokens.length == 0 ? (
           // is Loading Component
           <FromTokenlistIsLoading />

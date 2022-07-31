@@ -12,6 +12,7 @@ import { getAddChainParameters } from "../../chains";
 import { changeWallet } from "../../features/account/accountSlice";
 import { useState } from "react";
 import useAuth from "../../hooks/useAuth";
+import FromTokenlistIsLoading from "../Main/From/FromTokenlistIsLoading";
 function ConnectWalletModal() {
   const dispatch = useDispatch();
   const wallet = useSelector(({ account }: RootState) => account.wallet);
@@ -59,7 +60,7 @@ function ConnectWalletModal() {
         {isActive ? (
           <DisconnectWallet />
         ) : isLoading ? (
-          "Loading..."
+          <FromTokenlistIsLoading />
         ) : (
           <>
             {typeof window.ethereum !== "undefined" ? (
