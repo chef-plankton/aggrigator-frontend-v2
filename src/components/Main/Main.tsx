@@ -46,7 +46,10 @@ import useTokenBalance from "../../hooks/useTokenBalance";
 import { setTextRange } from "typescript";
 import { changeApprovalState } from "../../features/account/accountSlice";
 import { changeChain } from "../../features/chains/chainsSlice";
-import { changeResponseData, changeShowRoute } from "../../features/route/routeSlice";
+import {
+  changeResponseData,
+  changeShowRoute,
+} from "../../features/route/routeSlice";
 export const useCurrentBlock = (): number => {
   const { data: currentBlock = 0 } = useSWRImmutable("blockNumber");
   return currentBlock;
@@ -113,8 +116,6 @@ function Main() {
   );
   const chainId = useSelector(({ chains }: RootState) => chains.value);
   const balance = useTokenBalance(fromToken.adress, account);
-  console.log("swapButtonData:", swapButtonData.isDisable);
-
   const isButtonDisable = {
     disabled: swapButtonData.isDisable ? true : false,
   };
