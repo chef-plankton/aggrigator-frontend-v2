@@ -429,7 +429,7 @@ function Main() {
 
         <button
           onClick={handleSwapButtonClick}
-          className={`mt-[10px] py-4 w-[100%] text-center font-medium text-lg rounded-[10px] ${
+          className={`mt-[10px] py-1 w-[100%] h-[50px] text-center font-medium text-lg rounded-[10px] ${
             !swapButtonData.isDisable
               ? "text-white bg-[#111111] hover:bg-[#111111] hover:text-[white] hover:shadow-none hover:border-[1px] hover:border-black transition duration-300 shadow-[0_8px_32px_#23293176]"
               : "text-white bg-gray-300"

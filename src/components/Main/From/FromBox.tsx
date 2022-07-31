@@ -39,9 +39,8 @@ function FromBox() {
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   const fromToken = useSelector(({ route }: RootState) => route.fromToken);
   const address = useSelector(({ account }: RootState) => account.address);
-  const balance = useTokenBalance(fromToken.adress, address)
-  
-  
+  const balance = useTokenBalance(fromToken.adress, address);
+
   return (
     <StyledFromBox
       color={themeMode === "light" ? "black" : "white"}
@@ -52,25 +51,29 @@ function FromBox() {
       }
     >
       {/* box top bar */}
-      <div className="px-3 py-1 w-[100%] flex justify-between">
-
-        From: {balance ? formatEther(balance)?.toString() : 0}
-        <div className="flex">
+      <div className='px-3 py-1 w-[100%] flex justify-between'>
+        From
+        <div className='flex items-center'>
+          <span className="px-3 py-1 mx-1 rounded-[5px] bg-[#f3f3f3]">
+            Your Balance: {balance ? formatEther(balance)?.toString() : 0}
+          </span>
           <FromRefresh />
           {/* <FromAdvanceSetting /> */}
         </div>
       </div>
       {/* box datas */}
-      <div className="px-3 py-2 flex justify-between flex-col md:flex-row">
-        <div className="md:w-[60%] w-[100%} flex justify-between ">
+      <div className='px-3 py-2 flex justify-between flex-col md:flex-row'>
+        <div className='md:w-[60%] w-[100%} flex justify-between '>
           {/* from network */}
           <FromChangeNetworkButton
-            imageSrc={`${chainId === 56 ? bnblightIcon : ""}${chainId === 250 ? fantomIcon : ""
-              }${chainId === 97 ? bnblightIcon : ""}`}
+            imageSrc={`${chainId === 56 ? bnblightIcon : ""}${
+              chainId === 250 ? fantomIcon : ""
+            }${chainId === 97 ? bnblightIcon : ""}`}
             coinName={`
             ${chainId === 56 ? "BNB Chain" : ""}
-            ${chainId === 250 ? "Fantom" : ""}${chainId === 97 ? "BNB Chain" : ""
-              }`}
+            ${chainId === 250 ? "Fantom" : ""}${
+              chainId === 97 ? "BNB Chain" : ""
+            }`}
           />
           {/* from token */}
           <FromChangeTokenButton
@@ -82,7 +85,7 @@ function FromBox() {
           />
         </div>
         {/* from input */}
-        <div className="md:w-[40%] w-[100%} mt-[30px] md:mt-0 flex justify-center">
+        <div className='md:w-[40%] w-[100%} mt-[30px] md:mt-0 flex flex-col justify-center'>
           <FromInput />
         </div>
       </div>

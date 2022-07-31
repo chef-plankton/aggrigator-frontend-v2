@@ -71,7 +71,7 @@ function Header() {
           </div>
           {/* Mobile menu button */}
           <div className='md:hidden flex items-center'>
-            <div className='md:hidden flex items-center mr-5'>
+            <div className='md:hidden flex items-center md:mr-5'>
               <ChainsButton
                 ArrowDownFont={ArrowDownFont}
                 setDropdown={setDropdown}
