@@ -13,8 +13,6 @@ import { RootState } from "../../app/store";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 
-
-
 function Header() {
   const [toggle, setToggle] = useState(true);
   const toggleMenu = () => {
@@ -23,19 +21,19 @@ function Header() {
   };
   const [dropdown, setDropdown] = useState(false);
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
-  const [hidden, setHidden] = useState<boolean>(false)
-  console.log("headerrrrr",hidden);
-  
+  const [hidden, setHidden] = useState<boolean>(false);
+
   return (
     <nav
-      className={`${themeMode === "light" ? "bg-white" : "bg-[#232931]"
-        } bg-white shadow-lg z-10`}
+      className={`${
+        themeMode === "light" ? "bg-white" : "bg-[#232931]"
+      } bg-white shadow-lg z-10`}
     >
-      <div className="max-w-full mx-auto px-4">
-        <div className="flex justify-between">
-          <div className="flex space-x-7">
+      <div className='max-w-full mx-auto px-4'>
+        <div className='flex justify-between'>
+          <div className='flex space-x-7'>
             <div>
-              <Link to="/" className="flex items-center py-4 px-2">
+              <Link to='/' className='flex items-center py-4 px-2'>
                 {/* Main Menu Logo */}
                 <Logo
                   logoPic={themeMode === "light" ? logoPic : lightlogoPic}
@@ -46,7 +44,11 @@ function Header() {
             {/* <Menu /> */}
           </div>
           {/* Secondary Navbar items */}
-          <div className={`hidden md:${hidden ? 'hidden' : 'flex'} items-center space-x-3 `}>
+          <div
+            className={`hidden md:${
+              hidden ? "hidden" : "flex"
+            } items-center space-x-3 `}
+          >
             {/* Chains Button Dropdown */}
             <ChainsButton
               ArrowDownFont={ArrowDownFont}
@@ -55,7 +57,11 @@ function Header() {
               setToggle={setToggle}
             />
             {/* Check showing dropdown */}
-            {dropdown ? <ChainsDropdown setDropdown={setDropdown} setHidden={setHidden}/> : ""}
+            {dropdown ? (
+              <ChainsDropdown setDropdown={setDropdown} setHidden={setHidden} />
+            ) : (
+              ""
+            )}
 
             {/* Connect wallet button */}
             <ConnectWalletButton />
@@ -64,15 +70,22 @@ function Header() {
             <ChangeThemeButton />
           </div>
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
-            <div className="md:hidden flex items-center mr-5">
+          <div className='md:hidden flex items-center'>
+            <div className='md:hidden flex items-center mr-5'>
               <ChainsButton
                 ArrowDownFont={ArrowDownFont}
                 setDropdown={setDropdown}
                 dropdown={dropdown}
                 setToggle={setToggle}
               />
-              {dropdown ? <ChainsDropdown setDropdown={setDropdown} setHidden={setHidden}/> : ""}
+              {dropdown ? (
+                <ChainsDropdown
+                  setDropdown={setDropdown}
+                  setHidden={setHidden}
+                />
+              ) : (
+                ""
+              )}
             </div>
             {/* <button
               onClick={toggleMenu}

@@ -7,7 +7,11 @@ import Swal from "sweetalert2";
 import { RootState } from "../../app/store";
 import { useCurrentBlock } from "../../components/Main/Main";
 import { TransactionTypes } from "ethers/lib/utils";
-import { ApprovalState, changeApprovalState } from "../../features/account/accountSlice";
+import {
+  ApprovalState,
+  changeApprovalState,
+} from "../../features/account/accountSlice";
+import DescriptionWithTx from "../../components/Main/DescriptionWithTx";
 
 export function shouldCheck(
   currentBlock: number,
@@ -79,30 +83,40 @@ export default function Updater(): null {
               console.log(tx);
 
               if (tx) {
-
                 switch (tx.type) {
-                  case 'approve':
+                  case "approve":
                     console.log(receipt.status);
-                    
-                    if (receipt.status === 1) dispatch(changeApprovalState(ApprovalState.APPROVED))
-                    break
+                    if (receipt.status === 1)
+                      dispatch(changeApprovalState(ApprovalState.APPROVED));
+                    break;
                 }
               }
 
-
               receipt.status === 1
                 ? Swal.fire({
-                  position: "top-end",
-                  icon: "success",
-                  title: `Confirmed`,
-                  showConfirmButton: false,
-                  timer: 1500,
-                })
+                    position: "top-end",
+                    icon: "success",
+                    title: `Transaction Confirmed`,
+                    html: `<p>Tx: ${tx.hash}</p>`,
+                    width: "500px",
+                    heightAuto: false,
+                    showCancelButton: true,
+                    showCloseButton: true,
+                    showConfirmButton: true,
+                    confirmButtonColor: "black",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Show on BSC Scan",
+                  }).then(() => {
+                    window.open(
+                      `${"https://bscscan.com"}/tx/${tx.hash}`,
+                      "_blank"
+                    );
+                  })
                 : Swal.fire({
-                  icon: "error",
-                  title: "Oops...",
-                  text: "Something went wrong!",
-                });
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Something went wrong!",
+                  });
             } else {
               dispatch(checkedTransaction({ chainId, hash }));
             }
