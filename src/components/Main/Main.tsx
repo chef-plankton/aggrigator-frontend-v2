@@ -46,6 +46,7 @@ import useTokenBalance from "../../hooks/useTokenBalance";
 import { setTextRange } from "typescript";
 import { changeApprovalState } from "../../features/account/accountSlice";
 import { changeChain } from "../../features/chains/chainsSlice";
+import { changeResponseData, changeShowRoute } from "../../features/route/routeSlice";
 export const useCurrentBlock = (): number => {
   const { data: currentBlock = 0 } = useSWRImmutable("blockNumber");
   return currentBlock;
@@ -116,8 +117,26 @@ function Main() {
 
   const isButtonDisable = {
     disabled: swapButtonData.isDisable ? true : false,
-  }
-  
+  };
+  useEffect(() => {
+    if (amount === "") {
+      dispatch(changeShowRoute(false));
+      dispatch(
+        changeResponseData({
+          data: {
+            return_amount: undefined,
+            routes: [
+              {
+                operations: [],
+                operations_seperated: [],
+              },
+            ],
+          },
+        })
+      );
+    }
+  }, [amount]);
+
   useEffect(() => {
     if (walletChainId) dispatch(changeChain(walletChainId));
   }, [walletChainId]);
