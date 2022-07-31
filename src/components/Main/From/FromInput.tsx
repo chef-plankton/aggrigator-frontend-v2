@@ -75,7 +75,7 @@ function FromInput() {
   return (
     <StyledInput
       color={themeMode === "light" ? "black" : "white"}
-      placeholder='Enter amount you want to sel'
+      placeholder='Enter amount you want to sell'
       onChange={(e) => {
         dispatch(changeAmount(e.target.value));
         if (

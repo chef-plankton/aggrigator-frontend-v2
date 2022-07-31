@@ -1,18 +1,14 @@
+import { formatEther } from "@ethersproject/units";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { RootState } from "../../../app/store";
-import FromBalance from "./FromBalance";
-import FromChangeTokenButton from "./FromChangeTokenButton";
-import FromChangeNetworkButton from "./FromChangeNetworkButton";
-import FromInput from "./FromInput";
 import bnblightIcon from "../../../assets/img/chains/binance-light.svg";
-import polygonIcon from "../../../assets/img/chains/polygon.svg";
 import fantomIcon from "../../../assets/img/chains/fantom.svg";
-import FromAdvanceSetting from "./FromAdvanceSettingButton";
-import FromRefresh from "./FromRefresh";
-import FromToken from "./FromToken";
 import useTokenBalance from "../../../hooks/useTokenBalance";
-import { formatEther, parseUnits } from "@ethersproject/units";
+import FromChangeNetworkButton from "./FromChangeNetworkButton";
+import FromChangeTokenButton from "./FromChangeTokenButton";
+import FromInput from "./FromInput";
+import FromRefresh from "./FromRefresh";
 
 // From Box Styles
 const StyledFromBox = styled.div<{ color: string; backgroundColor: string }>`

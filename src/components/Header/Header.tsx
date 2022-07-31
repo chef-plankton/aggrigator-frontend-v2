@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from "react";
-import logoPic from "../../assets/mainlogo.png";
-import lightlogoPic from "../../assets/lightlogo.png";
-import { Link } from "react-router-dom";
-import ArrowDownFont from "../../assets/arrow-down-sign-to-navigate.png";
-import ChainsDropdown from "./ChainsDropdown";
-import Logo from "./Logo/Logo";
-import ChainsButton from "./ChainsButton";
-import ConnectWalletButton from "./ConnectWalletButton";
-import Menu from "./Menu";
-import ChangeThemeButton from "./ChangeThemeButton";
-import { RootState } from "../../app/store";
+import { useState } from "react";
 import { useSelector } from "react-redux";
-import styled from "styled-components";
+import { Link } from "react-router-dom";
+import { RootState } from "../../app/store";
+import ArrowDownFont from "../../assets/arrow-down-sign-to-navigate.png";
+import lightlogoPic from "../../assets/lightlogo.png";
+import logoPic from "../../assets/mainlogo.png";
+import ChainsButton from "./ChainsButton";
+import ChainsDropdown from "./ChainsDropdown";
+import ConnectWalletButton from "./ConnectWalletButton";
+import Logo from "./Logo/Logo";
 
 function Header() {
   const [toggle, setToggle] = useState(true);

@@ -1,55 +1,41 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../../app/store";
-import { metaMask } from "../../connectors/metaMask";
-import { walletConnect } from "../../connectors/walletConnect";
-import {
-  useAkkaContract,
-  useERC20,
-  useWBNBContract,
-} from "../../hooks/useContract";
-import { useCallWithoutGasPrice } from "../../hooks/useCallWithoutGasPrice";
-import FromBox from "./From/FromBox";
-import ReceiverBox from "./Receiver/ReceiverBox";
-import ToBox from "./To/ToBox";
-import plusIcon from "../../assets/plus.png";
-import { bool, node } from "prop-types";
-import { useTransition, animated } from "react-spring";
-import styled from "styled-components";
-import useWallet from "../Wallets/useWallet";
-import { BigNumber, ethers, utils } from "ethers";
-import get from "lodash/get";
-import { wait } from "@testing-library/user-event/dist/utils";
-import { getSigner } from "../../utils";
-import Swal from "sweetalert2";
-import { useDispatch } from "react-redux";
-import { Weth } from "../../config/abi/types";
-import useWrapCallback from "../../hooks/useWrapCallback";
-import useTokenAllowance from "../../hooks/useTokenAllowance";
-import { CurrencyAmount, Token } from "@pancakeswap/sdk";
-import {
-  ApprovalState,
-  useApproveCallbackFromTrade,
-} from "../../hooks/useApproveCallback";
-import useSWRImmutable from "swr/immutable";
-import Route from "./Route/Route";
-import { connectWalletStatus } from "../../features/modals/modalsSlice";
 import { TransactionResponse } from "@ethersproject/providers";
-import {
-  useAkkaEncodeSwapDescriptionCallback,
-  useAkkaCalcLayerZeroFeeCallback,
-  useAkkaAggrigatorSwapCallback,
-} from "../../hooks/useAkkaCallback";
-import { formatEther, parseEther } from "@ethersproject/units";
-import FromToken from "./From/FromToken";
-import useTokenBalance from "../../hooks/useTokenBalance";
-import { setTextRange } from "typescript";
+import { parseEther } from "@ethersproject/units";
+import { BigNumber } from "ethers";
+import { bool, node } from "prop-types";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { animated, useTransition } from "react-spring";
+import styled from "styled-components";
+import Swal from "sweetalert2";
+import useSWRImmutable from "swr/immutable";
+import { RootState } from "../../app/store";
+import plusIcon from "../../assets/plus.png";
+import { Weth } from "../../config/abi/types";
 import { changeApprovalState } from "../../features/account/accountSlice";
 import { changeChain } from "../../features/chains/chainsSlice";
+import { connectWalletStatus } from "../../features/modals/modalsSlice";
 import {
   changeResponseData,
   changeShowRoute,
 } from "../../features/route/routeSlice";
+import {
+  useAkkaAggrigatorSwapCallback,
+  useAkkaCalcLayerZeroFeeCallback,
+  useAkkaEncodeSwapDescriptionCallback,
+} from "../../hooks/useAkkaCallback";
+import {
+  ApprovalState,
+  useApproveCallbackFromTrade,
+} from "../../hooks/useApproveCallback";
+import { useCallWithoutGasPrice } from "../../hooks/useCallWithoutGasPrice";
+import { useWBNBContract } from "../../hooks/useContract";
+import useTokenBalance from "../../hooks/useTokenBalance";
+import useWrapCallback from "../../hooks/useWrapCallback";
+import useWallet from "../Wallets/useWallet";
+import FromBox from "./From/FromBox";
+import ReceiverBox from "./Receiver/ReceiverBox";
+import Route from "./Route/Route";
+import ToBox from "./To/ToBox";
 export const useCurrentBlock = (): number => {
   const { data: currentBlock = 0 } = useSWRImmutable("blockNumber");
   return currentBlock;
