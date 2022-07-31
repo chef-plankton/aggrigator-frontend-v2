@@ -67,7 +67,7 @@ function Header() {
             <ConnectWalletButton />
 
             {/* change theme button */}
-            <ChangeThemeButton />
+            {/* <ChangeThemeButton /> */}
           </div>
           {/* Mobile menu button */}
           <div className='md:hidden flex items-center'>

@@ -57,7 +57,7 @@ function FromBox() {
         From: {balance ? formatEther(balance)?.toString() : 0}
         <div className="flex">
           <FromRefresh />
-          <FromAdvanceSetting />
+          {/* <FromAdvanceSetting /> */}
         </div>
       </div>
       {/* box datas */}
