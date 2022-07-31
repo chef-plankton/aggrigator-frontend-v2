@@ -402,7 +402,6 @@ function Main() {
         <SlideToggleContent isVisible={isVisible}>
           <ReceiverBox />
         </SlideToggleContent>
-        <Route />
 
         <button
           onClick={handleSwapButtonClick}
@@ -415,6 +414,8 @@ function Main() {
         >
           {swapButtonData.text}
         </button>
+
+        <Route />
       </div>
     </main>
   );
