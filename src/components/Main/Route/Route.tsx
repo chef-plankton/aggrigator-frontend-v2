@@ -9,8 +9,8 @@ import fantomIcon from "../../../assets/img/chains/fantom.svg";
 import DexBox from "./DexBox";
 // From Box Styles
 const MainStyled = styled.div`
-  margin-bottom: 40px;
-  margin-top: 30px;
+  margin-bottom: 30px;
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
   width: 100%;
