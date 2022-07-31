@@ -52,10 +52,10 @@ function ToTokenlist() {
     let url = '';
 
     if (chainId === 56) {
-      url = "http://192.64.112.22:8084/tokens?chain=bsc&limit=6000";
+      url = "http://192.64.112.22:8084/tokens?chain=bsc&limit=1000";
     }
     if (chainId === 250) {
-      url = "http://192.64.112.22:8084/tokens?chain=fantom&limit=6000";
+      url = "http://192.64.112.22:8084/tokens?chain=fantom&limit=1000";
     }
     if (chainId === 97) {
       url = "http://localhost:4000/BSC-testnet";

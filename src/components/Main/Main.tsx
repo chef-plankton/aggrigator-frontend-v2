@@ -44,6 +44,7 @@ import { formatEther, parseEther } from "@ethersproject/units";
 import FromToken from "./From/FromToken";
 import useTokenBalance from "../../hooks/useTokenBalance";
 import { setTextRange } from "typescript";
+import { changeApprovalState } from "../../features/account/accountSlice";
 export const useCurrentBlock = (): number => {
   const { data: currentBlock = 0 } = useSWRImmutable("blockNumber");
   return currentBlock;
@@ -97,10 +98,11 @@ function Main() {
   const { getBytes } = useAkkaEncodeSwapDescriptionCallback();
   const { quoteLayerZeroFee } = useAkkaCalcLayerZeroFeeCallback();
   const { aggrigatorSwap } = useAkkaAggrigatorSwapCallback();
+  const approveState = useSelector(({ account }: RootState) => account.approveState);
+  const transactions = useSelector(({ transactions }: RootState) => transactions);
   const chainId = useSelector(({ chains }: RootState) => chains.value);
   const balance = useTokenBalance(fromToken.adress, account)
-  console.log(balance&&formatEther(balance).toString());
-  
+
   useEffect(() => {
 
     if (isActive) {
@@ -117,14 +119,15 @@ function Main() {
         setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.INSUFFICIENT_BALANCE, text: "Insufficient Balance", isDisable: true }));
         return
       }
+
       if (
-        approvevalue && approvevalue?.lt(parseEther(amount))) {
+        approvevalue !== null && BigNumber.from(approvevalue)?.lt(parseEther(amount))) {
         setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.APPROVE, text: "APPROVE" }));
         return
       }
-    
+
       if (
-        approvevalue && approvevalue?.gte(parseEther(amount))) {
+        approvevalue && BigNumber.from(approvevalue)?.gte(parseEther(amount))) {
         setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.SWAP, text: "Swap" }));
         return
       }
@@ -157,6 +160,11 @@ function Main() {
     fromToken.adress,
     inputValue
   );
+  useEffect(() => {
+    if (approveState === ApprovalState.APPROVED) {
+      setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.SWAP, text: "Swap", isDisable: false }));
+    }
+  }, [approveState])
   // check if user has gone through approval process, used to show two step buttons, reset on token change
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false);
   // mark when a user has submitted an approval, reset onTokenSelection for input field
@@ -308,9 +316,12 @@ function Main() {
       switch (swapButtonData.state) {
         case SwapButonStates.APPROVE:
           approveCallback();
+          dispatch(changeApprovalState(ApprovalState.PENDING))
+          setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.APPROVE, text: "APPROVE", isDisable: true }));
           break
         case SwapButonStates.SWAP:
           multiCallSwap();
+          // setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.APPROVE, text: "Swap", isDisable: true }));
           break
         case SwapButonStates.CONNECT_TO_WALLET:
           dispatch(connectWalletStatus(true))

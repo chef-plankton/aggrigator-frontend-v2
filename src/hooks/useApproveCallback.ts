@@ -61,7 +61,7 @@ export function useApproveCallback(
     if (!currentAllowance) {
       return ApprovalState.UNKNOWN;
     }
-    dispatch(changeApprovevalue(currentAllowance));
+    dispatch(changeApprovevalue(currentAllowance.toString()));
     // amountToApprove will be defined if currentAllowance is
     return currentAllowance.lt(amountToApprove)
       ? pendingApproval

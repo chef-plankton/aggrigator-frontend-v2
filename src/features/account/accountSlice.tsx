@@ -10,13 +10,13 @@ export enum ApprovalState {
 interface AccountState {
   wallet: WalletName;
   address: string;
-  approvestate: ApprovalState;
-  approvevalue: BigNumber;
+  approveState: ApprovalState;
+  approvevalue: string;
 }
 const initialState: AccountState = {
   wallet: "",
   address: "",
-  approvestate: ApprovalState.UNKNOWN,
+  approveState: ApprovalState.UNKNOWN,
   approvevalue: null,
 };
 
@@ -33,11 +33,14 @@ export const accountSlice = createSlice({
     changeApprovevalue: (state, action) => {
       state.approvevalue = action.payload;
     },
+    changeApprovalState: (state, action) => {
+      state.approveState = action.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { changeWallet, changeAddress, changeApprovevalue } =
+export const { changeWallet, changeAddress, changeApprovevalue,changeApprovalState } =
   accountSlice.actions;
 
 export default accountSlice.reducer;

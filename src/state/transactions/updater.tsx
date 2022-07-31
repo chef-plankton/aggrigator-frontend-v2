@@ -6,6 +6,8 @@ import useWallet from "../../components/Wallets/useWallet";
 import Swal from "sweetalert2";
 import { RootState } from "../../app/store";
 import { useCurrentBlock } from "../../components/Main/Main";
+import { TransactionTypes } from "ethers/lib/utils";
+import { ApprovalState, changeApprovalState } from "../../features/account/accountSlice";
 
 export function shouldCheck(
   currentBlock: number,
@@ -29,7 +31,7 @@ export function shouldCheck(
 }
 
 export default function Updater(): null {
-  const wallet = useSelector((state: RootState) => state.account.wallet);
+  const wallet = useSelector(({ account }: RootState) => account.wallet);
   const hooks = useWallet(wallet);
   const { useProvider, useChainId } = hooks;
   const chainId = useChainId();
@@ -71,19 +73,36 @@ export default function Updater(): null {
                   },
                 })
               );
+              const tx = transactions[hash];
+              console.log(transactions);
+              console.log(chainId);
+              console.log(tx);
+
+              if (tx) {
+
+                switch (tx.type) {
+                  case 'approve':
+                    console.log(receipt.status);
+                    
+                    if (receipt.status === 1) dispatch(changeApprovalState(ApprovalState.APPROVED))
+                    break
+                }
+              }
+
+
               receipt.status === 1
                 ? Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: `Confirmed`,
-                    showConfirmButton: false,
-                    timer: 1500,
-                  })
+                  position: "top-end",
+                  icon: "success",
+                  title: `Confirmed`,
+                  showConfirmButton: false,
+                  timer: 1500,
+                })
                 : Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "Something went wrong!",
-                  });
+                  icon: "error",
+                  title: "Oops...",
+                  text: "Something went wrong!",
+                });
             } else {
               dispatch(checkedTransaction({ chainId, hash }));
             }
