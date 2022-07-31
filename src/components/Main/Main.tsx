@@ -94,48 +94,84 @@ function Main() {
   const account = useAccount();
   const dispatch = useDispatch();
   const wrapCallback = useWrapCallback("BNB", "WBNB");
-  const [swapButtonData, setSwapButtonData] = useState<{ text: string, isDisable?: boolean, state: SwapButonStates }>({ text: "", isDisable: false, state: null });
+  const [swapButtonData, setSwapButtonData] = useState<{
+    text: string;
+    isDisable?: boolean;
+    state: SwapButonStates;
+  }>({ text: "", isDisable: false, state: null });
   const { getBytes } = useAkkaEncodeSwapDescriptionCallback();
   const { quoteLayerZeroFee } = useAkkaCalcLayerZeroFeeCallback();
   const { aggrigatorSwap } = useAkkaAggrigatorSwapCallback();
-  const approveState = useSelector(({ account }: RootState) => account.approveState);
-  const transactions = useSelector(({ transactions }: RootState) => transactions);
+  const approveState = useSelector(
+    ({ account }: RootState) => account.approveState
+  );
+  const transactions = useSelector(
+    ({ transactions }: RootState) => transactions
+  );
   const chainId = useSelector(({ chains }: RootState) => chains.value);
-  const balance = useTokenBalance(fromToken.adress, account)
+  const balance = useTokenBalance(fromToken.adress, account);
+  console.log("swapButtonData:", swapButtonData.isDisable);
+
+  const isButtonDisable = {
+    disabled: swapButtonData.isDisable ? true : false,
+  };
+  console.log(isButtonDisable);
 
   useEffect(() => {
-
     if (isActive) {
-      if (!(fromToken.adress &&
-        toToken.adress &&
-        fromChain &&
-        toChain &&
-        amount)) {
-        setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.ENTER_AMOUNT, text: "Enter Amount", isDisable: true }));
-        return
-      }
       if (
-        balance && balance?.lt(parseEther(amount))) {
-        setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.INSUFFICIENT_BALANCE, text: "Insufficient Balance", isDisable: true }));
-        return
+        !(fromToken.adress && toToken.adress && fromChain && toChain && amount)
+      ) {
+        setSwapButtonData((prevState) => ({
+          ...prevState,
+          state: SwapButonStates.ENTER_AMOUNT,
+          text: "Enter Amount",
+          isDisable: true,
+        }));
+        return;
+      }
+      if (balance && balance?.lt(parseEther(amount))) {
+        setSwapButtonData((prevState) => ({
+          ...prevState,
+          state: SwapButonStates.INSUFFICIENT_BALANCE,
+          text: "Insufficient Balance",
+          isDisable: true,
+        }));
+        return;
       }
 
       if (
-        approvevalue !== null && BigNumber.from(approvevalue)?.lt(parseEther(amount))) {
-        setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.APPROVE, text: "APPROVE" }));
-        return
+        approvevalue !== null &&
+        BigNumber.from(approvevalue)?.lt(parseEther(amount))
+      ) {
+        setSwapButtonData((prevState) => ({
+          ...prevState,
+          state: SwapButonStates.APPROVE,
+          text: "APPROVE",
+          isDisable: false,
+        }));
+        return;
       }
 
       if (
-        approvevalue && BigNumber.from(approvevalue)?.gte(parseEther(amount))) {
-        setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.SWAP, text: "Swap" }));
-        return
+        approvevalue &&
+        BigNumber.from(approvevalue)?.gte(parseEther(amount))
+      ) {
+        setSwapButtonData((prevState) => ({
+          ...prevState,
+          state: SwapButonStates.SWAP,
+          text: "Swap",
+          isDisable: false,
+        }));
+        return;
       }
     } else {
-      setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.CONNECT_TO_WALLET, text: "Connect To Wallet" }));
+      setSwapButtonData((prevState) => ({
+        ...prevState,
+        state: SwapButonStates.CONNECT_TO_WALLET,
+        text: "Connect To Wallet",
+      }));
     }
-
-
 
     // if (approvevalue && approvevalue?.gte(parseEther(amount))) {
     //   setText({te"Swap"});
@@ -150,11 +186,16 @@ function Main() {
     //   setText("Approve");
     //   return
     // }
-
-
-
-
-  }, [isActive, amount, approvevalue, balance, fromToken.adress, toToken.adress, toChain, fromChain]);
+  }, [
+    isActive,
+    amount,
+    approvevalue,
+    balance,
+    fromToken.adress,
+    toToken.adress,
+    toChain,
+    fromChain,
+  ]);
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallbackFromTrade(
     fromToken.adress,
@@ -162,9 +203,14 @@ function Main() {
   );
   useEffect(() => {
     if (approveState === ApprovalState.APPROVED) {
-      setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.SWAP, text: "Swap", isDisable: false }));
+      setSwapButtonData((prevState) => ({
+        ...prevState,
+        state: SwapButonStates.SWAP,
+        text: "Swap",
+        isDisable: false,
+      }));
     }
-  }, [approveState])
+  }, [approveState]);
   // check if user has gone through approval process, used to show two step buttons, reset on token change
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false);
   // mark when a user has submitted an approval, reset onTokenSelection for input field
@@ -316,36 +362,42 @@ function Main() {
       switch (swapButtonData.state) {
         case SwapButonStates.APPROVE:
           approveCallback();
-          dispatch(changeApprovalState(ApprovalState.PENDING))
-          setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.APPROVE, text: "APPROVE", isDisable: true }));
-          break
+          dispatch(changeApprovalState(ApprovalState.PENDING));
+          setSwapButtonData((prevState) => ({
+            ...prevState,
+            state: SwapButonStates.APPROVE,
+            text: "APPROVE",
+            isDisable: true,
+          }));
+          break;
         case SwapButonStates.SWAP:
           multiCallSwap();
           // setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.APPROVE, text: "Swap", isDisable: true }));
-          break
+          break;
         case SwapButonStates.CONNECT_TO_WALLET:
-          dispatch(connectWalletStatus(true))
-          break
+          dispatch(connectWalletStatus(true));
+          break;
       }
     }
-  }
+  };
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   const [isVisible, setIsVisible] = useState(false);
   return (
     <main
-      className={`${themeMode === "light" ? "bg-slate-100" : "bg-[#393E46]"
-        } shadow-lg z-10`}
+      className={`${
+        themeMode === "light" ? "bg-slate-100" : "bg-[#393E46]"
+      } shadow-lg z-10`}
     >
-      <div className="max-w-3xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[50px] pt-[50px] md:pt-[50px]">
+      <div className='max-w-3xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[50px] pt-[50px] md:pt-[50px]'>
         <FromBox />
         <ToBox />
-        <div className="w-[100%] flex mb-[10px] mt-0 pl-[5px] items-center">
+        <div className='w-[100%] flex mb-[10px] mt-0 pl-[5px] items-center'>
           <button
-            className="w-[100%] flex items-center"
+            className='w-[100%] flex items-center'
             onClick={() => setIsVisible(!isVisible)}
           >
             Send To
-            <img src={plusIcon} alt="" className="w-[14px] h-[14px] ml-[6px]" />
+            <img src={plusIcon} alt='' className='w-[14px] h-[14px] ml-[6px]' />
           </button>
         </div>
         <SlideToggleContent isVisible={isVisible}>
@@ -355,10 +407,12 @@ function Main() {
 
         <button
           onClick={handleSwapButtonClick}
-          className={`mt-[10px] py-4 w-[100%] text-center font-medium text-lg text-white rounded-[10px] ${themeMode === "light"
-            ? "bg-[#111111] hover:bg-[#111111] hover:text-[white] hover:shadow-none hover:border-[1px] hover:border-black"
-            : "bg-[#4ECCA3] hover:bg-[#79d8b8]"
-            } transition duration-300 shadow-[0_8px_32px_#23293176]`}
+          className={`mt-[10px] py-4 w-[100%] text-center font-medium text-lg rounded-[10px] ${
+            !swapButtonData.isDisable
+              ? "text-white bg-[#111111] hover:bg-[#111111] hover:text-[white] hover:shadow-none hover:border-[1px] hover:border-black transition duration-300 shadow-[0_8px_32px_#23293176]"
+              : "text-white bg-gray-300"
+          }`}
+          {...isButtonDisable}
         >
           {swapButtonData.text}
         </button>
