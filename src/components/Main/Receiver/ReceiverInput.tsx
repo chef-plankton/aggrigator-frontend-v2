@@ -6,7 +6,7 @@ const StyledInput = styled.input`
   position: relative;
   text-overflow: ellipsis;
   font-weight: 400;
-  font-size: 28px;
+  font-size: 20px;
   padding: 15px 0px;
   display: block;
   color: "palevioletred";
@@ -28,15 +28,15 @@ const StyledInput = styled.input`
   }
   ::placeholder,
   ::-webkit-input-placeholder {
-    font-size: 25px;
+    font-size: 16px;
   }
   :-ms-input-placeholder {
-    font-size: 25px;
+    font-size: 16px;
   }
 `;
 function ReceiverInput() {
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
-  return <StyledInput color={themeMode === "light" ? "black" : "white"} placeholder="Receiver Adress" />;
+  return <StyledInput color={themeMode === "light" ? "black" : "white"} placeholder="Destination wallet address" />;
 }
 
 export default ReceiverInput;

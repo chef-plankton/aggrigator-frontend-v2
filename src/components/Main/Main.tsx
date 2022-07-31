@@ -325,7 +325,7 @@ function Main() {
       className={`${themeMode === "light" ? "bg-slate-100" : "bg-[#393E46]"
         } shadow-lg z-10`}
     >
-      <div className="max-w-3xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[100px] pt-[50px] md:pt-[50px]">
+      <div className="max-w-3xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[50px] pt-[50px] md:pt-[50px]">
         <FromBox />
         <ToBox />
         <div className="w-[100%] flex mb-[5px] mt-0 pl-[5px] items-center">
@@ -344,7 +344,7 @@ function Main() {
 
         <button
           onClick={handleSwapButtonClick}
-          className={`mt-[20px] py-4 w-[100%] text-center font-medium text-lg text-white rounded-[10px] ${themeMode === "light"
+          className={`mt-[10px] py-4 w-[100%] text-center font-medium text-lg text-white rounded-[10px] ${themeMode === "light"
             ? "bg-[#111111] hover:bg-[transparent] hover:text-[#111111] hover:shadow-none hover:border-[1px] hover:border-black"
             : "bg-[#4ECCA3] hover:bg-[#79d8b8]"
             } transition duration-300 shadow-[0_8px_32px_#23293176]`}
