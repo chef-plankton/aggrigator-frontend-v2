@@ -258,7 +258,7 @@ function Main() {
       <div className="max-w-3xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[100px] pt-[50px] md:pt-[50px]">
         <FromBox />
         <ToBox />
-        <div className="w-[100%] flex mb-[30px] mt-0 pl-[5px] items-center">
+        <div className="w-[100%] flex mb-[5px] mt-0 pl-[5px] items-center">
           <button
             className="w-[100%] flex items-center"
             onClick={() => setIsVisible(!isVisible)}

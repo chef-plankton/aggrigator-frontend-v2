@@ -7,7 +7,7 @@ import ArrowDownFont from "../../../assets/arrow-down-sign-to-navigate.png";
 import { ToNetworklistStatus } from "../../../features/modals/modalsSlice";
 const StyledButton = styled.div<{ backgroundColor: string }>`
   width: 50%;
-  height: 100%;
+  min-height: 55px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -19,7 +19,7 @@ const StyledButton = styled.div<{ backgroundColor: string }>`
     backgroundColor ? backgroundColor : "#EEEEEE"};
   border: 1px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(30px);
-  font-size: 12px;
+  font-size: 14px;
   cursor: pointer;
   @media (max-width: 768px) {
     padding: 10px 15px;

@@ -64,7 +64,7 @@ function FromInput() {
             toChain === 56 ? "bsc" : toChain === 250 ? "fantom" : ""
           }&amount=${amount}`
         )
-        .then((data) => {          
+        .then((data) => {
           dispatch(changeResponseString(JSON.stringify(data)));
           dispatch(changeResponseData(data));
           dispatch(changeShowRoute(true));
@@ -75,7 +75,7 @@ function FromInput() {
   return (
     <StyledInput
       color={themeMode === "light" ? "black" : "white"}
-      placeholder="Please enter your coin balance"
+      placeholder='Enter amount you want to sel'
       onChange={(e) => {
         dispatch(changeAmount(e.target.value));
         if (

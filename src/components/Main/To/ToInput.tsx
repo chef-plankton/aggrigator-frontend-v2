@@ -43,7 +43,7 @@ function ToInput() {
   return (
     <StyledInput
       color={themeMode === "light" ? "black" : "white"}
-      placeholder="You will recieve"
+      placeholder="Amount you will receive"
       value={responseData.data.return_amount ? Math.round(responseData.data.return_amount * 100000) / 100000 : ""}
       disabled
     />
