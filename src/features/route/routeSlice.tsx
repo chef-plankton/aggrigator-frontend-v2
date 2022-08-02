@@ -32,7 +32,6 @@ interface RouteState {
     };
   };
   responseString: string;
-
   // slippageTolerance: number;
 }
 const initialState: RouteState = {
