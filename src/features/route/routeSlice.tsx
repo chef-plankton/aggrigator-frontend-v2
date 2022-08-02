@@ -33,7 +33,6 @@ interface RouteState {
   };
   swapDescription: string
   responseString: string;
-
   // slippageTolerance: number;
 }
 const initialState: RouteState = {

@@ -9,6 +9,7 @@ import CloseIcon from "../../../assets/img/close.png";
 import { changeModalStatus } from "../../../features/modals/modalsSlice";
 import FromToken from "./FromToken";
 import FromTokenlistIsLoading from "./FromTokenlistIsLoading";
+import { v4 as uuidv4 } from "uuid";
 const StyledInput = styled.input<HTMLAttributes<HTMLInputElement>>`
   width: 100%;
   height: 100%;
@@ -30,7 +31,7 @@ function FromTokenlist() {
   const chainId = useSelector(({ chains }: RootState) => chains.value);
 
   const [tokens, setTokens] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [orgListItems, setOrgListItems] = useState([]);
   const [listItems, setListItems] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
@@ -50,7 +51,7 @@ function FromTokenlist() {
 
   useEffect(() => {
     // Initial setup
-    let url = '';
+    let url = "";
 
     if (chainId === 56) {
       url = "http://192.64.112.22:8084/tokens?chain=bsc&limit=100";
@@ -62,9 +63,8 @@ function FromTokenlist() {
       url = "http://localhost:4000/BSC-testnet";
     }
 
-    axios.get(url)
-    .then((res) => {
-      setOrgListItems(res.data); 
+    axios.get(url).then((res) => {
+      setOrgListItems(res.data);
       setTokens(res.data);
     });
   }, []);
@@ -75,28 +75,25 @@ function FromTokenlist() {
 
   const handleScroll = (e) => {
     let myDiv = e.target;
-    if (
-      myDiv.offsetHeight + myDiv.scrollTop < myDiv.scrollHeight ||
-      isFetching
-    )
+    if (myDiv.offsetHeight + myDiv.scrollTop < myDiv.scrollHeight || isFetching)
       return;
     setIsFetching(true);
   };
 
   const fetchData = async () => {
     if (orgListItems.length == 0) return;
-      const data1 = orgListItems.slice(page*10, (page+1)*10);
-      if (page == 0) {
-        setListItems(data1);
-      } else {
-        setListItems([...listItems, ...data1])
-      }
-      setPage(page + 1);
+    const data1 = orgListItems.slice(page * 10, (page + 1) * 10);
+    if (page == 0) {
+      setListItems(data1);
+    } else {
+      setListItems([...listItems, ...data1]);
+    }
+    setPage(page + 1);
   };
 
   useEffect(() => {
     if (!isFetching) return;
-        fetchMoreListItems();
+    fetchMoreListItems();
   }, [isFetching]);
 
   const fetchMoreListItems = () => {
@@ -106,16 +103,25 @@ function FromTokenlist() {
 
   useEffect(() => {
     if (searchQuery.slice(0, 2) == "0x") {
-      setOrgListItems(tokens.filter(c => c.contract_addr.toLowerCase().indexOf(searchQuery.toLowerCase()) != -1));
+      setOrgListItems(
+        tokens.filter(
+          (c) =>
+            c.contract_addr.toLowerCase().indexOf(searchQuery.toLowerCase()) !=
+            -1
+        )
+      );
       setPage(0);
       setIsFetching(true);
     } else {
-      setOrgListItems(tokens.filter(c => c.symbol.toLowerCase().indexOf(searchQuery.toLowerCase()) != -1));
+      setOrgListItems(
+        tokens.filter(
+          (c) => c.symbol.toLowerCase().indexOf(searchQuery.toLowerCase()) != -1
+        )
+      );
       setPage(0);
       setIsFetching(true);
     }
-  
-}, [searchQuery]);
+  }, [searchQuery]);
 
   return (
     <>
@@ -135,17 +141,25 @@ function FromTokenlist() {
 
       {/* Tokens list search box */}
       <div className="px-5">
-        <StyledInput type="text" placeholder="Search name or paste address" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+        <StyledInput
+          type="text"
+          placeholder="Search name or paste address"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
       </div>
 
       {/* Tokens list box */}
-      <div className="flex flex-col w-[100%] overflow-y-scroll h-[500px] scrollbar" onScroll={handleScroll}>
+      <div
+        className="flex flex-col w-[100%] overflow-y-scroll h-[500px] scrollbar"
+        onScroll={handleScroll}
+      >
         {tokens.length == 0 ? (
           // is Loading Component
           <FromTokenlistIsLoading />
         ) : (
           listItems.map((token, index) => (
-            <FromToken token={token} index={index} />
+            <FromToken token={token} index={index} key={uuidv4()} />
           ))
         )}
       </div>

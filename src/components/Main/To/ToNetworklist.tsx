@@ -37,7 +37,7 @@ function ToNetworklist() {
               className="flex flex-col items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-md dark:hover:text-white cursor-pointer"
             >
               <img src={bnblightIcon} alt="" className="w-[56px] mb-2" />
-              <span>BNB Chain</span>
+              <span className="w-[60px] md:w-[100px] text-[12px] text-center">BNB Chain</span>
             </div>
           </li>
           <li className="m-2">
@@ -50,7 +50,7 @@ function ToNetworklist() {
               className="flex flex-col items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-md dark:hover:text-white cursor-pointer"
             >
               <img src={fantomIcon} alt="" className="w-[56px] mb-2" />
-              <span>Fantom</span>
+              <span className="w-[60px] md:w-[100px] text-[12px] text-center">Fantom</span>
             </div>
           </li>
           <li className="m-2">
@@ -63,7 +63,7 @@ function ToNetworklist() {
               className="flex flex-col items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-md dark:hover:text-white cursor-pointer"
             >
               <img src={bnblightIcon} alt="" className="w-[56px] mb-2" />
-              <span>BNB Chain Testnet</span>
+              <span className="w-[60px] md:w-[100px] text-[12px] text-center">BNB Chain Testnet</span>
             </div>
           </li>
         </ul>
