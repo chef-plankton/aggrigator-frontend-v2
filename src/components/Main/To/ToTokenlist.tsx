@@ -10,6 +10,7 @@ import { changeModalStatus } from "../../../features/modals/modalsSlice";
 import FromTokenlistIsLoading from "../From/FromTokenlistIsLoading";
 import ToToken from "./ToToken";
 import { v4 as uuidv4 } from "uuid";
+import { getTokenlist } from "../../../config/api";
 const StyledInput = styled.input<HTMLAttributes<HTMLInputElement>>`
   width: 100%;
   height: 100%;
@@ -50,21 +51,25 @@ function ToTokenlist() {
 
   useEffect(() => {
     // Initial setup
-    let url = "";
+    // let url = "";
 
-    if (chainId === 56) {
-      url = "http://192.64.112.22:8084/tokens?chain=bsc&limit=1000";
-    }
-    if (chainId === 250) {
-      url = "http://192.64.112.22:8084/tokens?chain=fantom&limit=1000";
-    }
-    if (chainId === 97) {
-      url = "http://localhost:4000/BSC-testnet";
-    }
+    // if (chainId === 56) {
+    //   url = "http://192.64.112.22:8084/tokens?chain=bsc&limit=1000";
+    // }
+    // if (chainId === 250) {
+    //   url = "http://192.64.112.22:8084/tokens?chain=fantom&limit=1000";
+    // }
+    // if (chainId === 97) {
+    //   url = "http://localhost:4000/BSC-testnet";
+    // }
 
-    axios.get(url).then((res) => {
-      setOrgListItems(res.data);
-      setTokens(res.data);
+    // axios.get(url).then((res) => {
+    //   setOrgListItems(res.data);
+    //   setTokens(res.data);
+    // });
+    getTokenlist("bsc").then((res) => {
+      // setOrgListItems(res.data.symbol);
+      // setTokens(res.data.name);
     });
   }, []);
 
