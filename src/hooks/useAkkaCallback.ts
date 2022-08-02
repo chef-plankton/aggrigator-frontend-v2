@@ -146,7 +146,7 @@ export function useAkkaAggrigatorSwapCallback(): {
   const wallet = useSelector(({ account }: RootState) => account.wallet);
   const { useChainId } = useWallet(wallet);
   const chainId = useChainId();
-  const { callWithoutGasPrice } = useCallWithoutGasPrice<
+  const { callWithoutGasPrice,callWithGasPrice } = useCallWithoutGasPrice<
     AkkaAggrigator,
     TransactionResponse
   >();
@@ -161,7 +161,7 @@ export function useAkkaAggrigatorSwapCallback(): {
       aggrigatorSwap: async (swapDescription, fee, payload) => {
         console.log({swapDescription});
 
-        const tx = await callWithoutGasPrice(
+        const tx = await callWithGasPrice(
           akkaContract,
           "aggrigatorSwap",
           [
@@ -169,7 +169,6 @@ export function useAkkaAggrigatorSwapCallback(): {
             payload,
           ] as SwapDescriptionStruct[],
           {
-            gasLimit: 300000,
             value: fee ? fee.toString() : undefined,
           }
         );

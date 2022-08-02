@@ -85,10 +85,11 @@ function FromInput() {
   }, [amount, fromChain, toChain, fromToken, toToken, chainId, counter]);
   const convertResponseDataToSwapDescriptionStruct = (resData: RouteResponseDto) => {
     let swapDescription: SwapDescriptionStruct;
+
     swapDescription = {
       ...swapDescription,
-      srcDesiredAmount: resData.input_amount,
-      dstDesiredMinAmount: resData.return_amount,
+      srcDesiredAmount: parseEther(resData.input_amount.toString()),
+      dstDesiredMinAmount: parseEther(resData.return_amount.toString()),
       dstChainId: 0,
       dstPoolId: 0,
 
@@ -130,8 +131,6 @@ function FromInput() {
               srcToken: operations[0].offer_token[0],
               dstToken: operations[operations.length - 1].ask_token[0],
               isRegularTransfer: true,
-              srcDesiredAmount: parseEther(amount_in.toString()),
-              dstDesiredMinAmount: parseEther(amount_out.toString()),
             }
             if (swapDescription?.routes === undefined) {
               swapDescription = {
@@ -139,8 +138,6 @@ function FromInput() {
                 routes: [route0]
               }
             } else {
-              console.log(swapDescription);
-
               swapDescription = {
                 ...swapDescription,
                 routes: [...swapDescription.routes, route0]
