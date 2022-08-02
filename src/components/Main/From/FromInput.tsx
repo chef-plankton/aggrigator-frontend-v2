@@ -1,3 +1,4 @@
+import { parseEther } from "@ethersproject/units";
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useQuery } from "react-query";
@@ -5,12 +6,15 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { RootState } from "../../../app/store";
+import { RouteDescriptionStruct, SwapDescriptionStruct } from "../../../config/abi/types/Aggr";
+import { NetworkName, RouteResponseDto, SwapTypes } from "../../../config/constants/types";
 import {
   changeAmount,
   changeRecieve,
   changeResponseData,
   changeResponseString,
   changeShowRoute,
+  changeSwapDescription,
 } from "../../../features/route/routeSlice";
 const StyledInput = styled.input`
   position: relative;
@@ -58,20 +62,80 @@ function FromInput() {
     if (fromToken.adress !== "" && toToken.adress !== "" && amount !== "") {
       axios
         .get(
-          `http://192.64.112.22:8084/route?token0=${fromToken.adress}&chain0=${
-            fromChain === 56 ? "bsc" : fromChain === 250 ? "fantom" : ""
-          }&token1=${toToken.adress}&chain1=${
-            toChain === 56 ? "bsc" : toChain === 250 ? "fantom" : ""
+          `http://192.64.112.22:8084/route?token0=${fromToken.adress}&chain0=${fromChain === 56 ? "bsc" : fromChain === 250 ? "fantom" : ""
+          }&token1=${toToken.adress}&chain1=${toChain === 56 ? "bsc" : toChain === 250 ? "fantom" : ""
           }&amount=${amount}`
         )
-        .then((data) => {                
+        .then((data) => {
           dispatch(changeResponseString(JSON.stringify(data)));
           dispatch(changeResponseData(data));
           dispatch(changeShowRoute(true));
         });
     }
   }, [amount, fromChain, toChain, fromToken, toToken, chainId, counter]);
+  const convertResponseDataToSwapDescriptionStruct = (resData: RouteResponseDto) => {
+    let swapDescription: SwapDescriptionStruct;
+    swapDescription = {
+      ...swapDescription,
+      srcDesiredAmount: resData.input_amount,
+      dstDesiredMinAmount: resData.return_amount,
+    }
+    resData.operationsSeparated.forEach(({ chain, chain_id, gas_fee, operations }) => {
+      swapDescription = {
+        ...swapDescription,
 
+      }
+      if (chain === 'bridge') {
+        swapDescription = {
+          ...swapDescription,
+
+        }
+      }
+      switch (chain as NetworkName) {
+        case NetworkName.FTM.toLowerCase():
+        case NetworkName.BSC.toLowerCase(): {
+          operations.forEach(({ amount_in, amount_out, ask_token, contract_addr, exchange, offer_token, router_addr }) => {
+
+            const route0: RouteDescriptionStruct = {
+              srcToken: offer_token[0],
+              dstToken: ask_token[0],
+              dstChainId: 0,
+              srcPoolId: 0,
+              dstPoolId: 0,
+              srcAmount: parseEther(amount_in.toString()),
+              dstMinAmount: parseEther(amount_out.toString()),
+              gasForSwap: parseEther(gas_fee.toString()),
+              path: [offer_token[0], ask_token[0]],
+              router: router_addr,
+              swapType: SwapTypes.Regular,
+            }
+            if (swapDescription.routes.length === 0) {
+              swapDescription = {
+                ...swapDescription,
+                routes: [route0]
+              }
+            } else {
+              swapDescription = {
+                ...swapDescription,
+                routes: [...swapDescription.routes, route0]
+              }
+            }
+
+          })
+        }
+
+          break
+        default:
+          break;
+      }
+      dispatch(changeSwapDescription(JSON.stringify(swapDescription)))
+
+      // if (chain === NetworkName.BSC.toLowerCase()){
+
+      // }
+
+    })
+  }
   return (
     <StyledInput
       color={themeMode === "light" ? "black" : "white"}

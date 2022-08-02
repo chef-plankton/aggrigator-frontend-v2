@@ -11,6 +11,7 @@ import useSWRImmutable from "swr/immutable";
 import { RootState } from "../../app/store";
 import plusIcon from "../../assets/plus.png";
 import { Weth } from "../../config/abi/types";
+import { SwapDescriptionStruct } from "../../config/abi/types/AkkaAggrigator";
 import { changeApprovalState } from "../../features/account/accountSlice";
 import { changeChain } from "../../features/chains/chainsSlice";
 import { connectWalletStatus } from "../../features/modals/modalsSlice";
@@ -63,6 +64,7 @@ function Main() {
   const fromChain = useSelector(({ route }: RootState) => route.fromChain);
   const toChain = useSelector(({ route }: RootState) => route.toChain);
   const amount = useSelector(({ route }: RootState) => route.amount);
+  const swapDescription = useSelector(({ route }: RootState) => route.swapDescription);
   const { callWithoutGasPrice } = useCallWithoutGasPrice<
     Weth,
     TransactionResponse
@@ -282,9 +284,12 @@ function Main() {
     }
   }
   async function multiCallSwap() {
-    const payload = await getBytes();
-    const quote = await quoteLayerZeroFee(payload);
-    aggrigatorSwap(quote[0], payload);
+    if (swapDescription) {
+      const payload = await getBytes();
+      const quote = await quoteLayerZeroFee(payload);
+
+      aggrigatorSwap(JSON.parse(swapDescription) as SwapDescriptionStruct, quote[0], payload);
+    }
   }
   // Connect to Metamask wallet automatically after refreshing the page (attempt to connect eagerly on mount)
   // const hooks = useWallet();
@@ -394,9 +399,8 @@ function Main() {
   const [isVisible, setIsVisible] = useState(false);
   return (
     <main
-      className={`${
-        themeMode === "light" ? "bg-slate-100" : "bg-[#393E46]"
-      } shadow-lg z-10`}
+      className={`${themeMode === "light" ? "bg-slate-100" : "bg-[#393E46]"
+        } shadow-lg z-10`}
     >
       <div className='max-w-3xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[50px] pt-[50px] md:pt-[50px]'>
         <FromBox />
@@ -416,11 +420,10 @@ function Main() {
 
         <button
           onClick={handleSwapButtonClick}
-          className={`mt-[10px] py-1 w-[100%] h-[50px] text-center font-medium text-lg rounded-[10px] ${
-            !swapButtonData.isDisable
-              ? "text-white bg-[#111111] hover:bg-[#111111] hover:text-[white] hover:shadow-none hover:border-[1px] hover:border-black transition duration-300 shadow-[0_8px_32px_#23293176]"
-              : "text-white bg-gray-300"
-          }`}
+          className={`mt-[10px] py-1 w-[100%] h-[50px] text-center font-medium text-lg rounded-[10px] ${!swapButtonData.isDisable
+            ? "text-white bg-[#111111] hover:bg-[#111111] hover:text-[white] hover:shadow-none hover:border-[1px] hover:border-black transition duration-300 shadow-[0_8px_32px_#23293176]"
+            : "text-white bg-gray-300"
+            }`}
           {...isButtonDisable}
         >
           {swapButtonData.text}

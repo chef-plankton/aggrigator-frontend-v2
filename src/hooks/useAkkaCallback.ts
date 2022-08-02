@@ -6,7 +6,7 @@ import useWallet from "../components/Wallets/useWallet";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
 import { AkkaAggrigator } from "../config/abi/types";
-import { SwapDescriptionStruct } from "../config/abi/types/Aggr";
+import { SwapDescriptionStruct } from "../config/abi/types/AkkaAggrigator";
 import { parseEther, parseUnits } from "@ethersproject/units";
 import BigNumber from "bignumber.js";
 import {
@@ -62,7 +62,7 @@ export function useAkkaEncodeSwapDescriptionCallback(): {
               srcToken: parsedResponseString.data.routes.operations_seperated[0]
                 .operations.offer_token[0]
                 ? parsedResponseString.data.routes.operations_seperated[0]
-                    .operations.offer_token[0]
+                  .operations.offer_token[0]
                 : "",
               dstToken: parsedResponseString.data.routes.operations_seperated[0]
                 .operations[
@@ -70,10 +70,10 @@ export function useAkkaEncodeSwapDescriptionCallback(): {
                   .operations.length - 1
               ].ask_token[0]
                 ? parsedResponseString.data.routes.operations_seperated[0]
-                    .operations[
-                    parsedResponseString.data.routes.operations_seperated[0]
-                      .operations.length - 1
-                  ].ask_token[0]
+                  .operations[
+                  parsedResponseString.data.routes.operations_seperated[0]
+                    .operations.length - 1
+                ].ask_token[0]
                 : "",
               srcDesiredAmount: parsedResponseString.data.input_amount
                 ? parseEther(parsedResponseString.data.input_amount.toString())
@@ -87,25 +87,25 @@ export function useAkkaEncodeSwapDescriptionCallback(): {
                   .operations.length - 1
               ].ask_token[0]
                 ? parsedResponseString.data.routes.operations_seperated[0]
-                    .operations[
-                    parsedResponseString.data.routes.operations_seperated[0]
-                      .operations.length - 1
-                  ].ask_token[0]
+                  .operations[
+                  parsedResponseString.data.routes.operations_seperated[0]
+                    .operations.length - 1
+                ].ask_token[0]
                 : "",
               dstChainId: parsedResponseString.data.routes
                 .operations_seperated[1].operations.ask_bridge_data.chain_id
                 ? parsedResponseString.data.routes.operations_seperated[1]
-                    .operations.ask_bridge_data.chain_id
+                  .operations.ask_bridge_data.chain_id
                 : 0,
               dstPoolId: parsedResponseString.data.routes
                 .operations_seperated[1].operations.ask_bridge_data.pool_id
                 ? parsedResponseString.data.routes.operations_seperated[1]
-                    .operations.ask_bridge_data.pool_id
+                  .operations.ask_bridge_data.pool_id
                 : 0,
               srcPoolId: parsedResponseString.data.routes
                 .operations_seperated[1].operations.offer_bridge_data.pool_id
                 ? parsedResponseString.data.routes.operations_seperated[1]
-                    .operations.offer_bridge_data.pool_id
+                  .operations.offer_bridge_data.pool_id
                 : 0,
               gasForSwap:
                 parsedResponseString.data.routes.operations_seperated[0]
@@ -116,34 +116,34 @@ export function useAkkaEncodeSwapDescriptionCallback(): {
                   .operations.length - 1
               ].ask_token[0]
                 ? parsedResponseString.data.routes.operations_seperated[0]
-                    .operations[
-                    parsedResponseString.data.routes.operations_seperated
-                      .operations.length - 1
-                  ].ask_token[0]
+                  .operations[
+                  parsedResponseString.data.routes.operations_seperated
+                    .operations.length - 1
+                ].ask_token[0]
                 : "",
               isRegularTransfer: fromChain !== toChain ? false : true,
               routes: [
                 parsedResponseString.data.routes.operations_seperated[0]
                   .operations
                   ? parsedResponseString.data.routes.operations_seperated[0].operations.forEach(
-                      (item: any) => ({
-                        srcToken: item.offer_token[0],
-                        dstToken: item.ask_token[0],
-                        srcAmount: parsedResponseString.data.input_amount
-                          ? parseEther(
-                              parsedResponseString.data.input_amount.toString()
-                            )
-                          : "",
-                        dstMinAmount: parsedResponseString.data.return_amount
-                          ? parseEther(
-                              parsedResponseString.data.return_amount.toString()
-                            )
-                          : "",
-                        swapType: fromChain === toChain ? 1 : 2,
-                        path: [item.offer_token[0], item.ask_token[0]],
-                        router: item.router_addr ? item.router_addr : "",
-                      })
-                    )
+                    (item: any) => ({
+                      srcToken: item.offer_token[0],
+                      dstToken: item.ask_token[0],
+                      srcAmount: parsedResponseString.data.input_amount
+                        ? parseEther(
+                          parsedResponseString.data.input_amount.toString()
+                        )
+                        : "",
+                      dstMinAmount: parsedResponseString.data.return_amount
+                        ? parseEther(
+                          parsedResponseString.data.return_amount.toString()
+                        )
+                        : "",
+                      swapType: fromChain === toChain ? 1 : 2,
+                      path: [item.offer_token[0], item.ask_token[0]],
+                      router: item.router_addr ? item.router_addr : "",
+                    })
+                  )
                   : [],
               ],
             },
@@ -160,8 +160,8 @@ export function useAkkaEncodeSwapDescriptionCallback(): {
 }
 export function useAkkaCalcLayerZeroFeeCallback(): {
   quoteLayerZeroFee?:
-    | undefined
-    | ((payload: string) => Promise<[BigNumber, BigNumber]>);
+  | undefined
+  | ((payload: string) => Promise<[BigNumber, BigNumber]>);
   inputError?: string;
 } {
   const { useAccount, useChainId } = useWallet("metamask");
@@ -215,8 +215,8 @@ export function useAkkaCalcLayerZeroFeeCallback(): {
 }
 export function useAkkaAggrigatorSwapCallback(): {
   aggrigatorSwap?:
-    | undefined
-    | ((fee: BigNumber, payload: string) => Promise<TransactionResponse>);
+  | undefined
+  | ((swapDescription: SwapDescriptionStruct, fee: BigNumber, payload: string) => Promise<TransactionResponse>);
   inputError?: string;
 } {
   let parsedResponseString = null;
@@ -246,102 +246,14 @@ export function useAkkaAggrigatorSwapCallback(): {
   return useMemo(() => {
     const sufficientBalance = inputAmount;
     return {
-      aggrigatorSwap: async (fee, payload) => {
+      aggrigatorSwap: async (swapDescription, fee, payload) => {
         const tx = await callWithoutGasPrice(
           akkaContract,
           "aggrigatorSwap",
           [
-            {
-              srcToken: parsedResponseString.data.routes.operations_seperated[0]
-                .operations.offer_token[0]
-                ? parsedResponseString.data.routes.operations_seperated[0]
-                    .operations.offer_token[0]
-                : "",
-              dstToken: parsedResponseString.data.routes.operations_seperated[0]
-                .operations[
-                parsedResponseString.data.routes.operations_seperated[0]
-                  .operations.length - 1
-              ].ask_token[0]
-                ? parsedResponseString.data.routes.operations_seperated[0]
-                    .operations[
-                    parsedResponseString.data.routes.operations_seperated[0]
-                      .operations.length - 1
-                  ].ask_token[0]
-                : "",
-              srcDesiredAmount: parsedResponseString.data.input_amount
-                ? parseEther(parsedResponseString.data.input_amount.toString())
-                : "",
-              dstDesiredMinAmount: parsedResponseString.data.return_amount
-                ? parseEther(parsedResponseString.data.return_amount.toString())
-                : "",
-              to: parsedResponseString.data.routes.operations_seperated[0]
-                .operations[
-                parsedResponseString.data.routes.operations_seperated[0]
-                  .operations.length - 1
-              ].ask_token[0]
-                ? parsedResponseString.data.routes.operations_seperated[0]
-                    .operations[
-                    parsedResponseString.data.routes.operations_seperated[0]
-                      .operations.length - 1
-                  ].ask_token[0]
-                : "",
-              dstChainId: parsedResponseString.data.routes
-                .operations_seperated[1].operations.ask_bridge_data.chain_id
-                ? parsedResponseString.data.routes.operations_seperated[1]
-                    .operations.ask_bridge_data.chain_id
-                : 0,
-              dstPoolId: parsedResponseString.data.routes
-                .operations_seperated[1].operations.ask_bridge_data.pool_id
-                ? parsedResponseString.data.routes.operations_seperated[1]
-                    .operations.ask_bridge_data.pool_id
-                : 0,
-              srcPoolId: parsedResponseString.data.routes
-                .operations_seperated[1].operations.offer_bridge_data.pool_id
-                ? parsedResponseString.data.routes.operations_seperated[1]
-                    .operations.offer_bridge_data.pool_id
-                : 0,
-              gasForSwap:
-                parsedResponseString.data.routes.operations_seperated[0]
-                  .gas_fee,
-              dstContractAddress: parsedResponseString.data.routes
-                .operations_seperated[0].operations[
-                parsedResponseString.data.routes.operations_seperated[0]
-                  .operations.length - 1
-              ].ask_token[0]
-                ? parsedResponseString.data.routes.operations_seperated[0]
-                    .operations[
-                    parsedResponseString.data.routes.operations_seperated
-                      .operations.length - 1
-                  ].ask_token[0]
-                : "",
-              isRegularTransfer: fromChain !== toChain ? false : true,
-              routes: [
-                parsedResponseString.data.routes.operations_seperated[0]
-                  .operations
-                  ? parsedResponseString.data.routes.operations_seperated[0].operations.forEach(
-                      (item: any) => ({
-                        srcToken: item.offer_token[0],
-                        dstToken: item.ask_token[0],
-                        srcAmount: parsedResponseString.data.input_amount
-                          ? parseEther(
-                              parsedResponseString.data.input_amount.toString()
-                            )
-                          : "",
-                        dstMinAmount: parsedResponseString.data.return_amount
-                          ? parseEther(
-                              parsedResponseString.data.return_amount.toString()
-                            )
-                          : "",
-                        swapType: fromChain === toChain ? 1 : 2,
-                        path: [item.offer_token[0], item.ask_token[0]],
-                        router: item.router_addr ? item.router_addr : "",
-                      })
-                    )
-                  : [],
-              ],
-            },
+            swapDescription,
             payload,
-          ] as unknown as SwapDescriptionStruct[],
+          ] as SwapDescriptionStruct[],
           {
             gasLimit: 21000000,
             value: fee ? fee.toString() : undefined,
