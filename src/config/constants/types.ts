@@ -23,13 +23,18 @@ export enum SwapTypes {
 export interface RouteResponseDto {
     input_amount: number,
     return_amount: number,
-    operationsSeparated: Array<RouteOperationsSeparated>
+    routes: Array<RouteRoutes>
+}
+export interface RouteRoutes {
+    input_amount: number
+    operations_seperated: Array<RouteOperationsSeparated>
+
 }
 export interface RouteOperationsSeparated {
     chain: string,
     chain_id: number,
     gas_fee: number,
-    operations: Array<RouteRegularOperations >
+    operations: Array<RouteRegularOperations>
 }
 export interface RouteRegularOperations {
     amount_in: number,

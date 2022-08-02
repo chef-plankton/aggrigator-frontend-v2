@@ -8,7 +8,7 @@ import { RootState } from "../app/store";
 import { AkkaAggrigator } from "../config/abi/types";
 import { SwapDescriptionStruct } from "../config/abi/types/AkkaAggrigator";
 import { parseEther, parseUnits } from "@ethersproject/units";
-import BigNumber from "bignumber.js";
+import { BigNumber } from "ethers";
 import {
   TransactionReceipt,
   TransactionResponse,
@@ -23,7 +23,7 @@ export enum WrapType {
 const NOT_APPLICABLE = { wrapType: WrapType.NOT_APPLICABLE };
 
 export function useAkkaEncodeSwapDescriptionCallback(): {
-  getBytes?: undefined | (() => Promise<string>);
+  getBytes?: undefined | ((swapDescription: SwapDescriptionStruct) => Promise<string>);
   inputError?: string;
 } {
   const wallet = useSelector(({ account }: RootState) => account.wallet);
@@ -53,101 +53,13 @@ export function useAkkaEncodeSwapDescriptionCallback(): {
     const sufficientBalance = inputAmount;
 
     return {
-      getBytes: async () => {
+      getBytes: async (swapDescription) => {
         const encodedData = await callWithoutGasPrice(
           akkaContract,
           "encodeSwapDescription",
           [
-            {
-              srcToken: parsedResponseString.data.routes.operations_seperated[0]
-                .operations.offer_token[0]
-                ? parsedResponseString.data.routes.operations_seperated[0]
-                  .operations.offer_token[0]
-                : "",
-              dstToken: parsedResponseString.data.routes.operations_seperated[0]
-                .operations[
-                parsedResponseString.data.routes.operations_seperated[0]
-                  .operations.length - 1
-              ].ask_token[0]
-                ? parsedResponseString.data.routes.operations_seperated[0]
-                  .operations[
-                  parsedResponseString.data.routes.operations_seperated[0]
-                    .operations.length - 1
-                ].ask_token[0]
-                : "",
-              srcDesiredAmount: parsedResponseString.data.input_amount
-                ? parseEther(parsedResponseString.data.input_amount.toString())
-                : "",
-              dstDesiredMinAmount: parsedResponseString.data.return_amount
-                ? parseEther(parsedResponseString.data.return_amount.toString())
-                : "",
-              to: parsedResponseString.data.routes.operations_seperated[0]
-                .operations[
-                parsedResponseString.data.routes.operations_seperated[0]
-                  .operations.length - 1
-              ].ask_token[0]
-                ? parsedResponseString.data.routes.operations_seperated[0]
-                  .operations[
-                  parsedResponseString.data.routes.operations_seperated[0]
-                    .operations.length - 1
-                ].ask_token[0]
-                : "",
-              dstChainId: parsedResponseString.data.routes
-                .operations_seperated[1].operations.ask_bridge_data.chain_id
-                ? parsedResponseString.data.routes.operations_seperated[1]
-                  .operations.ask_bridge_data.chain_id
-                : 0,
-              dstPoolId: parsedResponseString.data.routes
-                .operations_seperated[1].operations.ask_bridge_data.pool_id
-                ? parsedResponseString.data.routes.operations_seperated[1]
-                  .operations.ask_bridge_data.pool_id
-                : 0,
-              srcPoolId: parsedResponseString.data.routes
-                .operations_seperated[1].operations.offer_bridge_data.pool_id
-                ? parsedResponseString.data.routes.operations_seperated[1]
-                  .operations.offer_bridge_data.pool_id
-                : 0,
-              gasForSwap:
-                parsedResponseString.data.routes.operations_seperated[0]
-                  .gas_fee,
-              dstContractAddress: parsedResponseString.data.routes
-                .operations_seperated[0].operations[
-                parsedResponseString.data.routes.operations_seperated[0]
-                  .operations.length - 1
-              ].ask_token[0]
-                ? parsedResponseString.data.routes.operations_seperated[0]
-                  .operations[
-                  parsedResponseString.data.routes.operations_seperated
-                    .operations.length - 1
-                ].ask_token[0]
-                : "",
-              isRegularTransfer: fromChain !== toChain ? false : true,
-              routes: [
-                parsedResponseString.data.routes.operations_seperated[0]
-                  .operations
-                  ? parsedResponseString.data.routes.operations_seperated[0].operations.forEach(
-                    (item: any) => ({
-                      srcToken: item.offer_token[0],
-                      dstToken: item.ask_token[0],
-                      srcAmount: parsedResponseString.data.input_amount
-                        ? parseEther(
-                          parsedResponseString.data.input_amount.toString()
-                        )
-                        : "",
-                      dstMinAmount: parsedResponseString.data.return_amount
-                        ? parseEther(
-                          parsedResponseString.data.return_amount.toString()
-                        )
-                        : "",
-                      swapType: fromChain === toChain ? 1 : 2,
-                      path: [item.offer_token[0], item.ask_token[0]],
-                      router: item.router_addr ? item.router_addr : "",
-                    })
-                  )
-                  : [],
-              ],
-            },
-          ] as unknown as SwapDescriptionStruct[],
+            swapDescription,
+          ] as SwapDescriptionStruct[],
           {
             gasLimit: 21000000,
           }
@@ -247,6 +159,8 @@ export function useAkkaAggrigatorSwapCallback(): {
     const sufficientBalance = inputAmount;
     return {
       aggrigatorSwap: async (swapDescription, fee, payload) => {
+        console.log({swapDescription});
+
         const tx = await callWithoutGasPrice(
           akkaContract,
           "aggrigatorSwap",
@@ -255,7 +169,7 @@ export function useAkkaAggrigatorSwapCallback(): {
             payload,
           ] as SwapDescriptionStruct[],
           {
-            gasLimit: 21000000,
+            gasLimit: 300000,
             value: fee ? fee.toString() : undefined,
           }
         );

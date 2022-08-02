@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { HttpMethod, RequestPath, tokenListApi } from "./types";
+import { HttpMethod, RequestPath, TokenListApi } from "./types";
 const instance = axios.create({
   baseURL: "http://192.64.112.22:8084",
 });
@@ -17,6 +17,6 @@ const api = <R>(
 };
 
 const getTokenlist = async (chain: string, limit: number = 1000) =>
-  await api<tokenListApi>("GET", `/tokens?chain=${chain}&limit=${limit}`);
+  await api<TokenListApi[]>("GET", `/tokens?chain=${chain}&limit=${limit}`);
 
 export { getTokenlist };

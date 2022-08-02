@@ -1,6 +1,7 @@
 import { TransactionResponse } from "@ethersproject/providers";
 import { parseEther } from "@ethersproject/units";
 import { BigNumber } from "ethers";
+import { AbiCoder } from "ethers/lib/utils";
 import { bool, node } from "prop-types";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -285,10 +286,15 @@ function Main() {
   }
   async function multiCallSwap() {
     if (swapDescription) {
-      const payload = await getBytes();
-      const quote = await quoteLayerZeroFee(payload);
+      if (fromChain !== toChain) {
+        const payload = await getBytes(JSON.parse(swapDescription) as SwapDescriptionStruct);
+        const quote = await quoteLayerZeroFee(payload);
+        aggrigatorSwap(JSON.parse(swapDescription) as SwapDescriptionStruct, quote[0], payload);
+      } else {
+        aggrigatorSwap(JSON.parse(swapDescription) as SwapDescriptionStruct, BigNumber.from('0'), new AbiCoder().encode(['string'], ['']));
+      }
 
-      aggrigatorSwap(JSON.parse(swapDescription) as SwapDescriptionStruct, quote[0], payload);
+
     }
   }
   // Connect to Metamask wallet automatically after refreshing the page (attempt to connect eagerly on mount)
@@ -387,7 +393,7 @@ function Main() {
           break;
         case SwapButonStates.SWAP:
           multiCallSwap();
-          // setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.APPROVE, text: "Swap", isDisable: true }));
+          // setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.LOADING, text: "LOADING...", isDisable: true }));
           break;
         case SwapButonStates.CONNECT_TO_WALLET:
           dispatch(connectWalletStatus(true));

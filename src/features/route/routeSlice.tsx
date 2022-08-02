@@ -44,7 +44,7 @@ const initialState: RouteState = {
   recieve: "",
   showRoute: false,
   counter: 0,
-  swapDescription: undefined,
+  swapDescription: null,
   responseData: {
     data: {
       return_amount: undefined,

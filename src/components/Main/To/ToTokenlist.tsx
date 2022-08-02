@@ -11,6 +11,7 @@ import FromTokenlistIsLoading from "../From/FromTokenlistIsLoading";
 import ToToken from "./ToToken";
 import { v4 as uuidv4 } from "uuid";
 import { getTokenlist } from "../../../config/api";
+import { TokenListApi } from "../../../config/api/types";
 const StyledInput = styled.input<HTMLAttributes<HTMLInputElement>>`
   width: 100%;
   height: 100%;
@@ -30,9 +31,9 @@ const StyledInput = styled.input<HTMLAttributes<HTMLInputElement>>`
 function ToTokenlist() {
   const dispatch = useDispatch();
   const chainId = useSelector(({ route }: RootState) => route.toChain);
-  const [tokens, setTokens] = useState([]);
+  const [tokens, setTokens] = useState<TokenListApi[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [orgListItems, setOrgListItems] = useState([]);
+  const [orgListItems, setOrgListItems] = useState<TokenListApi[]>([]);
   const [listItems, setListItems] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
   const [page, setPage] = useState(0);
@@ -68,8 +69,8 @@ function ToTokenlist() {
     //   setTokens(res.data);
     // });
     getTokenlist("bsc").then((res) => {
-      // setOrgListItems(res.data.symbol);
-      // setTokens(res.data.name);
+      setOrgListItems(res.data);
+      setTokens(res.data);
     });
   }, []);
 

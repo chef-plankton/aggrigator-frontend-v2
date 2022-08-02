@@ -1,12 +1,13 @@
 import { parseEther } from "@ethersproject/units";
 import axios from "axios";
+import { BigNumber } from "ethers";
 import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { RootState } from "../../../app/store";
-import { RouteDescriptionStruct, SwapDescriptionStruct } from "../../../config/abi/types/Aggr";
+import { RouteDescriptionStruct, SwapDescriptionStruct } from "../../../config/abi/types/AkkaAggrigator";
 import { NetworkName, RouteResponseDto, SwapTypes } from "../../../config/constants/types";
 import {
   changeAmount,
@@ -16,6 +17,7 @@ import {
   changeShowRoute,
   changeSwapDescription,
 } from "../../../features/route/routeSlice";
+import useWallet from "../../Wallets/useWallet";
 const StyledInput = styled.input`
   position: relative;
   text-overflow: ellipsis;
@@ -57,6 +59,11 @@ function FromInput() {
   const amount = useSelector(({ route }: RootState) => route.amount);
   const chainId = useSelector(({ chains }: RootState) => chains.value);
   const counter = useSelector(({ route }: RootState) => route.counter);
+  const wallet = useSelector(({ account }: RootState) => account.wallet);
+  const Connectedwallet = useWallet(wallet)
+  const { useAccount } = Connectedwallet
+  const account = useAccount();
+
   const dispatch = useDispatch();
   useEffect(() => {
     if (fromToken.adress !== "" && toToken.adress !== "" && amount !== "") {
@@ -70,6 +77,9 @@ function FromInput() {
           dispatch(changeResponseString(JSON.stringify(data)));
           dispatch(changeResponseData(data));
           dispatch(changeShowRoute(true));
+
+          dispatch(changeSwapDescription(JSON.stringify(convertResponseDataToSwapDescriptionStruct(data.data))))
+
         });
     }
   }, [amount, fromChain, toChain, fromToken, toToken, chainId, counter]);
@@ -79,8 +89,16 @@ function FromInput() {
       ...swapDescription,
       srcDesiredAmount: resData.input_amount,
       dstDesiredMinAmount: resData.return_amount,
+      dstChainId: 0,
+      dstPoolId: 0,
+
+      srcPoolId: 0,
+      gasForSwap: BigNumber.from('0'),
+      dstContractAddress: process.env.REACT_APP_FTM_AKKA_CONTRACT,
+      to: account,
     }
-    resData.operationsSeparated.forEach(({ chain, chain_id, gas_fee, operations }) => {
+
+    resData.routes[0].operations_seperated.forEach(({ chain, chain_id, gas_fee, operations }) => {
       swapDescription = {
         ...swapDescription,
 
@@ -88,7 +106,9 @@ function FromInput() {
       if (chain === 'bridge') {
         swapDescription = {
           ...swapDescription,
-
+          dstChainId: 0,
+          dstPoolId: 0,
+          srcPoolId: 0,
         }
       }
       switch (chain as NetworkName) {
@@ -99,22 +119,28 @@ function FromInput() {
             const route0: RouteDescriptionStruct = {
               srcToken: offer_token[0],
               dstToken: ask_token[0],
-              dstChainId: 0,
-              srcPoolId: 0,
-              dstPoolId: 0,
               srcAmount: parseEther(amount_in.toString()),
               dstMinAmount: parseEther(amount_out.toString()),
-              gasForSwap: parseEther(gas_fee.toString()),
               path: [offer_token[0], ask_token[0]],
               router: router_addr,
               swapType: SwapTypes.Regular,
             }
-            if (swapDescription.routes.length === 0) {
+            swapDescription = {
+              ...swapDescription,
+              srcToken: operations[0].offer_token[0],
+              dstToken: operations[operations.length - 1].ask_token[0],
+              isRegularTransfer: true,
+              srcDesiredAmount: parseEther(amount_in.toString()),
+              dstDesiredMinAmount: parseEther(amount_out.toString()),
+            }
+            if (swapDescription?.routes === undefined) {
               swapDescription = {
                 ...swapDescription,
                 routes: [route0]
               }
             } else {
+              console.log(swapDescription);
+
               swapDescription = {
                 ...swapDescription,
                 routes: [...swapDescription.routes, route0]
@@ -128,13 +154,15 @@ function FromInput() {
         default:
           break;
       }
-      dispatch(changeSwapDescription(JSON.stringify(swapDescription)))
 
       // if (chain === NetworkName.BSC.toLowerCase()){
 
       // }
 
     })
+    console.log('fsd');
+
+    return swapDescription
   }
   return (
     <StyledInput
