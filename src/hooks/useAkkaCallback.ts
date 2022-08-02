@@ -6,7 +6,7 @@ import useWallet from "../components/Wallets/useWallet";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
 import { AkkaAggrigator } from "../config/abi/types";
-import { SwapDescriptionStruct } from "../config/abi/types/Aggr";
+import { SwapDescriptionStruct } from "../config/abi/types/AkkaAggrigator";
 import { parseEther, parseUnits } from "@ethersproject/units";
 import BigNumber from "bignumber.js";
 import {
