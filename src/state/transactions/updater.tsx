@@ -11,7 +11,6 @@ import {
   changeApprovalState,
   changeApprovevalue,
 } from "../../features/account/accountSlice";
-import { clearRoute } from "../../features/route/routeSlice";
 import { changeSwapButtonState } from "../../features/swapbutton/swapbuttonSlice";
 import useTokenBalance from "../../hooks/useTokenBalance";
 import { AppState, useAppDispatch } from "../index";
@@ -112,16 +111,43 @@ export default function Updater(): null {
                       dispatch(changeApprovalState(ApprovalState.APPROVED));
                     break;
                   case "swap":
-                    if (receipt.status === 1) {
-                      dispatch(clearRoute());
+                    if (isActive) {
+                      if (receipt.status === 1) {
+                        dispatch(changeApprovevalue(null));
+                        if (
+                          approvevalue !== null &&
+                          BigNumber.from(approvevalue)?.lt(
+                            BigNumber.from(amount)
+                          )
+                        ) {
+                          dispatch(
+                            changeSwapButtonState({
+                              state: SwapButonStates.APPROVE,
+                              text: "APPROVE",
+                              isDisable: false,
+                            })
+                          );
+                          return;
+                        }
+                      }
+                      if (balance && balance?.lt(BigNumber.from(amount))) {
+                        dispatch(
+                          changeSwapButtonState({
+                            state: SwapButonStates.INSUFFICIENT_BALANCE,
+                            text: "Insufficient Balance",
+                            isDisable: true,
+                          })
+                        );
+                        return;
+                      }
+                    } else {
                       dispatch(
                         changeSwapButtonState({
-                          state: SwapButonStates.ENTER_AMOUNT,
-                          text: "Enter Amount",
-                          isDisable: true,
+                          isDisable: false,
+                          state: SwapButonStates.CONNECT_TO_WALLET,
+                          text: "Connect To Wallet",
                         })
                       );
-                      dispatch(changeApprovevalue(null));
                     }
                     break;
                 }
