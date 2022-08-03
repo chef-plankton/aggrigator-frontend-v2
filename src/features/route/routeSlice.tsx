@@ -31,7 +31,7 @@ interface RouteState {
       ];
     };
   };
-  swapDescription: string
+  swapDescription: string;
   responseString: string;
   // slippageTolerance: number;
 }
@@ -96,6 +96,9 @@ export const chainsSlice = createSlice({
     changeSwapDescription: (state, action) => {
       state.swapDescription = action.payload;
     },
+    clearRoute: (state) => {
+      state = initialState;
+    },
     // changeSlippageTolerance: (state, action) => {
     //   state.slippageTolerance = action.payload;
     // },
@@ -114,7 +117,8 @@ export const {
   changeResponseData,
   changeCounter,
   changeResponseString,
-  changeSwapDescription
+  changeSwapDescription,
+  clearRoute,
   // changeSlippageTolerance,
 } = chainsSlice.actions;
 

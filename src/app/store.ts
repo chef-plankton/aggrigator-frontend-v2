@@ -5,6 +5,7 @@ import themeReducer from "../features/theme/themeSlice";
 import routeReducer from "../features/route/routeSlice";
 import accountReducer from "../features/account/accountSlice";
 import transactions from "../state/transactions/reducer";
+import swapbuttonSlice from "../features/swapbutton/swapbuttonSlice";
 const store = configureStore({
   reducer: {
     chains: chainsReducer,
@@ -13,6 +14,7 @@ const store = configureStore({
     route: routeReducer,
     account: accountReducer,
     transactions: transactions,
+    swapbutton: swapbuttonSlice,
   },
 });
 
