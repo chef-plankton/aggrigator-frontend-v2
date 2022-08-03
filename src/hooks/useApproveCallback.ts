@@ -49,7 +49,7 @@ export function useApproveCallback(
     account ?? undefined,
     spender
   );
-
+    
   const pendingApproval = useHasPendingApproval(tokenAddress, spender);
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
