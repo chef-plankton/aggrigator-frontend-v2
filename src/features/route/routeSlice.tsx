@@ -31,7 +31,7 @@ interface RouteState {
       ];
     };
   };
-  swapDescription: string
+  swapDescription: string;
   responseString: string;
   // slippageTolerance: number;
 }
@@ -114,7 +114,7 @@ export const {
   changeResponseData,
   changeCounter,
   changeResponseString,
-  changeSwapDescription
+  changeSwapDescription,
   // changeSlippageTolerance,
 } = chainsSlice.actions;
 

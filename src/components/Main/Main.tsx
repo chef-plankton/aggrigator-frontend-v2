@@ -20,6 +20,7 @@ import {
   changeResponseData,
   changeShowRoute,
 } from "../../features/route/routeSlice";
+import { changeSwapButtonState } from "../../features/swapbutton/swapbuttonSlice";
 import {
   useAkkaAggrigatorSwapCallback,
   useAkkaCalcLayerZeroFeeCallback,
@@ -65,13 +66,18 @@ function Main() {
   const fromChain = useSelector(({ route }: RootState) => route.fromChain);
   const toChain = useSelector(({ route }: RootState) => route.toChain);
   const amount = useSelector(({ route }: RootState) => route.amount);
-  const swapDescription = useSelector(({ route }: RootState) => route.swapDescription);
+  const swapDescription = useSelector(
+    ({ route }: RootState) => route.swapDescription
+  );
   const { callWithoutGasPrice } = useCallWithoutGasPrice<
     Weth,
     TransactionResponse
   >();
   const wbnbContract = useWBNBContract(true);
   const wallet = useSelector(({ account }: RootState) => account.wallet);
+  const swapButtonData = useSelector(
+    ({ swapbutton }: RootState) => swapbutton.value
+  );
   const approvevalue = useSelector(
     ({ account }: RootState) => account.approvevalue
   );
@@ -85,15 +91,9 @@ function Main() {
   } = useWallet(wallet);
   const isActive = useIsActive();
   const walletChainId = useChainId();
-  const library = useProvider();
   const account = useAccount();
   const dispatch = useDispatch();
   const wrapCallback = useWrapCallback("BNB", "WBNB");
-  const [swapButtonData, setSwapButtonData] = useState<{
-    text: string;
-    isDisable?: boolean;
-    state: SwapButonStates;
-  }>({ text: "", isDisable: false, state: null });
   const { getBytes } = useAkkaEncodeSwapDescriptionCallback();
   const { quoteLayerZeroFee } = useAkkaCalcLayerZeroFeeCallback();
   const { aggrigatorSwap } = useAkkaAggrigatorSwapCallback();
@@ -136,55 +136,61 @@ function Main() {
       if (
         !(fromToken.adress && toToken.adress && fromChain && toChain && amount)
       ) {
-        setSwapButtonData((prevState) => ({
-          ...prevState,
-          state: SwapButonStates.ENTER_AMOUNT,
-          text: "Enter Amount",
-          isDisable: true,
-        }));
+        dispatch(
+          changeSwapButtonState({
+            state: SwapButonStates.ENTER_AMOUNT,
+            text: "Enter Amount",
+            isDisable: true,
+          })
+        );
         return;
       }
-      if (balance && balance?.lt(parseEther(amount))) {
-        setSwapButtonData((prevState) => ({
-          ...prevState,
-          state: SwapButonStates.INSUFFICIENT_BALANCE,
-          text: "Insufficient Balance",
-          isDisable: true,
-        }));
+      if (balance && balance?.lt(BigNumber.from(amount))) {
+        dispatch(
+          changeSwapButtonState({
+            state: SwapButonStates.INSUFFICIENT_BALANCE,
+            text: "Insufficient Balance",
+            isDisable: true,
+          })
+        );
         return;
       }
 
       if (
         approvevalue !== null &&
-        BigNumber.from(approvevalue)?.lt(parseEther(amount))
+        BigNumber.from(approvevalue)?.lt(BigNumber.from(amount))
       ) {
-        setSwapButtonData((prevState) => ({
-          ...prevState,
-          state: SwapButonStates.APPROVE,
-          text: "APPROVE",
-          isDisable: false,
-        }));
+        dispatch(
+          changeSwapButtonState({
+            state: SwapButonStates.APPROVE,
+            text: "APPROVE",
+            isDisable: false,
+          })
+        );
         return;
       }
 
       if (
         approvevalue &&
-        BigNumber.from(approvevalue)?.gte(parseEther(amount))
+        BigNumber.from(approvevalue)?.gte(BigNumber.from(amount))
       ) {
-        setSwapButtonData((prevState) => ({
-          ...prevState,
-          state: SwapButonStates.SWAP,
-          text: "Swap",
-          isDisable: false,
-        }));
+        dispatch(
+          changeSwapButtonState({
+            state: SwapButonStates.SWAP,
+            text: "Swap",
+            isDisable: false,
+          })
+        );
         return;
       }
     } else {
-      setSwapButtonData((prevState) => ({
-        ...prevState,
-        state: SwapButonStates.CONNECT_TO_WALLET,
-        text: "Connect To Wallet",
-      }));
+      dispatch(
+        changeSwapButtonState({
+          isDisable: false,
+          state: SwapButonStates.CONNECT_TO_WALLET,
+          text: "Connect To Wallet",
+        })
+      );
     }
 
     // if (approvevalue && approvevalue?.gte(parseEther(amount))) {
@@ -217,12 +223,13 @@ function Main() {
   );
   useEffect(() => {
     if (approveState === ApprovalState.APPROVED) {
-      setSwapButtonData((prevState) => ({
-        ...prevState,
-        state: SwapButonStates.SWAP,
-        text: "Swap",
-        isDisable: false,
-      }));
+      dispatch(
+        changeSwapButtonState({
+          state: SwapButonStates.SWAP,
+          text: "Swap",
+          isDisable: false,
+        })
+      );
     }
   }, [approveState]);
   // check if user has gone through approval process, used to show two step buttons, reset on token change
@@ -236,34 +243,6 @@ function Main() {
 
   const currentBlock = useCurrentBlock();
   async function getCurrentBlock() {
-    // const contractWithSigner = wbnbContract.connect(
-    //   getSigner(library, account)
-    // );
-    // contractWithSigner
-    //   .allowance(account, "0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3", {
-    //     gasLimit: 21000000,
-    //   })
-    //   .then((result) => {
-    //     console.log(ethers.utils.parseUnits(inputValue).toString());
-    //     console.log(result.toString());
-
-    //     if (result < ethers.utils.parseUnits(inputValue)) {
-    //       const contractWithSigner = wbnbContract.connect(
-    //         getSigner(library, account)
-    //       );
-    //       contractWithSigner.approve(
-    //         "0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3",
-    //         ethers.utils.parseUnits(inputValue, 18),
-    //         {
-    //           gasLimit: 21000000,
-    //         }
-    //       );
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-
     if (
       fromChain === 97 &&
       toChain === 97 &&
@@ -287,37 +266,24 @@ function Main() {
   async function multiCallSwap() {
     if (swapDescription) {
       if (fromChain !== toChain) {
-        const payload = await getBytes(JSON.parse(swapDescription) as SwapDescriptionStruct);
+        const payload = await getBytes(
+          JSON.parse(swapDescription) as SwapDescriptionStruct
+        );
         const quote = await quoteLayerZeroFee(payload);
-        aggrigatorSwap(JSON.parse(swapDescription) as SwapDescriptionStruct, quote[0], payload);
+        aggrigatorSwap(
+          JSON.parse(swapDescription) as SwapDescriptionStruct,
+          quote[0],
+          payload
+        );
       } else {
-        aggrigatorSwap(JSON.parse(swapDescription) as SwapDescriptionStruct, BigNumber.from('0'), new AbiCoder().encode(['string'], ['']));
+        aggrigatorSwap(
+          JSON.parse(swapDescription) as SwapDescriptionStruct,
+          BigNumber.from("0"),
+          new AbiCoder().encode(["string"], [""])
+        );
       }
-
-
     }
   }
-  // Connect to Metamask wallet automatically after refreshing the page (attempt to connect eagerly on mount)
-  // const hooks = useWallet();
-  // const { useIsActivating, useIsActive } = hooks;
-  // const isActive = useIsActive();
-  // console.log(isActive);
-
-  // const erc20 = useERC20(
-  //   "0x55d398326f99059fF775485246999027B3197955",
-  //   isActive
-  // );
-  // async function name() {
-  //   let salam = await erc20.balanceOf(
-  //     "0xa182aab7b51232fbfabc22d989f21d264b0b246f"
-  //   );
-  //   console.log(Number(formatEther(salam)).toFixed(4));
-  // }
-  // useEffect(() => {
-  //   if (isActive) {
-  //     name();
-  //   }
-  // }, [isActive]);
   /** The children of this component will slide down on mount and will slide up on unmount */
   const visibleStyle = {
     height: "auto",
@@ -384,12 +350,13 @@ function Main() {
         case SwapButonStates.APPROVE:
           approveCallback();
           dispatch(changeApprovalState(ApprovalState.PENDING));
-          setSwapButtonData((prevState) => ({
-            ...prevState,
-            state: SwapButonStates.APPROVE,
-            text: "APPROVE",
-            isDisable: true,
-          }));
+          dispatch(
+            changeSwapButtonState({
+              state: SwapButonStates.APPROVE,
+              text: "APPROVE",
+              isDisable: true,
+            })
+          );
           break;
         case SwapButonStates.SWAP:
           multiCallSwap();
@@ -405,8 +372,9 @@ function Main() {
   const [isVisible, setIsVisible] = useState(false);
   return (
     <main
-      className={`${themeMode === "light" ? "bg-slate-100" : "bg-[#393E46]"
-        } shadow-lg z-10`}
+      className={`${
+        themeMode === "light" ? "bg-slate-100" : "bg-[#393E46]"
+      } shadow-lg z-10`}
     >
       <div className='max-w-3xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[50px] pt-[50px] md:pt-[50px]'>
         <FromBox />
@@ -426,10 +394,11 @@ function Main() {
 
         <button
           onClick={handleSwapButtonClick}
-          className={`mt-[10px] py-1 w-[100%] h-[50px] text-center font-medium text-lg rounded-[10px] ${!swapButtonData.isDisable
-            ? "text-white bg-[#111111] hover:bg-[#111111] hover:text-[white] hover:shadow-none hover:border-[1px] hover:border-black transition duration-300 shadow-[0_8px_32px_#23293176]"
-            : "text-white bg-gray-300"
-            }`}
+          className={`mt-[10px] py-1 w-[100%] h-[50px] text-center font-medium text-lg rounded-[10px] ${
+            !swapButtonData.isDisable
+              ? "text-white bg-[#111111] hover:bg-[#111111] hover:text-[white] hover:shadow-none hover:border-[1px] hover:border-black transition duration-300 shadow-[0_8px_32px_#23293176]"
+              : "text-white bg-gray-300"
+          }`}
           {...isButtonDisable}
         >
           {swapButtonData.text}

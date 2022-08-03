@@ -1,17 +1,30 @@
+import { parseEther } from "@ethersproject/units";
+import { BigNumber } from "ethers";
 import { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { AppState, useAppDispatch } from "../index";
-import { checkedTransaction, finalizeTransaction } from "./actions";
-import useWallet from "../../components/Wallets/useWallet";
 import Swal from "sweetalert2";
 import { RootState } from "../../app/store";
 import { useCurrentBlock } from "../../components/Main/Main";
-import { TransactionTypes } from "ethers/lib/utils";
+import useWallet from "../../components/Wallets/useWallet";
 import {
   ApprovalState,
   changeApprovalState,
+  changeApprovevalue,
 } from "../../features/account/accountSlice";
-import DescriptionWithTx from "../../components/Main/DescriptionWithTx";
+import { changeSwapButtonState } from "../../features/swapbutton/swapbuttonSlice";
+import useTokenBalance from "../../hooks/useTokenBalance";
+import { AppState, useAppDispatch } from "../index";
+import { checkedTransaction, finalizeTransaction } from "./actions";
+
+enum SwapButonStates {
+  CONNECT_TO_WALLET = "CONNECT_TO_WALLET",
+  ENTER_AMOUNT = "ENTER_AMOUNT",
+  APPROVE = "APPROVE",
+  LOADING = "LOADING",
+  SWAP = "SWAP",
+  WRAP = "WRAP",
+  INSUFFICIENT_BALANCE = "INSUFFICIENT_BALANCE",
+}
 
 export function shouldCheck(
   currentBlock: number,
@@ -41,17 +54,30 @@ export default function Updater(): null {
   const chainId = useChainId();
   const library = useProvider();
   const currentBlockNumber = useCurrentBlock();
-
+  const approveState = useSelector(
+    ({ account }: RootState) => account.approveState
+  );
   const dispatch = useAppDispatch();
   const state = useSelector<AppState, AppState["transactions"]>(
     (s) => s.transactions
   );
-
+  const fromToken = useSelector(({ route }: RootState) => route.fromToken);
+  const toToken = useSelector(({ route }: RootState) => route.toToken);
+  const fromChain = useSelector(({ route }: RootState) => route.fromChain);
+  const toChain = useSelector(({ route }: RootState) => route.toChain);
+  const amount = useSelector(({ route }: RootState) => route.amount);
+  const { useAccount, useIsActivating, useIsActive, useENSNames } =
+    useWallet(wallet);
+  const approvevalue = useSelector(
+    ({ account }: RootState) => account.approvevalue
+  );
+  const isActive = useIsActive();
+  const account = useAccount();
   const transactions = useMemo(
     () => (chainId ? state[chainId] ?? {} : {}),
     [chainId, state]
   );
-
+  const balance = useTokenBalance(fromToken.adress, account);
   useEffect(() => {
     if (!chainId || !library || !currentBlockNumber) return;
     Object.keys(transactions)
@@ -83,6 +109,46 @@ export default function Updater(): null {
                   case "approve":
                     if (receipt.status === 1)
                       dispatch(changeApprovalState(ApprovalState.APPROVED));
+                    break;
+                  case "swap":
+                    if (isActive) {
+                      if (receipt.status === 1) {
+                        dispatch(changeApprovevalue(null));
+                        if (
+                          approvevalue !== null &&
+                          BigNumber.from(approvevalue)?.lt(
+                            BigNumber.from(amount)
+                          )
+                        ) {
+                          dispatch(
+                            changeSwapButtonState({
+                              state: SwapButonStates.APPROVE,
+                              text: "APPROVE",
+                              isDisable: false,
+                            })
+                          );
+                          return;
+                        }
+                      }
+                      if (balance && balance?.lt(BigNumber.from(amount))) {
+                        dispatch(
+                          changeSwapButtonState({
+                            state: SwapButonStates.INSUFFICIENT_BALANCE,
+                            text: "Insufficient Balance",
+                            isDisable: true,
+                          })
+                        );
+                        return;
+                      }
+                    } else {
+                      dispatch(
+                        changeSwapButtonState({
+                          isDisable: false,
+                          state: SwapButonStates.CONNECT_TO_WALLET,
+                          text: "Connect To Wallet",
+                        })
+                      );
+                    }
                     break;
                 }
               }
