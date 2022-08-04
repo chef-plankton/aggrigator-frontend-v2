@@ -7,11 +7,14 @@ import {
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import useWallet from "./useWallet";
+import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../../app/hooks";
 function DisconnectWallet() {
   const walletName = useSelector(({ account }: RootState) => account.wallet);
   const hooks = useWallet(walletName);
   const { useIsActive } = hooks;
   const isActive = useIsActive();
+  const dispatch = useAppDispatch();
 
   const disconnectwallet = () => {
     if (isActive && walletName === "metamask") {
@@ -20,6 +23,7 @@ function DisconnectWallet() {
     if (isActive && walletName === "walletconnect") {
       void walletConnect.deactivate();
     }
+
   };
   return (
     <div

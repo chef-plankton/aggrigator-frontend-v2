@@ -38,23 +38,40 @@ const useAuth = ({ useAccount, useChainId }: Web3ReactHooks): useAuthReturn => {
     ) => {
       if (walletName === "metamask") {
         const isWalletConnected = metaMask.provider.isConnected();
-
+        console.log('asdasd');
+        
         if (isWalletConnected) {
-          return await metaMask
+          console.log('qqqq');
+          await metaMask
             .activate(desiredChainIdOrChainParameters)
-            .then(async () => {
-              dispatch(changeModalStatus(false));
-              dispatch(changeChain(chainId));
-              dispatch(changeWallet(walletName));
-              dispatch(changeAddress(account));
-              await wait(500);
-              void metaMask.connectEagerly().catch(() => {
-                console.debug("Failed to connect eagerly to metamask");
-              });
-            })
-            .catch((err) => {
-              console.error(err);
-            });
+          dispatch(changeModalStatus(false));
+          dispatch(changeChain(chainId));
+          console.log(account);
+          
+          dispatch(changeWallet(walletName));
+          dispatch(changeAddress(account));
+          await wait(500);
+
+
+          await metaMask.connectEagerly().catch(() => {
+            console.debug("Failed to connect eagerly to metamask");
+          });
+          // return await metaMask
+          //   .activate(desiredChainIdOrChainParameters)
+          //   .then(async () => {
+          //     dispatch(changeModalStatus(false));
+          //     dispatch(changeChain(chainId));
+          //     dispatch(changeWallet(walletName));
+          //     console.log("account", account);
+          //     dispatch(changeAddress(account));
+          //     await wait(500);
+          //     void metaMask.connectEagerly().catch(() => {
+          //       console.debug("Failed to connect eagerly to metamask");
+          //     });
+          //   })
+          //   .catch((err) => {
+          //     console.error(err);
+          //   });
         }
       }
       if (walletName === "walletconnect") {
@@ -62,21 +79,20 @@ const useAuth = ({ useAccount, useChainId }: Web3ReactHooks): useAuthReturn => {
         if (isWalletConnected) {
           // walletConnect.provider=null
           // return await walletConnect.provider.connect()
-          return await walletConnect
+          await walletConnect
             .activate(chainId)
-            .then(async () => {
-              dispatch(changeModalStatus(false));
-              dispatch(changeChain(chainId));
-              dispatch(changeWallet(walletName));
-              dispatch(changeAddress(account));
-              await wait(500);
-              void walletConnect.connectEagerly().catch(() => {
-                console.debug("Failed to connect eagerly to metamask");
-              });
-            })
-            .catch((err) => {
-              console.error(err);
-            });
+          dispatch(changeModalStatus(false));
+          dispatch(changeChain(chainId));
+          dispatch(changeWallet(walletName));
+          dispatch(changeAddress(account));
+          await wait(500);
+
+
+          await walletConnect.connectEagerly().catch(() => {
+            console.debug("Failed to connect eagerly to metamask");
+          });
+
+
         }
       }
     },

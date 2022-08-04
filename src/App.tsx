@@ -8,23 +8,31 @@ import GeneralModal from "./components/Modals/GeneralModal";
 import useWallet from "./components/Wallets/useWallet";
 import { metaMask } from "./connectors/metaMask";
 import { walletConnect } from "./connectors/walletConnect";
-import { changeWallet } from "./features/account/accountSlice";
+import { changeAddress, changeWallet } from "./features/account/accountSlice";
 import useAuth from "./hooks/useAuth";
 
 function App() {
   const chainId = useSelector(({ chains }: RootState) => chains.value);
   const dispatch = useDispatch();
-
+  const wallet = useSelector(({ account }: RootState) => account.wallet);
+  const { useAccount } = useWallet(wallet)
+  const account = useAccount()
   useEffect(() => {
-    
-    void metaMask.connectEagerly().then(()=>{
+
+    void metaMask.connectEagerly().then(() => {
       dispatch(changeWallet('metamask'))
+      console.log(account);
+
+      dispatch(changeAddress(account));
     }).catch(() => {
       console.debug("Failed to connect eagerly to metamask");
     });
     void walletConnect.connectEagerly().catch(() => {
       console.debug("Failed to connect eagerly to metamask");
     });
+
+
+
   }, [chainId]);
 
   return (

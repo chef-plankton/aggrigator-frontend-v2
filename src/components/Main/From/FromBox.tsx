@@ -1,4 +1,6 @@
 import { formatEther } from "@ethersproject/units";
+import { BigNumber } from "ethers";
+import { FC } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { RootState } from "../../../app/store";
@@ -27,15 +29,21 @@ const StyledFromBox = styled.div<{ color: string; backgroundColor: string }>`
   justify-content: space-between;
   color: ${({ color }) => (color ? color : "black")};
 `;
-
+interface FromBoxProps {
+  account: string
+  balance: BigNumber
+}
 // From Box Component
-function FromBox() {
+const FromBox: FC<FromBoxProps> = ({ account,balance}) => {
   // Get data from redux
   const chainId = useSelector(({ chains }: RootState) => chains.value);
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   const fromToken = useSelector(({ route }: RootState) => route.fromToken);
-  const address = useSelector(({ account }: RootState) => account.address);
-  const balance = useTokenBalance(fromToken.adress, address);
+  // const address =useAccount
+  // const balance = useTokenBalance(fromToken.adress, address);
+  // console.log(fromToken, address);
+
+  console.log("balance from token", balance && formatEther(BigNumber.from(balance).toString()));
 
   return (
     <StyledFromBox
@@ -51,7 +59,7 @@ function FromBox() {
         From
         <div className='flex items-center'>
           <span className="px-3 py-1 mx-1 rounded-[5px] bg-[#f3f3f3]">
-            Your Balance: {balance ? formatEther(balance)?.toString() : 0}
+            Your Balance: {balance ? Number(formatEther(balance?.toString()))?.toFixed(4) : 0}
           </span>
           <FromRefresh />
           {/* <FromAdvanceSetting /> */}
@@ -62,14 +70,12 @@ function FromBox() {
         <div className='md:w-[60%] w-[100%} flex justify-between '>
           {/* from network */}
           <FromChangeNetworkButton
-            imageSrc={`${chainId === 56 ? bnblightIcon : ""}${
-              chainId === 250 ? fantomIcon : ""
-            }${chainId === 97 ? bnblightIcon : ""}`}
+            imageSrc={`${chainId === 56 ? bnblightIcon : ""}${chainId === 250 ? fantomIcon : ""
+              }${chainId === 97 ? bnblightIcon : ""}`}
             coinName={`
             ${chainId === 56 ? "BNB Chain" : ""}
-            ${chainId === 250 ? "Fantom" : ""}${
-              chainId === 97 ? "BNB Chain" : ""
-            }`}
+            ${chainId === 250 ? "Fantom" : ""}${chainId === 97 ? "BNB Chain" : ""
+              }`}
           />
           {/* from token */}
           <FromChangeTokenButton

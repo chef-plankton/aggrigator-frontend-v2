@@ -20,7 +20,7 @@ function useTokenBalance(
 
     return useMemo(
         () => (tokenAdress && balance ? balance : undefined),
-        [tokenAdress, balance]
+        [tokenAdress, balance,owner]
     );
 }
 

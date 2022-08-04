@@ -165,8 +165,16 @@ function FromInput() {
     <StyledInput
       color={themeMode === "light" ? "black" : "white"}
       placeholder='Enter amount you want to sell'
+      value={amount}
       onChange={(e) => {
-        dispatch(changeAmount(e.target.value));
+        const value = e.target.value
+        if(/^\d*\.?\d*$/.test(value)){
+          dispatch(changeAmount(value));
+        }
+
+        if (!/[0-9]/.test(value)) {
+        }
+
         if (
           (fromToken.name === "BNB" && toToken.name === "WBNB") ||
           (fromToken.name === "WBNB" && toToken.name === "BNB")

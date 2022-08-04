@@ -1,5 +1,5 @@
 import { TransactionResponse } from "@ethersproject/providers";
-import { parseEther, parseUnits } from "@ethersproject/units";
+import { formatEther, parseEther, parseUnits } from "@ethersproject/units";
 import { BigNumber } from "ethers";
 import { AbiCoder } from "ethers/lib/utils";
 import { bool, node } from "prop-types";
@@ -105,6 +105,7 @@ function Main() {
   );
   const chainId = useSelector(({ chains }: RootState) => chains.value);
   const balance = useTokenBalance(fromToken.adress, account);
+    
   const isButtonDisable = {
     disabled: swapButtonData.isDisable ? true : false,
   };
@@ -398,7 +399,7 @@ function Main() {
         } shadow-lg z-10`}
     >
       <div className='max-w-3xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[50px] pt-[50px] md:pt-[50px]'>
-        <FromBox />
+        <FromBox balance={balance} account={account}/>
         <ToBox />
         <div className='w-[100%] flex mb-[10px] mt-0 pl-[5px] items-center'>
           <button
