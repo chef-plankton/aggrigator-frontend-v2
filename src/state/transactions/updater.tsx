@@ -1,4 +1,4 @@
-import { parseEther } from "@ethersproject/units";
+import { parseEther, parseUnits } from "@ethersproject/units";
 import { BigNumber } from "ethers";
 import { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
@@ -11,6 +11,7 @@ import {
   changeApprovalState,
   changeApprovevalue,
 } from "../../features/account/accountSlice";
+import { clearRouteAfterSwap } from "../../features/route/routeSlice";
 import { changeSwapButtonState } from "../../features/swapbutton/swapbuttonSlice";
 import useTokenBalance from "../../hooks/useTokenBalance";
 import { AppState, useAppDispatch } from "../index";
@@ -114,32 +115,9 @@ export default function Updater(): null {
                     if (isActive) {
                       if (receipt.status === 1) {
                         dispatch(changeApprovevalue(null));
-                        if (
-                          approvevalue !== null &&
-                          BigNumber.from(approvevalue)?.lt(
-                            BigNumber.from(amount)
-                          )
-                        ) {
-                          dispatch(
-                            changeSwapButtonState({
-                              state: SwapButonStates.APPROVE,
-                              text: "APPROVE",
-                              isDisable: false,
-                            })
-                          );
-                          return;
-                        }
+                        dispatch(clearRouteAfterSwap());
                       }
-                      if (balance && balance?.lt(BigNumber.from(amount))) {
-                        dispatch(
-                          changeSwapButtonState({
-                            state: SwapButonStates.INSUFFICIENT_BALANCE,
-                            text: "Insufficient Balance",
-                            isDisable: true,
-                          })
-                        );
-                        return;
-                      }
+
                     } else {
                       dispatch(
                         changeSwapButtonState({
@@ -155,29 +133,33 @@ export default function Updater(): null {
 
               receipt.status === 1
                 ? Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: `Transaction Confirmed`,
-                    html: `<p>Tx: ${tx.hash}</p>`,
-                    width: "500px",
-                    heightAuto: false,
-                    showCancelButton: true,
-                    showCloseButton: true,
-                    showConfirmButton: true,
-                    confirmButtonColor: "black",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Show on BSC Scan",
-                  }).then(() => {
+                  position: "top-end",
+                  icon: "success",
+                  title: `Transaction Confirmed`,
+                  html: `<p>Tx: ${tx.hash}</p>`,
+                  width: "500px",
+                  heightAuto: false,
+                  showCancelButton: true,
+                  showCloseButton: true,
+                  showConfirmButton: true,
+                  confirmButtonColor: "black",
+                  cancelButtonColor: "#d33",
+                  confirmButtonText: "Show on BSC Scan",
+
+                }).then((data) => {
+                  const { isDismissed, isConfirmed, isDenied } = data
+                  if (isConfirmed) {
                     window.open(
                       `${"https://bscscan.com"}/tx/${tx.hash}`,
                       "_blank"
                     );
-                  })
+                  }
+                })
                 : Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "Something went wrong!",
-                  });
+                  icon: "error",
+                  title: "Oops...",
+                  text: "Something went wrong!",
+                });
             } else {
               dispatch(checkedTransaction({ chainId, hash }));
             }

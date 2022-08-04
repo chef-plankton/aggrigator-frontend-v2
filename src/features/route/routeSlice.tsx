@@ -96,6 +96,7 @@ export const chainsSlice = createSlice({
     changeSwapDescription: (state, action) => {
       state.swapDescription = action.payload;
     },
+    clearRouteAfterSwap: () => initialState,
     // changeSlippageTolerance: (state, action) => {
     //   state.slippageTolerance = action.payload;
     // },
@@ -115,6 +116,7 @@ export const {
   changeCounter,
   changeResponseString,
   changeSwapDescription,
+  clearRouteAfterSwap,
   // changeSlippageTolerance,
 } = chainsSlice.actions;
 

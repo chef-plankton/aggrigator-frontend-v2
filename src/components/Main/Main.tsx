@@ -146,8 +146,8 @@ function Main() {
         return;
       }
       console.log(balance?.toString());
-      
-      if (balance !== null && balance?.lt(parseUnits(amount,18))) {
+
+      if (balance !== null && balance?.lt(parseUnits(amount, 18))) {
         dispatch(
           changeSwapButtonState({
             state: SwapButonStates.INSUFFICIENT_BALANCE,
@@ -160,7 +160,7 @@ function Main() {
 
       if (
         approvevalue !== null &&
-        BigNumber.from(approvevalue)?.lt(parseUnits(amount,18))
+        BigNumber.from(approvevalue)?.lt(parseUnits(amount, 18))
       ) {
         dispatch(
           changeSwapButtonState({
@@ -174,7 +174,7 @@ function Main() {
 
       if (
         approvevalue &&
-        BigNumber.from(approvevalue)?.gte(parseUnits(amount,18))
+        BigNumber.from(approvevalue)?.gte(parseUnits(amount, 18))
       ) {
         dispatch(
           changeSwapButtonState({
@@ -282,7 +282,19 @@ function Main() {
           JSON.parse(swapDescription) as SwapDescriptionStruct,
           BigNumber.from("0"),
           new AbiCoder().encode(["string"], [""])
-        );
+        )
+        .catch(err => {
+          if (err?.code === 4001) {
+            dispatch(
+              changeSwapButtonState({
+                state: SwapButonStates.SWAP,
+                text: "Swap",
+                isDisable: false,
+              })
+            );
+          }
+        });
+        
       }
     }
   }
@@ -361,7 +373,15 @@ function Main() {
           );
           break;
         case SwapButonStates.SWAP:
-          multiCallSwap();
+          multiCallSwap()
+          dispatch(
+            changeSwapButtonState({
+              state: SwapButonStates.SWAP,
+              text: "Swap",
+              isDisable: true,
+            })
+          );
+
           // setSwapButtonData(prevState => ({ ...prevState, state: SwapButonStates.LOADING, text: "LOADING...", isDisable: true }));
           break;
         case SwapButonStates.CONNECT_TO_WALLET:
@@ -374,9 +394,8 @@ function Main() {
   const [isVisible, setIsVisible] = useState(false);
   return (
     <main
-      className={`${
-        themeMode === "light" ? "bg-slate-100" : "bg-[#393E46]"
-      } shadow-lg z-10`}
+      className={`${themeMode === "light" ? "bg-slate-100" : "bg-[#393E46]"
+        } shadow-lg z-10`}
     >
       <div className='max-w-3xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[50px] pt-[50px] md:pt-[50px]'>
         <FromBox />
@@ -396,11 +415,10 @@ function Main() {
 
         <button
           onClick={handleSwapButtonClick}
-          className={`mt-[10px] py-1 w-[100%] h-[50px] text-center font-medium text-lg rounded-[10px] ${
-            !swapButtonData.isDisable
-              ? "text-white bg-[#111111] hover:bg-[#111111] hover:text-[white] hover:shadow-none hover:border-[1px] hover:border-black transition duration-300 shadow-[0_8px_32px_#23293176]"
-              : "text-white bg-gray-300"
-          }`}
+          className={`mt-[10px] py-1 w-[100%] h-[50px] text-center font-medium text-lg rounded-[10px] ${!swapButtonData.isDisable
+            ? "text-white bg-[#111111] hover:bg-[#111111] hover:text-[white] hover:shadow-none hover:border-[1px] hover:border-black transition duration-300 shadow-[0_8px_32px_#23293176]"
+            : "text-white bg-gray-300"
+            }`}
           {...isButtonDisable}
         >
           {swapButtonData.text}
