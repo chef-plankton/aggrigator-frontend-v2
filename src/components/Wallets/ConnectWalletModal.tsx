@@ -36,6 +36,11 @@ function ConnectWalletModal() {
     await login(getAddChainParameters(chainId),chainId,'metamask')
     setIsLoading(false)
   };
+  const connectWalletConnectHandler = async () => {
+    setIsLoading(true)
+    await login(getAddChainParameters(chainId),chainId,'walletconnect')
+    setIsLoading(false)
+  };
   return (
     <>
       <div className="flex justify-between items-center mb-5 pr-5 pl-5 pt-5 pb-2">
@@ -68,7 +73,7 @@ function ConnectWalletModal() {
             ) : (
               ""
             )}
-            <WalletConnectCard />
+            <WalletConnectCard handleClick={connectWalletConnectHandler}/>
           </>
         )}
       </div>

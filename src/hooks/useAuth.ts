@@ -60,6 +60,8 @@ const useAuth = ({ useAccount, useChainId }: Web3ReactHooks): useAuthReturn => {
       if (walletName === "walletconnect") {
         const isWalletConnected = walletConnect.provider.isWalletConnect;
         if (isWalletConnected) {
+          // walletConnect.provider=null
+          // return await walletConnect.provider.connect()
           return await walletConnect
             .activate(chainId)
             .then(async () => {

@@ -1,5 +1,5 @@
 import { TransactionResponse } from "@ethersproject/providers";
-import { parseEther } from "@ethersproject/units";
+import { parseEther, parseUnits } from "@ethersproject/units";
 import { BigNumber } from "ethers";
 import { AbiCoder } from "ethers/lib/utils";
 import { bool, node } from "prop-types";
@@ -145,7 +145,9 @@ function Main() {
         );
         return;
       }
-      if (balance && balance?.lt(BigNumber.from(amount))) {
+      console.log(balance?.toString());
+      
+      if (balance !== null && balance?.lt(parseUnits(amount,18))) {
         dispatch(
           changeSwapButtonState({
             state: SwapButonStates.INSUFFICIENT_BALANCE,
@@ -158,7 +160,7 @@ function Main() {
 
       if (
         approvevalue !== null &&
-        BigNumber.from(approvevalue)?.lt(BigNumber.from(amount))
+        BigNumber.from(approvevalue)?.lt(parseUnits(amount,18))
       ) {
         dispatch(
           changeSwapButtonState({
@@ -172,7 +174,7 @@ function Main() {
 
       if (
         approvevalue &&
-        BigNumber.from(approvevalue)?.gte(BigNumber.from(amount))
+        BigNumber.from(approvevalue)?.gte(parseUnits(amount,18))
       ) {
         dispatch(
           changeSwapButtonState({
