@@ -66,6 +66,7 @@
     "build": "set \"GENERATE_SOURCEMAP=false\" && react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject",
+    "heroku-prebuild":"npm run typechain",
     "typechain": "typechain --out-dir src/config/abi/types --target=ethers-v5 \"src/config/abi/*.json\""
   },
   "eslintConfig": {
