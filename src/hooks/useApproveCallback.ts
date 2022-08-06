@@ -157,10 +157,12 @@ export function useApproveCallbackFromTrade(
     () => (inputAmount ? ethers.utils.parseUnits(inputAmount) : undefined),
     [inputAmount, allowedSlippage]
   );
-
+  const wallet = useSelector(({ account }: RootState) => account.wallet);
+  const { useChainId } = useWallet(wallet);
+  const chainId = useChainId();
   return useApproveCallback(
     tokenAddress,
     amountToApprove,
-    useSetContractWithChainId()
+    useSetContractWithChainId(chainId)
   );
 }
