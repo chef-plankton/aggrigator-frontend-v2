@@ -74,14 +74,13 @@ function FromInput() {
   const Connectedwallet = useWallet(wallet);
   const { useAccount, useChainId } = Connectedwallet;
   const account = useAccount();
-  const c = useChainId();
   const dispatch = useDispatch();
   useEffect(() => {
     if (fromToken.adress !== "" && toToken.adress !== "" && amount !== "") {
       axios
         .get(
           `https://192.64.112.22:8084/route?token0=${fromToken.adress}&chain0=${
-            c === 56 ? "bsc" : c === 250 ? "fantom" : ""
+            fromChain === 56 ? "bsc" : fromChain === 250 ? "fantom" : ""
           }&token1=${toToken.adress}&chain1=${
             toChain === 56 ? "bsc" : toChain === 250 ? "fantom" : ""
           }&amount=${amount}`
