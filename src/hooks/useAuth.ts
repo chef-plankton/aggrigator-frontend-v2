@@ -38,20 +38,15 @@ const useAuth = ({ useAccount, useChainId }: Web3ReactHooks): useAuthReturn => {
     ) => {
       if (walletName === "metamask") {
         const isWalletConnected = metaMask.provider.isConnected();
-        console.log('asdasd');
-        
+
         if (isWalletConnected) {
-          console.log('qqqq');
-          await metaMask
-            .activate(desiredChainIdOrChainParameters)
+          await metaMask.activate(desiredChainIdOrChainParameters);
           dispatch(changeModalStatus(false));
           dispatch(changeChain(chainId));
-          console.log(account);
-          
+
           dispatch(changeWallet(walletName));
           dispatch(changeAddress(account));
           await wait(500);
-
 
           await metaMask.connectEagerly().catch(() => {
             console.debug("Failed to connect eagerly to metamask");
@@ -79,20 +74,16 @@ const useAuth = ({ useAccount, useChainId }: Web3ReactHooks): useAuthReturn => {
         if (isWalletConnected) {
           // walletConnect.provider=null
           // return await walletConnect.provider.connect()
-          await walletConnect
-            .activate(chainId)
+          await walletConnect.activate(chainId);
           dispatch(changeModalStatus(false));
           dispatch(changeChain(chainId));
           dispatch(changeWallet(walletName));
           dispatch(changeAddress(account));
           await wait(500);
 
-
           await walletConnect.connectEagerly().catch(() => {
             console.debug("Failed to connect eagerly to metamask");
           });
-
-
         }
       }
     },

@@ -54,13 +54,13 @@ function FromTokenlist() {
     let url = "";
 
     if (chainId === 56) {
-      url = "http://192.64.112.22:8084/tokens?chain=bsc&limit=100";
+      url = "https://192.64.112.22:8084/tokens?chain=bsc&limit=100";
     }
     if (chainId === 250) {
-      url = "http://192.64.112.22:8084/tokens?chain=fantom&limit=100";
+      url = "https://192.64.112.22:8084/tokens?chain=fantom&limit=100";
     }
     if (chainId === 97) {
-      url = "http://localhost:4000/BSC-testnet";
+      url = "https://localhost:4000/BSC-testnet";
     }
 
     axios.get(url).then((res) => {

@@ -146,7 +146,6 @@ function Main() {
         );
         return;
       }
-      console.log(balance?.toString());
 
       if (balance !== null && balance?.lt(parseUnits(amount, 18))) {
         dispatch(

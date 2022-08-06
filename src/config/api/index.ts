@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { HttpMethod, RequestPath, TokenListApi } from "./types";
 const instance = axios.create({
-  baseURL: "http://192.64.112.22:8084",
+  baseURL: "https://192.64.112.22:8084",
 });
 const api = <R>(
   method: HttpMethod,

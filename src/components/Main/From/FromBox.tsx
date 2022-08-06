@@ -43,7 +43,6 @@ const FromBox: FC<FromBoxProps> = ({ account,balance}) => {
   // const balance = useTokenBalance(fromToken.adress, address);
   // console.log(fromToken, address);
 
-  console.log("balance from token", balance && formatEther(BigNumber.from(balance).toString()));
 
   return (
     <StyledFromBox

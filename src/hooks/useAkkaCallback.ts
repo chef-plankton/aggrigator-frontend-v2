@@ -1,18 +1,16 @@
+import {
+  TransactionResponse
+} from "@ethersproject/providers";
+import { BigNumber } from "ethers";
 import { useEffect, useMemo } from "react";
-import { useTransactionAdder } from "../state/transactions/hooks";
-import { useAkkaContract } from "./useContract";
-import { useCallWithoutGasPrice } from "./useCallWithoutGasPrice";
-import useWallet from "../components/Wallets/useWallet";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
+import useWallet from "../components/Wallets/useWallet";
 import { AkkaAggrigator } from "../config/abi/types";
 import { SwapDescriptionStruct } from "../config/abi/types/AkkaAggrigator";
-import { parseEther, parseUnits } from "@ethersproject/units";
-import { BigNumber } from "ethers";
-import {
-  TransactionReceipt,
-  TransactionResponse,
-} from "@ethersproject/providers";
+import { useTransactionAdder } from "../state/transactions/hooks";
+import { useCallWithoutGasPrice } from "./useCallWithoutGasPrice";
+import { useAkkaContract } from "./useContract";
 
 export enum WrapType {
   NOT_APPLICABLE,
@@ -23,7 +21,9 @@ export enum WrapType {
 const NOT_APPLICABLE = { wrapType: WrapType.NOT_APPLICABLE };
 
 export function useAkkaEncodeSwapDescriptionCallback(): {
-  getBytes?: undefined | ((swapDescription: SwapDescriptionStruct) => Promise<string>);
+  getBytes?:
+    | undefined
+    | ((swapDescription: SwapDescriptionStruct) => Promise<string>);
   inputError?: string;
 } {
   const wallet = useSelector(({ account }: RootState) => account.wallet);
@@ -57,11 +57,9 @@ export function useAkkaEncodeSwapDescriptionCallback(): {
         const encodedData = await callWithoutGasPrice(
           akkaContract,
           "encodeSwapDescription",
-          [
-            swapDescription,
-          ] as SwapDescriptionStruct[],
+          [swapDescription] as SwapDescriptionStruct[],
           {
-            gasLimit: 21000000,
+            gasLimit: 21000,
           }
         );
         return encodedData as string;
@@ -72,8 +70,8 @@ export function useAkkaEncodeSwapDescriptionCallback(): {
 }
 export function useAkkaCalcLayerZeroFeeCallback(): {
   quoteLayerZeroFee?:
-  | undefined
-  | ((payload: string) => Promise<[BigNumber, BigNumber]>);
+    | undefined
+    | ((payload: string) => Promise<[BigNumber, BigNumber]>);
   inputError?: string;
 } {
   const { useAccount, useChainId } = useWallet("metamask");
@@ -121,14 +119,18 @@ export function useAkkaCalcLayerZeroFeeCallback(): {
         );
         return fee as [BigNumber, BigNumber];
       },
-      inputError: sufficientBalance ? undefined : "Insufficient BNB balance",
+      inputError: sufficientBalance ? undefined : "Insufficient Token balance",
     };
   }, [akkaContract, chainId, inputAmount, addTransaction, callWithoutGasPrice]);
 }
 export function useAkkaAggrigatorSwapCallback(): {
   aggrigatorSwap?:
-  | undefined
-  | ((swapDescription: SwapDescriptionStruct, fee: BigNumber, payload: string) => Promise<TransactionResponse>);
+    | undefined
+    | ((
+        swapDescription: SwapDescriptionStruct,
+        fee: BigNumber,
+        payload: string
+      ) => Promise<TransactionResponse>);
   inputError?: string;
 } {
   let parsedResponseString = null;
@@ -146,7 +148,7 @@ export function useAkkaAggrigatorSwapCallback(): {
   const wallet = useSelector(({ account }: RootState) => account.wallet);
   const { useChainId } = useWallet(wallet);
   const chainId = useChainId();
-  const { callWithoutGasPrice,callWithGasPrice } = useCallWithoutGasPrice<
+  const { callWithoutGasPrice, callWithGasPrice } = useCallWithoutGasPrice<
     AkkaAggrigator,
     TransactionResponse
   >();
@@ -159,15 +161,12 @@ export function useAkkaAggrigatorSwapCallback(): {
     const sufficientBalance = inputAmount;
     return {
       aggrigatorSwap: async (swapDescription, fee, payload) => {
-        console.log({swapDescription});
+        console.log({ swapDescription });
 
         const tx = await callWithGasPrice(
           akkaContract,
           "aggrigatorSwap",
-          [
-            swapDescription,
-            payload,
-          ] as SwapDescriptionStruct[],
+          [swapDescription, payload] as SwapDescriptionStruct[],
           {
             value: fee ? fee.toString() : undefined,
           }
@@ -176,6 +175,8 @@ export function useAkkaAggrigatorSwapCallback(): {
           summary: `swap ${inputAmount}`,
           type: "swap",
         });
+        console.log(tx);
+
         return tx as TransactionResponse;
       },
       inputError: sufficientBalance ? undefined : "Insufficient token balance",
