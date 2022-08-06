@@ -6,7 +6,6 @@ import styled from "styled-components";
 import { RootState } from "../../../app/store";
 import bnblightIcon from "../../../assets/img/chains/binance-light.svg";
 import fantomIcon from "../../../assets/img/chains/fantom.svg";
-import useTokenBalance from "../../../hooks/useTokenBalance";
 import FromChangeNetworkButton from "./FromChangeNetworkButton";
 import FromChangeTokenButton from "./FromChangeTokenButton";
 import FromInput from "./FromInput";
@@ -30,19 +29,18 @@ const StyledFromBox = styled.div<{ color: string; backgroundColor: string }>`
   color: ${({ color }) => (color ? color : "black")};
 `;
 interface FromBoxProps {
-  account: string
-  balance: BigNumber
+  account: string;
+  balance: BigNumber;
 }
 // From Box Component
-const FromBox: FC<FromBoxProps> = ({ account,balance}) => {
+const FromBox: FC<FromBoxProps> = ({ account, balance }) => {
   // Get data from redux
-  const chainId = useSelector(({ chains }: RootState) => chains.value);
+  const chainId = useSelector(({ route }: RootState) => route.fromChain);
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   const fromToken = useSelector(({ route }: RootState) => route.fromToken);
   // const address =useAccount
   // const balance = useTokenBalance(fromToken.adress, address);
   // console.log(fromToken, address);
-
 
   return (
     <StyledFromBox
@@ -57,8 +55,9 @@ const FromBox: FC<FromBoxProps> = ({ account,balance}) => {
       <div className='px-3 py-1 w-[100%] flex justify-between'>
         From
         <div className='flex items-center'>
-          <span className="px-3 py-1 mx-1 rounded-[5px] bg-[#f3f3f3]">
-            Your Balance: {balance ? Number(formatEther(balance?.toString()))?.toFixed(4) : 0}
+          <span className='px-3 py-1 mx-1 rounded-[5px] bg-[#f3f3f3]'>
+            Your Balance:{" "}
+            {balance ? Number(formatEther(balance?.toString()))?.toFixed(4) : 0}
           </span>
           <FromRefresh />
           {/* <FromAdvanceSetting /> */}
@@ -69,12 +68,14 @@ const FromBox: FC<FromBoxProps> = ({ account,balance}) => {
         <div className='md:w-[60%] w-[100%} flex justify-between '>
           {/* from network */}
           <FromChangeNetworkButton
-            imageSrc={`${chainId === 56 ? bnblightIcon : ""}${chainId === 250 ? fantomIcon : ""
-              }${chainId === 97 ? bnblightIcon : ""}`}
+            imageSrc={`${chainId === 56 ? bnblightIcon : ""}${
+              chainId === 250 ? fantomIcon : ""
+            }${chainId === 97 ? bnblightIcon : ""}`}
             coinName={`
             ${chainId === 56 ? "BNB Chain" : ""}
-            ${chainId === 250 ? "Fantom" : ""}${chainId === 97 ? "BNB Chain" : ""
-              }`}
+            ${chainId === 250 ? "Fantom" : ""}${
+              chainId === 97 ? "BNB Chain" : ""
+            }`}
           />
           {/* from token */}
           <FromChangeTokenButton
@@ -92,6 +93,6 @@ const FromBox: FC<FromBoxProps> = ({ account,balance}) => {
       </div>
     </StyledFromBox>
   );
-}
+};
 
 export default FromBox;
