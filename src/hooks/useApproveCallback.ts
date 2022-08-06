@@ -16,6 +16,7 @@ import { parseUnits } from "@ethersproject/units";
 import { useDispatch } from "react-redux";
 import { changeApprovevalue } from "../features/account/accountSlice";
 import { Erc20 } from "../config/abi/types";
+import useSetContractWithChainId from "./useSetContractWithChainId";
 export enum ApprovalState {
   UNKNOWN,
   NOT_APPROVED,
@@ -24,7 +25,10 @@ export enum ApprovalState {
 }
 
 // returns a variable indicating the state of the approval and a function which approves if necessary or early returns'
-export type ApproveParams = (spender: string,amountToApprove: BigNumber) => Promise<void>
+export type ApproveParams = (
+  spender: string,
+  amountToApprove: BigNumber
+) => Promise<void>;
 export function useApproveCallback(
   tokenAddress?: string,
   amountToApprove?: BigNumber,
@@ -41,7 +45,10 @@ export function useApproveCallback(
     useENSNames,
   } = useWallet(wallet);
   const account = useAccount();
-  const { callWithoutGasPrice } = useCallWithoutGasPrice<Erc20, TransactionResponse>();
+  const { callWithoutGasPrice } = useCallWithoutGasPrice<
+    Erc20,
+    TransactionResponse
+  >();
 
   const token = amountToApprove;
   const currentAllowance = useTokenAllowance(
@@ -49,7 +56,7 @@ export function useApproveCallback(
     account ?? undefined,
     spender
   );
-    
+
   const pendingApproval = useHasPendingApproval(tokenAddress, spender);
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
@@ -150,10 +157,10 @@ export function useApproveCallbackFromTrade(
     () => (inputAmount ? ethers.utils.parseUnits(inputAmount) : undefined),
     [inputAmount, allowedSlippage]
   );
-  // 0xae13d989dac2f0debff460ac112a837c89baa7cd
+
   return useApproveCallback(
     tokenAddress,
     amountToApprove,
-    process.env.REACT_APP_BSC_AKKA_CONTRACT// todo: make it dynamic
+    useSetContractWithChainId()
   );
 }

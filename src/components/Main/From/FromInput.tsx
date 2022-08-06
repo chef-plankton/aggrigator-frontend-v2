@@ -101,14 +101,14 @@ function FromInput() {
     resData: RouteResponseDto
   ) => {
     let swapDescription: SwapDescriptionStruct;
-    console.log(resData);
+    console.log("resData",resData);
     
 
     swapDescription = {
       ...swapDescription,
       srcDesiredAmount: parseEther(resData.input_amount.toString()),
       dstDesiredMinAmount: parseEther(resData.return_amount.toString()),
-      dstChainId: 0,
+      dstChainId: fromChain !== toChain ? 0 : 0,
       dstPoolId: 0,
       srcPoolId: 0,
       gasForSwap: BigNumber.from("0"),
