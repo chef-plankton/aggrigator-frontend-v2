@@ -9,6 +9,7 @@ import useWallet from "./components/Wallets/useWallet";
 import { metaMask } from "./connectors/metaMask";
 import { walletConnect } from "./connectors/walletConnect";
 import { changeAddress, changeWallet } from "./features/account/accountSlice";
+import { changeFromChain } from "./features/route/routeSlice";
 import useAuth from "./hooks/useAuth";
 
 function App() {
@@ -21,7 +22,7 @@ function App() {
 
     void metaMask.connectEagerly().then(() => {
       dispatch(changeWallet('metamask'))
-      console.log(account);
+      dispatch(changeFromChain(chainId));
 
       dispatch(changeAddress(account));
     }).catch(() => {

@@ -12,6 +12,7 @@ import ERC20_ABI from "../config/abi/erc20.json";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
 import { ca } from "date-fns/locale";
+import { ChainId } from "../config/constants/types";
 // returns null on errors
 function useContract<T extends Contract = Contract>(
   address: string | undefined,
@@ -74,11 +75,10 @@ export function useAkkaContract(
   useEffect(() => {
     if (chainId) {
       switch (chainId) {
-        case 56:
-        case 97:
+        case ChainId.BSC:
           setContractAddress(process.env.REACT_APP_BSC_AKKA_CONTRACT);
           break;
-        case 250:
+        case ChainId.FTM:
           setContractAddress(process.env.REACT_APP_FTM_AKKA_CONTRACT);
           break;
       }
