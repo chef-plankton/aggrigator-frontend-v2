@@ -1,7 +1,7 @@
 import {
   TransactionResponse
 } from "@ethersproject/providers";
-import { BigNumber } from "ethers";
+import { BigNumber, BytesLike } from "ethers";
 import { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
@@ -22,14 +22,14 @@ const NOT_APPLICABLE = { wrapType: WrapType.NOT_APPLICABLE };
 
 export function useAkkaEncodeSwapDescriptionCallback(): {
   getBytes?:
-    | undefined
-    | ((swapDescription: SwapDescriptionStruct) => Promise<string>);
+  | undefined
+  | ((swapDescription: SwapDescriptionStruct) => Promise<string>);
   inputError?: string;
 } {
   const wallet = useSelector(({ account }: RootState) => account.wallet);
   const { useChainId } = useWallet(wallet);
   const chainId = useChainId();
-  const { callWithoutGasPrice } = useCallWithoutGasPrice<
+  const { callWithoutGasPrice, callWithGasPrice } = useCallWithoutGasPrice<
     AkkaAggrigator,
     string
   >();
@@ -54,12 +54,12 @@ export function useAkkaEncodeSwapDescriptionCallback(): {
 
     return {
       getBytes: async (swapDescription) => {
-        const encodedData = await callWithoutGasPrice(
+        const encodedData = await callWithGasPrice(
           akkaContract,
           "encodeSwapDescription",
           [swapDescription] as SwapDescriptionStruct[],
           {
-            gasLimit: 21000,
+            // gasLimit: 21000,
           }
         );
         return encodedData as string;
@@ -70,14 +70,14 @@ export function useAkkaEncodeSwapDescriptionCallback(): {
 }
 export function useAkkaCalcLayerZeroFeeCallback(): {
   quoteLayerZeroFee?:
-    | undefined
-    | ((payload: string) => Promise<[BigNumber, BigNumber]>);
+  | undefined
+  | ((router: string, dstChainId: BigNumber, to: string, payload: BytesLike, gasForCall: BigNumber) => Promise<[BigNumber, BigNumber]>);
   inputError?: string;
 } {
   const { useAccount, useChainId } = useWallet("metamask");
   const chainId = useChainId();
   const account = useAccount();
-  const { callWithoutGasPrice } = useCallWithoutGasPrice<
+  const { callWithoutGasPrice, callWithGasPrice } = useCallWithoutGasPrice<
     AkkaAggrigator,
     [BigNumber, BigNumber]
   >();
@@ -100,21 +100,15 @@ export function useAkkaCalcLayerZeroFeeCallback(): {
   return useMemo(() => {
     const sufficientBalance = inputAmount;
     return {
-      quoteLayerZeroFee: async (payload) => {
-        const fee = await callWithoutGasPrice(
+      quoteLayerZeroFee: async (router, dstChainId, to, payload, gasForCall) => {
+        const fee = await callWithGasPrice(
           akkaContract,
           "quoteLayerZeroFee",
           [
-            parsedResponseString.data.routes.operations_seperated[1]
-              .operations[0].contract_addr,
-            parsedResponseString.data.routes.operations_seperated[1].operations
-              .ask_bridge_data.chain_id,
-            "0xa9e70F8134C500b09353Efb0b39f4f67cA2608eb",
-            payload,
-            parsedResponseString.data.routes.operations_seperated[2].gas_fee,
-          ] as unknown as Parameters<typeof akkaContract.quoteLayerZeroFee>[],
+            router, dstChainId, to, payload, gasForCall
+          ] as Parameters<typeof akkaContract.quoteLayerZeroFee>[],
           {
-            gasLimit: 21000000,
+            // gasLimit: 21000000,
           }
         );
         return fee as [BigNumber, BigNumber];
@@ -125,12 +119,12 @@ export function useAkkaCalcLayerZeroFeeCallback(): {
 }
 export function useAkkaAggrigatorSwapCallback(): {
   aggrigatorSwap?:
-    | undefined
-    | ((
-        swapDescription: SwapDescriptionStruct,
-        fee: BigNumber,
-        payload: string
-      ) => Promise<TransactionResponse>);
+  | undefined
+  | ((
+    swapDescription: SwapDescriptionStruct,
+    fee: BigNumber,
+    payload: string
+  ) => Promise<TransactionResponse>);
   inputError?: string;
 } {
   let parsedResponseString = null;
@@ -163,11 +157,12 @@ export function useAkkaAggrigatorSwapCallback(): {
       aggrigatorSwap: async (swapDescription, fee, payload) => {
         console.log({ swapDescription });
 
-        const tx = await callWithGasPrice(
+        const tx = await callWithoutGasPrice(
           akkaContract,
           "aggrigatorSwap",
           [swapDescription, payload] as SwapDescriptionStruct[],
           {
+            // gasLimit:1000000,
             value: fee ? fee.toString() : undefined,
           }
         );

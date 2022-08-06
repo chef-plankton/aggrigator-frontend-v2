@@ -16,6 +16,7 @@ import {
 } from "../features/account/accountSlice";
 import { changeChain } from "../features/chains/chainsSlice";
 import { changeModalStatus } from "../features/modals/modalsSlice";
+import { changeFromChain } from "../features/route/routeSlice";
 interface useAuthReturn {
   login: (
     desiredChainIdOrChainParameters?: number | AddEthereumChainParameter,
@@ -43,6 +44,7 @@ const useAuth = ({ useAccount, useChainId }: Web3ReactHooks): useAuthReturn => {
           await metaMask.activate(desiredChainIdOrChainParameters);
           dispatch(changeModalStatus(false));
           dispatch(changeChain(chainId));
+          dispatch(changeFromChain(chainId));
 
           dispatch(changeWallet(walletName));
           dispatch(changeAddress(account));

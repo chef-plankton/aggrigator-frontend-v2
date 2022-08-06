@@ -10,7 +10,8 @@ export enum ChainId {
 }
 export enum NetworkName {
     BSC = "BSC",
-    FTM = "FTM",
+    FTM = "FANTOM",
+    BRIDGE = "BRIDGE",
 }
 
 export enum BridgeName {
@@ -34,22 +35,31 @@ export interface RouteOperationsSeparated {
     chain: string,
     chain_id: number,
     gas_fee: number,
-    operations: Array<RouteRegularOperations>
+    operations: Array<RouteRegularOperations | RouteStargateBridgeOperations>
 }
-export interface RouteRegularOperations {
-    amount_in: number,
-    amount_out: number,
-    offer_token: Array<string>,
-    ask_token: Array<string>,
-    router_addr: string,
-    contract_addr: string,
-    exchange: string,
+export class RouteRegularOperations {
+    constructor(partial: Partial<RouteRegularOperations> = {}) {
+        Object.assign(this, partial)
+    }
+    amount_in: number
+    amount_out: number
+    offer_token: Array<string>
+    ask_token: Array<string>
+    router_addr: string
+    contract_addr: string
+    exchange: BridgeName & string
 }
-export interface RouteStargateBridgeOperations {
-    offer_token: Array<string>,
-    ask_token: Array<string>,
-    exchange: BridgeName,
-    router_addr: string,
-    ask_bridge_data: string[],
-    offer_bridge_data: string[],
+export class RouteStargateBridgeOperations {
+    constructor(partial: Partial<RouteStargateBridgeOperations> = {}) {
+        Object.assign(this, partial)
+    }
+    amount_in: number
+    amount_out: number
+    offer_token: Array<string>
+    ask_token: Array<string>
+    exchange: BridgeName
+    contract_addr: string
+    router_addr: string
+    ask_bridge_data: { chain_id: number, pool_id: number }
+    offer_bridge_data: { chain_id: number, pool_id: number }
 }

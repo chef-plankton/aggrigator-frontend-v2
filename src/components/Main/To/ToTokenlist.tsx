@@ -12,6 +12,7 @@ import ToToken from "./ToToken";
 import { v4 as uuidv4 } from "uuid";
 import { getTokenlist } from "../../../config/api";
 import { TokenListApi } from "../../../config/api/types";
+import { NetworkName } from "../../../config/constants/types";
 const StyledInput = styled.input<HTMLAttributes<HTMLInputElement>>`
   width: 100%;
   height: 100%;
@@ -68,7 +69,7 @@ function ToTokenlist() {
     //   setOrgListItems(res.data);
     //   setTokens(res.data);
     // });
-    getTokenlist("bsc").then((res) => {
+    getTokenlist(chainId===250?NetworkName.FTM:NetworkName.BSC).then((res) => {
       setOrgListItems(res.data);
       setTokens(res.data);
     });

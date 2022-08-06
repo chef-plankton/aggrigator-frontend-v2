@@ -44,10 +44,10 @@ function Route() {
   const [masir, setMasir] = useState([]);
   const dispatch = useDispatch();
   useEffect(() => {
-    if (responseData.data.routes[0].operations_seperated != undefined) {
+    if (responseData.data?.routes[0].operations_seperated != undefined) {
       setMasir(responseData.data.routes[0].operations_seperated);
     }
-  }, [responseData.data.routes[0].operations_seperated]);
+  }, [responseData.data?.routes[0].operations_seperated]);
 
   return (
     <>

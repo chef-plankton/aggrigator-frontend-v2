@@ -1,5 +1,5 @@
 import { TransactionResponse } from "@ethersproject/providers";
-import { formatEther, parseEther, parseUnits } from "@ethersproject/units";
+import { formatEther, formatUnits, parseEther, parseUnits } from "@ethersproject/units";
 import { BigNumber } from "ethers";
 import { AbiCoder } from "ethers/lib/utils";
 import { bool, node } from "prop-types";
@@ -13,6 +13,7 @@ import { RootState } from "../../app/store";
 import plusIcon from "../../assets/plus.png";
 import { Weth } from "../../config/abi/types";
 import { SwapDescriptionStruct } from "../../config/abi/types/AkkaAggrigator";
+import { SwapTypes } from "../../config/constants/types";
 import { changeApprovalState } from "../../features/account/accountSlice";
 import { changeChain } from "../../features/chains/chainsSlice";
 import { connectWalletStatus } from "../../features/modals/modalsSlice";
@@ -105,7 +106,7 @@ function Main() {
   );
   const chainId = useSelector(({ chains }: RootState) => chains.value);
   const balance = useTokenBalance(fromToken.adress, account);
-    
+
   const isButtonDisable = {
     disabled: swapButtonData.isDisable ? true : false,
   };
@@ -265,36 +266,43 @@ function Main() {
       }
     }
   }
+  // bs sb 
   async function multiCallSwap() {
     if (swapDescription) {
+      const sd = JSON.parse(swapDescription) as SwapDescriptionStruct
       if (fromChain !== toChain) {
         const payload = await getBytes(
-          JSON.parse(swapDescription) as SwapDescriptionStruct
+          sd
         );
-        const quote = await quoteLayerZeroFee(payload);
+        const router = sd.routes.filter(item => item.swapType === SwapTypes.StargateBridge)[0].router
+        const b=sd.routes.filter(item => item.swapType === SwapTypes.StargateBridge)[0]
+        console.log('gasForSwap',BigNumber.from(b.dstMinAmount).toNumber());
+        const quote = await quoteLayerZeroFee(router, BigNumber.from(sd.dstChainId), sd.to, payload, sd.gasForSwap as BigNumber);
+        console.log(quote[0].toString());
+        
         aggrigatorSwap(
-          JSON.parse(swapDescription) as SwapDescriptionStruct,
+          sd,
           quote[0],
           payload
         );
       } else {
         aggrigatorSwap(
-          JSON.parse(swapDescription) as SwapDescriptionStruct,
+          sd,
           BigNumber.from("0"),
           new AbiCoder().encode(["string"], [""])
         )
-        .catch(err => {
-          if (err?.code === 4001) {
-            dispatch(
-              changeSwapButtonState({
-                state: SwapButonStates.SWAP,
-                text: "Swap",
-                isDisable: false,
-              })
-            );
-          }
-        });
-        
+          .catch(err => {
+            if (err?.code === 4001) {
+              dispatch(
+                changeSwapButtonState({
+                  state: SwapButonStates.SWAP,
+                  text: "Swap",
+                  isDisable: false,
+                })
+              );
+            }
+          });
+
       }
     }
   }
@@ -398,7 +406,7 @@ function Main() {
         } shadow-lg z-10`}
     >
       <div className='max-w-3xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[50px] pt-[50px] md:pt-[50px]'>
-        <FromBox balance={balance} account={account}/>
+        <FromBox balance={balance} account={account} />
         <ToBox />
         <div className='w-[100%] flex mb-[10px] mt-0 pl-[5px] items-center'>
           <button
