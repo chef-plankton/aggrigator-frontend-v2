@@ -72,16 +72,17 @@ function FromInput() {
   const counter = useSelector(({ route }: RootState) => route.counter);
   const wallet = useSelector(({ account }: RootState) => account.wallet);
   const Connectedwallet = useWallet(wallet);
-  const { useAccount,useChainId } = Connectedwallet;
+  const { useAccount, useChainId } = Connectedwallet;
   const account = useAccount();
-    const c=useChainId()
   const dispatch = useDispatch();
   useEffect(() => {
     if (fromToken.adress !== "" && toToken.adress !== "" && amount !== "") {
       axios
         .get(
-          `https://192.64.112.22:8084/route?token0=${fromToken.adress}&chain0=${c === 56 ? "bsc" : c === 250 ? "fantom" : ""
-          }&token1=${toToken.adress}&chain1=${toChain === 56 ? "bsc" : toChain === 250 ? "fantom" : ""
+          `https://192.64.112.22:8084/route?token0=${fromToken.adress}&chain0=${
+            fromChain === 56 ? "bsc" : fromChain === 250 ? "fantom" : ""
+          }&token1=${toToken.adress}&chain1=${
+            toChain === 56 ? "bsc" : toChain === 250 ? "fantom" : ""
           }&amount=${amount}`
         )
         .then((data) => {
@@ -104,13 +105,11 @@ function FromInput() {
     resData: RouteResponseDto
   ) => {
     let swapDescription: SwapDescriptionStruct;
-    console.log(resData);
-
     swapDescription = {
       ...swapDescription,
       srcDesiredAmount: parseEther(resData.input_amount.toString()),
       dstDesiredMinAmount: parseEther(resData.return_amount.toString()),
-      dstChainId: 0,
+      dstChainId: fromChain !== toChain ? 0 : 0,
       dstPoolId: 0,
       srcPoolId: 0,
       // gasForSwap: BigNumber.from("2705617"),
@@ -118,7 +117,10 @@ function FromInput() {
       dstContractAddress: process.env.REACT_APP_FTM_AKKA_CONTRACT,
       to: account,
     };
-    const hasBridge = resData.routes[0].operations_seperated.filter(({ chain }: RouteOperationsSeparated) => chain === BridgeName.Stargate).length === 1
+    const hasBridge =
+      resData.routes[0].operations_seperated.filter(
+        ({ chain }: RouteOperationsSeparated) => chain === BridgeName.Stargate
+      ).length === 1;
     // resData.routes[0].operations_seperated.length===3
     resData.routes[0].operations_seperated.forEach(
       ({ chain, chain_id, gas_fee, operations }) => {
@@ -133,63 +135,67 @@ function FromInput() {
         //     srcPoolId: 0,
         //   };
         // }
-        operations.forEach(
-          (data) => {
-            switch (chain as NetworkName) {
-              case NetworkName.FTM.toLowerCase():
-              case NetworkName.BSC.toLowerCase():
-                {
+        operations.forEach((data) => {
+          switch (chain as NetworkName) {
+            case NetworkName.FTM.toLowerCase():
+            case NetworkName.BSC.toLowerCase():
+              {
+                let route0: RouteDescriptionStruct;
 
-                  let route0: RouteDescriptionStruct;
-
-                  const routeRegularOperations = new RouteRegularOperations({ ...data })
-                  if (routeRegularOperations instanceof RouteRegularOperations) {
-                    const {
-                      amount_in,
-                      amount_out,
-                      ask_token,
-                      contract_addr,
-                      exchange,
-                      offer_token,
-                      router_addr,
-                    } = routeRegularOperations
-                    route0 = {
-                      srcToken: offer_token[0],
-                      dstToken: ask_token[0],
-                      srcAmount: parseEther(amount_in.toString()),
-                      dstMinAmount: parseEther(amount_out.toString()),
-                      path: [offer_token[0], ask_token[0]],
-                      router: router_addr,
-                      swapType: SwapTypes.Regular,
-                    };
-                    swapDescription = {
-                      ...swapDescription,
-                      // gasForSwap: parseEther(gas_fee.toString())
-                      // srcToken: operations[0].offer_token[0],
-                      // dstToken: operations[operations.length - 1].ask_token[0],
-                      // isRegularTransfer: true,
-                    };
-                  }
-                  console.log("amm", { route0 });
-
-                  if (swapDescription?.routes === undefined) {
-                    swapDescription = {
-                      ...swapDescription,
-                      routes: [route0],
-                    };
-                  } else {
-                    swapDescription = {
-                      ...swapDescription,
-                      routes: [...swapDescription.routes, route0],
-                    };
-                  }
-
+                const routeRegularOperations = new RouteRegularOperations({
+                  ...data,
+                });
+                if (routeRegularOperations instanceof RouteRegularOperations) {
+                  const {
+                    amount_in,
+                    amount_out,
+                    ask_token,
+                    contract_addr,
+                    exchange,
+                    offer_token,
+                    router_addr,
+                  } = routeRegularOperations;
+                  route0 = {
+                    srcToken: offer_token[0],
+                    dstToken: ask_token[0],
+                    srcAmount: parseEther(amount_in.toString()),
+                    dstMinAmount: parseEther(amount_out.toString()),
+                    path: [offer_token[0], ask_token[0]],
+                    router: router_addr,
+                    swapType: SwapTypes.Regular,
+                  };
+                  swapDescription = {
+                    ...swapDescription,
+                    // gasForSwap: parseEther(gas_fee.toString())
+                    // srcToken: operations[0].offer_token[0],
+                    // dstToken: operations[operations.length - 1].ask_token[0],
+                    // isRegularTransfer: true,
+                  };
                 }
+                console.log("amm", { route0 });
 
-                break;
-              case NetworkName.BRIDGE.toLowerCase(): {
-                const routeStargateBridgeOperations = new RouteStargateBridgeOperations({ ...data })
-                if (routeStargateBridgeOperations instanceof RouteStargateBridgeOperations) {
+                if (swapDescription?.routes === undefined) {
+                  swapDescription = {
+                    ...swapDescription,
+                    routes: [route0],
+                  };
+                } else {
+                  swapDescription = {
+                    ...swapDescription,
+                    routes: [...swapDescription.routes, route0],
+                  };
+                }
+              }
+
+              break;
+            case NetworkName.BRIDGE.toLowerCase():
+              {
+                const routeStargateBridgeOperations =
+                  new RouteStargateBridgeOperations({ ...data });
+                if (
+                  routeStargateBridgeOperations instanceof
+                  RouteStargateBridgeOperations
+                ) {
                   const {
                     ask_token,
                     exchange,
@@ -199,17 +205,17 @@ function FromInput() {
                     amount_in,
                     amount_out,
                     contract_addr,
-                    router_addr
+                    router_addr,
                   } = routeStargateBridgeOperations;
                   let route0: RouteDescriptionStruct;
                   console.log("asdasml,dsakl",parseUnits(amount_in.toString(),18).toString());
-                  console.log("asdasml,dsakl",parseUnits('1.1',6).toString());
+                  console.log("asdasml,dsakl",parseUnits('0.09',6).toString());
                   
                   route0 = {
                     srcToken: offer_token[0],
                     dstToken: ask_token[0],
                     srcAmount: parseEther(amount_in.toString()),
-                    dstMinAmount: parseUnits(amount_out.toString(),6),
+                    dstMinAmount: parseUnits('0.09',6),
                     path: [offer_token[0], ask_token[0]],
                     router: router_addr,
                     swapType: SwapTypes.StargateBridge,
@@ -238,34 +244,36 @@ function FromInput() {
                   }
 
                   console.log("stargate", { route0 });
-
                 }
               }
 
-                break;
-              default:
-                break;
-            }
+              break;
+            default:
+              break;
           }
-        );
+        });
 
         // if (chain === NetworkName.BSC.toLowerCase()){
 
         // }
       }
     );
-    swapDescription = { ...swapDescription, isRegularTransfer: true }
+    swapDescription = { ...swapDescription, isRegularTransfer: true };
     swapDescription?.routes.forEach((s, index, arr) => {
       if (s.swapType === SwapTypes.StargateBridge) {
         if (arr[index + 1] !== undefined) {
-          swapDescription = { ...swapDescription, isRegularTransfer: false }
+          swapDescription = { ...swapDescription, isRegularTransfer: false };
         }
       }
 
       if (index === 0) {
-        swapDescription = { ...swapDescription, srcToken: arr[0].srcToken, dstToken: arr[arr.length - 1].dstToken }
+        swapDescription = {
+          ...swapDescription,
+          srcToken: arr[0].srcToken,
+          dstToken: arr[arr.length - 1].dstToken,
+        };
       }
-    })
+    });
     console.log({ swapDescription });
 
     return swapDescription;

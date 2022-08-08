@@ -98,7 +98,7 @@ function Route() {
                     />
                   </div>
                   <span className='text-[#000] text-[18px] font-[700] leading-[24px]'>
-                    {fromToken.symbol}
+                    {fromToken.symbol} / {masir[0]?.operations[0]?.ask_token[3]}
                   </span>
                 </div>
                 <div className='text-[#ebf0f7] text-[80px] font-[700] leading-[60px] absolute top-[14px] right-[16px]'>
@@ -122,9 +122,14 @@ function Route() {
                   {toChain === 97 ? "BSC testnet" : ""}
                 </span>
                 <div className='flex items-center justify-start'>
+                  
+                  <span className='text-[#000] text-[18px] font-[700] leading-[24px]'>
+                    {masir[masir.length - 1]?.operations[0]?.offer_token[3]}{" "}/{" "}
+                    {toToken.symbol}
+                  </span>
                   <div
                     data-testid='base-logo-wrapper'
-                    className='w-[32px] h-[32px] mr-[6px] bg-[#fff] rounded-[50%] box-border overflow-hidden inline-block'
+                    className='w-[32px] h-[32px] ml-[6px] bg-[#fff] rounded-[50%] box-border overflow-hidden inline-block'
                   >
                     <img
                       data-testid='base-logo'
@@ -139,9 +144,6 @@ function Route() {
                       }/assets/${toToken.adress}/logo.png`}
                     />
                   </div>
-                  <span className='text-[#000] text-[18px] font-[700] leading-[24px]'>
-                    {toToken.symbol}
-                  </span>
                 </div>
                 <div className='text-[#ebf0f7] text-[80px] font-[700] leading-[60px] absolute top-[14px] right-[16px]'>
                   2
@@ -313,6 +315,7 @@ function Route() {
                 </div>
               </div>
             </div>
+            {/* route dexes */}
             <div className='relative pr-[20px] pl-[16px] -mt-[10px]'>
               <span className='okex_swap_iconfont icon_icon_Arrow_Carets1 index-module__down-arrow'></span>
               <span className='okex_swap_iconfont icon_icon_Arrow_Carets1 index-module__up-arrow'></span>

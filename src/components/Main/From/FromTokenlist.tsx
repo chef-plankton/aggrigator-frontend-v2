@@ -28,7 +28,7 @@ const StyledInput = styled.input<HTMLAttributes<HTMLInputElement>>`
 `;
 function FromTokenlist() {
   const dispatch = useDispatch();
-  const chainId = useSelector(({ chains }: RootState) => chains.value);
+  const chainId = useSelector(({ route }: RootState) => route.fromChain);
 
   const [tokens, setTokens] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
