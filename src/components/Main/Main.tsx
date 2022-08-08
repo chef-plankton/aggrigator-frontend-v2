@@ -271,16 +271,29 @@ function Main() {
     if (swapDescription) {
       const sd = JSON.parse(swapDescription) as SwapDescriptionStruct
       if (fromChain !== toChain) {
-        let tochaindata = {...sd};
+        let tochaindata = { ...sd };
+        const index = tochaindata.routes.indexOf(tochaindata.routes.filter(item => item.swapType === SwapTypes.StargateBridge)[0])
+        const filteredArr = tochaindata.routes.slice(index + 1, tochaindata.routes.length)
+        tochaindata = {
+          ...sd,
+          routes: filteredArr,
+          srcToken: filteredArr[0].srcToken,
+          dstToken: filteredArr[filteredArr.length - 1].dstToken,
+          srcDesiredAmount: filteredArr[0].srcAmount,
+          dstDesiredMinAmount: filteredArr[filteredArr.length - 1].dstMinAmount,
+        };
+        console.log({tochaindata});
+        
+        // [s s b s s] [s s]
         const payload = await getBytes(
-          sd
+          tochaindata
         );
         const router = sd.routes.filter(item => item.swapType === SwapTypes.StargateBridge)[0].router
         const quote = await quoteLayerZeroFee(router, BigNumber.from(sd.dstChainId), sd.to, payload, sd.gasForSwap as BigNumber);
-        console.log('sd',sd);
-        console.log('quote',quote[0].toString());
-        console.log('payload',payload);
-        
+        console.log('sd', sd);
+        console.log('quote', quote[0].toString());
+        console.log('payload', payload);
+
         aggrigatorSwap(
           sd,
           quote[0],
