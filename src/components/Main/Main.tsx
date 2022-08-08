@@ -274,6 +274,8 @@ function Main() {
         let tochaindata = { ...sd };
         const index = tochaindata.routes.indexOf(tochaindata.routes.filter(item => item.swapType === SwapTypes.StargateBridge)[0])
         const filteredArr = tochaindata.routes.slice(index + 1, tochaindata.routes.length)
+        console.log(filteredArr);
+        
         tochaindata = {
           ...sd,
           routes: filteredArr,

@@ -19,6 +19,7 @@ import {
   SwapTypes,
   BridgeName,
   RouteOperationsSeparated,
+  ChainId,
 } from "../../../config/constants/types";
 import {
   changeAmount,
@@ -28,6 +29,7 @@ import {
   changeShowRoute,
   changeSwapDescription,
 } from "../../../features/route/routeSlice";
+import useSetContractWithChainId from "../../../hooks/useSetContractWithChainId";
 import useWallet from "../../Wallets/useWallet";
 const StyledInput = styled.input`
   position: relative;
@@ -71,6 +73,7 @@ function FromInput() {
   const chainId = useSelector(({ chains }: RootState) => chains.value);
   const counter = useSelector(({ route }: RootState) => route.counter);
   const wallet = useSelector(({ account }: RootState) => account.wallet);
+  const akkaContractAddress = useSetContractWithChainId(chainId);
   const Connectedwallet = useWallet(wallet);
   const { useAccount, useChainId } = Connectedwallet;
   const account = useAccount();
@@ -105,6 +108,7 @@ function FromInput() {
     resData: RouteResponseDto
   ) => {
     let swapDescription: SwapDescriptionStruct;
+    let swapDescription2: SwapDescriptionStruct;
     swapDescription = {
       ...swapDescription,
       srcDesiredAmount: parseEther(resData.input_amount.toString()),
@@ -113,8 +117,8 @@ function FromInput() {
       dstPoolId: 0,
       srcPoolId: 0,
       // gasForSwap: BigNumber.from("2705617"),
-      gasForSwap: BigNumber.from("1205617"),
-      dstContractAddress: process.env.REACT_APP_FTM_AKKA_CONTRACT,
+      gasForSwap: BigNumber.from("1705617"),
+      dstContractAddress: akkaContractAddress,
       to: account,
     };
     const hasBridge =
@@ -208,18 +212,25 @@ function FromInput() {
                     router_addr,
                   } = routeStargateBridgeOperations;
                   let route0: RouteDescriptionStruct;
-                  console.log("asdasml,dsakl",parseUnits(amount_in.toString(),18).toString());
-                  console.log("asdasml,dsakl",parseUnits('0.09',6).toString());
-                  
+                  console.log(
+                    "asdasml,dsakl",
+                    parseUnits(amount_in.toString(), 18).toString()
+                  );
+                  console.log(
+                    "asdasml,dsakl",
+                    parseUnits("0.09", 6).toString()
+                  );
+
                   route0 = {
                     srcToken: offer_token[0],
                     dstToken: ask_token[0],
                     srcAmount: parseEther(amount_in.toString()),
-                    dstMinAmount: parseUnits('0.09',6),
+                    dstMinAmount: parseUnits(amount_out.toString(), 6),
                     path: [offer_token[0], ask_token[0]],
                     router: router_addr,
                     swapType: SwapTypes.StargateBridge,
                   };
+
                   swapDescription = {
                     ...swapDescription,
                     // srcToken: operations[0].offer_token[0],
@@ -243,7 +254,6 @@ function FromInput() {
                     };
                   }
 
-                  console.log("stargate", { route0 });
                 }
               }
 
