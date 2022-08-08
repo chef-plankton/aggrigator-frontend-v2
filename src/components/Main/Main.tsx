@@ -271,6 +271,7 @@ function Main() {
     if (swapDescription) {
       const sd = JSON.parse(swapDescription) as SwapDescriptionStruct
       if (fromChain !== toChain) {
+        let tochaindata = {...sd};
         const payload = await getBytes(
           sd
         );

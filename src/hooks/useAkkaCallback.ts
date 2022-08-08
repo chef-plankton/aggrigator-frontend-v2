@@ -163,7 +163,7 @@ export function useAkkaAggrigatorSwapCallback(): {
           [swapDescription, payload] as SwapDescriptionStruct[],
           {
             // gasLimit:500000,
-            value: fee ? fee.toString() : undefined,
+            value: fee ? fee : undefined,
           }
         );
         addTransaction(tx, {
