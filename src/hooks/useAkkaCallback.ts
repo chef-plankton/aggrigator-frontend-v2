@@ -157,12 +157,12 @@ export function useAkkaAggrigatorSwapCallback(): {
       aggrigatorSwap: async (swapDescription, fee, payload) => {
         console.log({ swapDescription });
 
-        const tx = await callWithoutGasPrice(
+        const tx = await callWithGasPrice(
           akkaContract,
           "aggrigatorSwap",
           [swapDescription, payload] as SwapDescriptionStruct[],
           {
-            // gasLimit:1000000,
+            // gasLimit:500000,
             value: fee ? fee.toString() : undefined,
           }
         );

@@ -275,10 +275,10 @@ function Main() {
           sd
         );
         const router = sd.routes.filter(item => item.swapType === SwapTypes.StargateBridge)[0].router
-        const b=sd.routes.filter(item => item.swapType === SwapTypes.StargateBridge)[0]
-        console.log('gasForSwap',BigNumber.from(b.dstMinAmount).toNumber());
         const quote = await quoteLayerZeroFee(router, BigNumber.from(sd.dstChainId), sd.to, payload, sd.gasForSwap as BigNumber);
-        console.log(quote[0].toString());
+        console.log('sd',sd);
+        console.log('quote',quote[0].toString());
+        console.log('payload',payload);
         
         aggrigatorSwap(
           sd,

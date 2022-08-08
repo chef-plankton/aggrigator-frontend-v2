@@ -37,6 +37,8 @@ export function useCallWithoutGasPrice<T extends Contract, U>() {
     ): Promise<U | TransactionResponse> => {
       const contractMethod = get(contract, methodName);
       const estimateGas = await contract.estimateGas[methodName as string](...methodArgs, { ...overrides })
+      console.log(estimateGas.toString());
+      
       const tx = await contractMethod(...methodArgs, { ...overrides, gasLimit: calculateGasMargin(estimateGas) });
       return tx;
     },

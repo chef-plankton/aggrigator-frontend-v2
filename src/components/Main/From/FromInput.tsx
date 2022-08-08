@@ -114,7 +114,7 @@ function FromInput() {
       dstPoolId: 0,
       srcPoolId: 0,
       // gasForSwap: BigNumber.from("2705617"),
-      gasForSwap: BigNumber.from("4320617"),
+      gasForSwap: BigNumber.from("1205617"),
       dstContractAddress: process.env.REACT_APP_FTM_AKKA_CONTRACT,
       to: account,
     };
@@ -203,13 +203,13 @@ function FromInput() {
                   } = routeStargateBridgeOperations;
                   let route0: RouteDescriptionStruct;
                   console.log("asdasml,dsakl",parseUnits(amount_in.toString(),18).toString());
-                  console.log("asdasml,dsakl",parseUnits('0.09',6).toString());
+                  console.log("asdasml,dsakl",parseUnits('1.1',6).toString());
                   
                   route0 = {
                     srcToken: offer_token[0],
                     dstToken: ask_token[0],
                     srcAmount: parseEther(amount_in.toString()),
-                    dstMinAmount: parseUnits('0.09',6),
+                    dstMinAmount: parseUnits(amount_out.toString(),6),
                     path: [offer_token[0], ask_token[0]],
                     router: router_addr,
                     swapType: SwapTypes.StargateBridge,
