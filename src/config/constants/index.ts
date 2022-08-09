@@ -5,4 +5,4 @@ export const networkInfo: NetworkInfo[] = [
     { name: NetworkName.FTM, chainId: ChainId.FTM },
 ]
 
-export const defaultDecimalPlaces: number = 6 
+export const defaultDecimalPlaces: number = 18 

@@ -110,6 +110,7 @@ export default function Updater(): null {
                   case "approve":
                     if (receipt.status === 1)
                       dispatch(changeApprovalState(ApprovalState.APPROVED));
+                      // dispatch(changeApprovevalue());
                     break;
                   case "swap":
                     if (isActive) {
