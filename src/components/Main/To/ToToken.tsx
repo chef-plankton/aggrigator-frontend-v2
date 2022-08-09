@@ -16,8 +16,9 @@ function ToToken({ token, index }) {
         dispatch(
           changeToToken({
             name: token.name,
-            adress: token.contract_addr,
             symbol: token.symbol,
+            adress: token.contract_addr,
+            decimals: token.decimals,
           })
         );
         dispatch(changeModalStatus(false));
@@ -27,7 +28,13 @@ function ToToken({ token, index }) {
         <img
           className="w-[24px] h-[24px] rounded-[50%]"
           alt=""
-          src={`https://assets-cdn.trustwallet.com/blockchains/${toChain === 56 || toChain === 97 ? "smartchain" : toChain === 250 ? "fantom" : ""}/assets/${token.contract_addr}/logo.png`}
+          src={`https://assets-cdn.trustwallet.com/blockchains/${
+            toChain === 56 || toChain === 97
+              ? "smartchain"
+              : toChain === 250
+              ? "fantom"
+              : ""
+          }/assets/${token.contract_addr}/logo.png`}
         />
       </div>
 

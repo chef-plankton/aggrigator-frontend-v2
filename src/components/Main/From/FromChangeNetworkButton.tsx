@@ -41,7 +41,7 @@ const FromChangeNetworkButton: FC<{
         <div className="w-[20%]">
           <img src={imageSrc} alt="" className="w-[32px]" />
         </div>
-        <div className="mx-5 w-[60%] text-center">
+        <div className="mx-4 w-[60%] text-center">
           <h3>{coinName}</h3>
         </div>
         <div className="w-[20%]">

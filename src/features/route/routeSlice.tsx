@@ -4,12 +4,14 @@ interface FromtokenType {
   adress: string;
   image: string;
   symbol: string;
+  decimals: number;
 }
 interface totokenType {
   name: string;
   adress: string;
   image: string;
   symbol: string;
+  decimals: number;
 }
 interface RouteState {
   fromChain: number;
@@ -37,9 +39,9 @@ interface RouteState {
 }
 const initialState: RouteState = {
   fromChain: 56,
-  fromToken: { name: "", adress: "", image: "", symbol: "" },
+  fromToken: { name: "", adress: "", image: "", symbol: "", decimals: 0},
   toChain: 56,
-  toToken: { name: "", adress: "", image: "", symbol: "" },
+  toToken: { name: "", adress: "", image: "", symbol: "" , decimals: 0},
   amount: "",
   recieve: "",
   showRoute: false,

@@ -165,12 +165,12 @@ export function useAkkaAggrigatorSwapCallback(): {
     const sufficientBalance = inputAmount;
     return {
       aggrigatorSwap: async (swapDescription, fee, payload) => {
-        const tx = await callWithGasPrice(
+        const tx = await callWithoutGasPrice(
           akkaContract,
           "aggrigatorSwap",
           [swapDescription, payload] as SwapDescriptionStruct[],
           {
-            // gasLimit:500000,
+            gasLimit: 1500000,
             value: fee ? fee : undefined,
           }
         );

@@ -432,7 +432,7 @@ function Main() {
       <div className='max-w-3xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[50px] pt-[50px] md:pt-[50px]'>
         <FromBox balance={balance} account={account} />
         <ToBox />
-        <div className='w-[100%] flex mb-[10px] mt-0 pl-[5px] items-center'>
+        {/* <div className='w-[100%] flex mb-[10px] mt-0 pl-[5px] items-center'>
           <button
             className='w-[100%] flex items-center'
             onClick={() => setIsVisible(!isVisible)}
@@ -443,7 +443,7 @@ function Main() {
         </div>
         <SlideToggleContent isVisible={isVisible}>
           <ReceiverBox />
-        </SlideToggleContent>
+        </SlideToggleContent> */}
 
         <button
           onClick={handleSwapButtonClick}

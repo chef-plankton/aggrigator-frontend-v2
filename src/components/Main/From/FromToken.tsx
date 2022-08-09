@@ -6,21 +6,22 @@ import { changeModalStatus } from "../../../features/modals/modalsSlice";
 import { changeFromToken } from "../../../features/route/routeSlice";
 
 function FromToken({ token, index }) {
+  const fromToken = useSelector(({ route }: RootState) => route.fromToken);
   const dispatch = useDispatch();
   const fromChain = useSelector(({ route }: RootState) => route.fromChain);
-
   return (
     <div
       key={index}
       className="flex items-center justify-between my-1 cursor-pointer hover:bg-slate-200 px-3 py-2 m-2 rounded-md"
-      onClick={() => {
+      onClick={() => {        
         dispatch(
           changeFromToken({
             name: token.name,
             symbol: token.symbol,
             adress: token.contract_addr,
+            decimals: token.decimals,
           })
-        );
+        );        
         dispatch(changeModalStatus(false));
       }}
     >
@@ -29,7 +30,6 @@ function FromToken({ token, index }) {
           className="w-[24px] h-[24px] rounded-[50%]"
           alt=""
           loading="lazy"
-
           src={`https://assets-cdn.trustwallet.com/blockchains/${
             fromChain === 56 || fromChain === 97
               ? "smartchain"

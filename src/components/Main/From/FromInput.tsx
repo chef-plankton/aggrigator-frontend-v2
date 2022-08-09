@@ -29,8 +29,9 @@ import {
   changeShowRoute,
   changeSwapDescription,
 } from "../../../features/route/routeSlice";
-import useSetContractWithChainId from "../../../hooks/useSetContractWithChainId";
+import getContractWithChainId from "../../../hooks/useSetContractWithChainId";
 import useWallet from "../../Wallets/useWallet";
+import { defaultDecimalPlaces } from '../../../config/constants/index'
 const StyledInput = styled.input`
   position: relative;
   text-overflow: ellipsis;
@@ -63,6 +64,10 @@ const StyledInput = styled.input`
     font-size: 16px;
   }
 `;
+function test(n: number, decimal: number) {
+  // return parseUnits(n.toFixed(decimal), decimal)
+  return BigNumber.from("0")
+}
 function FromInput() {
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   const fromToken = useSelector(({ route }: RootState) => route.fromToken);
@@ -73,7 +78,7 @@ function FromInput() {
   const chainId = useSelector(({ chains }: RootState) => chains.value);
   const counter = useSelector(({ route }: RootState) => route.counter);
   const wallet = useSelector(({ account }: RootState) => account.wallet);
-  const akkaContractAddress = useSetContractWithChainId(chainId);
+  const akkaContractAddress = getContractWithChainId(toChain);
   const Connectedwallet = useWallet(wallet);
   const { useAccount, useChainId } = Connectedwallet;
   const account = useAccount();
@@ -82,10 +87,8 @@ function FromInput() {
     if (fromToken.adress !== "" && toToken.adress !== "" && amount !== "") {
       axios
         .get(
-          `https://192.64.112.22:8084/route?token0=${fromToken.adress}&chain0=${
-            fromChain === 56 ? "bsc" : fromChain === 250 ? "fantom" : ""
-          }&token1=${toToken.adress}&chain1=${
-            toChain === 56 ? "bsc" : toChain === 250 ? "fantom" : ""
+          `https://192.64.112.22:8084/route?token0=${fromToken.adress}&chain0=${fromChain === 56 ? "bsc" : fromChain === 250 ? "fantom" : ""
+          }&token1=${toToken.adress}&chain1=${toChain === 56 ? "bsc" : toChain === 250 ? "fantom" : ""
           }&amount=${amount}`
         )
         .then((data) => {
@@ -111,34 +114,18 @@ function FromInput() {
     let swapDescription2: SwapDescriptionStruct;
     swapDescription = {
       ...swapDescription,
-      srcDesiredAmount: parseEther(resData.input_amount.toString()),
-      dstDesiredMinAmount: parseEther(resData.return_amount.toString()),
-      dstChainId: fromChain !== toChain ? 0 : 0,
+      dstChainId: 0,
       dstPoolId: 0,
       srcPoolId: 0,
-      // gasForSwap: BigNumber.from("2705617"),
       gasForSwap: BigNumber.from("1705617"),
       dstContractAddress: akkaContractAddress,
       to: account,
     };
-    const hasBridge =
-      resData.routes[0].operations_seperated.filter(
-        ({ chain }: RouteOperationsSeparated) => chain === BridgeName.Stargate
-      ).length === 1;
-    // resData.routes[0].operations_seperated.length===3
     resData.routes[0].operations_seperated.forEach(
       ({ chain, chain_id, gas_fee, operations }) => {
         swapDescription = {
           ...swapDescription,
         };
-        // if (chain === "bridge") {
-        //   swapDescription = {
-        //     ...swapDescription,
-        //     dstChainId: 0,
-        //     dstPoolId: 0,
-        //     srcPoolId: 0,
-        //   };
-        // }
         operations.forEach((data) => {
           switch (chain as NetworkName) {
             case NetworkName.FTM.toLowerCase():
@@ -159,21 +146,19 @@ function FromInput() {
                     offer_token,
                     router_addr,
                   } = routeRegularOperations;
+
                   route0 = {
                     srcToken: offer_token[0],
                     dstToken: ask_token[0],
-                    srcAmount: parseEther(amount_in.toString()),
-                    dstMinAmount: parseEther(amount_out.toString()),
+                    srcAmount: test(amount_in, +offer_token[4]),
+                    dstMinAmount: test(amount_out, +offer_token[4]),
                     path: [offer_token[0], ask_token[0]],
                     router: router_addr,
                     swapType: SwapTypes.Regular,
                   };
+                  console.log(route0);
                   swapDescription = {
                     ...swapDescription,
-                    // gasForSwap: parseEther(gas_fee.toString())
-                    // srcToken: operations[0].offer_token[0],
-                    // dstToken: operations[operations.length - 1].ask_token[0],
-                    // isRegularTransfer: true,
                   };
                 }
 
@@ -215,8 +200,8 @@ function FromInput() {
                   route0 = {
                     srcToken: offer_token[0],
                     dstToken: ask_token[0],
-                    srcAmount: parseEther(amount_in.toString()),
-                    dstMinAmount: parseUnits(amount_out.toString(), 6),
+                    srcAmount: test(amount_in, +offer_token[4]),
+                    dstMinAmount: test(amount_out, +offer_token[4]),
                     path: [offer_token[0], ask_token[0]],
                     router: router_addr,
                     swapType: SwapTypes.StargateBridge,
@@ -267,10 +252,14 @@ function FromInput() {
       }
 
       if (index === 0) {
+        const operations = resData.routes[0].operations;
         swapDescription = {
           ...swapDescription,
           srcToken: arr[0].srcToken,
           dstToken: arr[arr.length - 1].dstToken,
+          srcDesiredAmount: parseUnits(resData.input_amount.toString(), +operations[0].offer_token[4]),
+          dstDesiredMinAmount:
+            parseUnits(resData.return_amount.toString(), +operations[operations.length - 1].ask_token[4]),
         };
       }
     });
@@ -281,7 +270,7 @@ function FromInput() {
   return (
     <StyledInput
       color={themeMode === "light" ? "black" : "white"}
-      placeholder='Enter amount you want to sell'
+      placeholder="Enter amount you want to sell"
       value={amount}
       onChange={(e) => {
         const value = e.target.value;
