@@ -1,6 +1,4 @@
-import {
-  TransactionResponse
-} from "@ethersproject/providers";
+import { TransactionResponse } from "@ethersproject/providers";
 import { BigNumber, BytesLike } from "ethers";
 import { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
@@ -22,8 +20,8 @@ const NOT_APPLICABLE = { wrapType: WrapType.NOT_APPLICABLE };
 
 export function useAkkaEncodeSwapDescriptionCallback(): {
   getBytes?:
-  | undefined
-  | ((swapDescription: SwapDescriptionStruct) => Promise<string>);
+    | undefined
+    | ((swapDescription: SwapDescriptionStruct) => Promise<string>);
   inputError?: string;
 } {
   const wallet = useSelector(({ account }: RootState) => account.wallet);
@@ -70,8 +68,14 @@ export function useAkkaEncodeSwapDescriptionCallback(): {
 }
 export function useAkkaCalcLayerZeroFeeCallback(): {
   quoteLayerZeroFee?:
-  | undefined
-  | ((router: string, dstChainId: BigNumber, to: string, payload: BytesLike, gasForCall: BigNumber) => Promise<[BigNumber, BigNumber]>);
+    | undefined
+    | ((
+        router: string,
+        dstChainId: BigNumber,
+        to: string,
+        payload: BytesLike,
+        gasForCall: BigNumber
+      ) => Promise<[BigNumber, BigNumber]>);
   inputError?: string;
 } {
   const { useAccount, useChainId } = useWallet("metamask");
@@ -100,13 +104,19 @@ export function useAkkaCalcLayerZeroFeeCallback(): {
   return useMemo(() => {
     const sufficientBalance = inputAmount;
     return {
-      quoteLayerZeroFee: async (router, dstChainId, to, payload, gasForCall) => {
+      quoteLayerZeroFee: async (
+        router,
+        dstChainId,
+        to,
+        payload,
+        gasForCall
+      ) => {
         const fee = await callWithGasPrice(
           akkaContract,
           "quoteLayerZeroFee",
-          [
-            router, dstChainId, to, payload, gasForCall
-          ] as Parameters<typeof akkaContract.quoteLayerZeroFee>[],
+          [router, dstChainId, to, payload, gasForCall] as Parameters<
+            typeof akkaContract.quoteLayerZeroFee
+          >[],
           {
             // gasLimit: 21000000,
           }
@@ -119,12 +129,12 @@ export function useAkkaCalcLayerZeroFeeCallback(): {
 }
 export function useAkkaAggrigatorSwapCallback(): {
   aggrigatorSwap?:
-  | undefined
-  | ((
-    swapDescription: SwapDescriptionStruct,
-    fee: BigNumber,
-    payload: string
-  ) => Promise<TransactionResponse>);
+    | undefined
+    | ((
+        swapDescription: SwapDescriptionStruct,
+        fee: BigNumber,
+        payload: string
+      ) => Promise<TransactionResponse>);
   inputError?: string;
 } {
   let parsedResponseString = null;
@@ -155,8 +165,6 @@ export function useAkkaAggrigatorSwapCallback(): {
     const sufficientBalance = inputAmount;
     return {
       aggrigatorSwap: async (swapDescription, fee, payload) => {
-        console.log({ swapDescription });
-
         const tx = await callWithGasPrice(
           akkaContract,
           "aggrigatorSwap",

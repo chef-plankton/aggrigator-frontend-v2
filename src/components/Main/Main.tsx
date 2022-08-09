@@ -1,5 +1,10 @@
 import { TransactionResponse } from "@ethersproject/providers";
-import { formatEther, formatUnits, parseEther, parseUnits } from "@ethersproject/units";
+import {
+  formatEther,
+  formatUnits,
+  parseEther,
+  parseUnits,
+} from "@ethersproject/units";
 import { BigNumber } from "ethers";
 import { AbiCoder } from "ethers/lib/utils";
 import { bool, node } from "prop-types";
@@ -266,16 +271,22 @@ function Main() {
       }
     }
   }
-  // bs sb 
+  // bs sb
   async function multiCallSwap() {
     if (swapDescription) {
-      const sd = JSON.parse(swapDescription) as SwapDescriptionStruct
+      const sd = JSON.parse(swapDescription) as SwapDescriptionStruct;
       if (fromChain !== toChain) {
         let tochaindata = { ...sd };
-        const index = tochaindata.routes.indexOf(tochaindata.routes.filter(item => item.swapType === SwapTypes.StargateBridge)[0])
-        const filteredArr = tochaindata.routes.slice(index + 1, tochaindata.routes.length)
-        console.log(filteredArr);
-        
+        const index = tochaindata.routes.indexOf(
+          tochaindata.routes.filter(
+            (item) => item.swapType === SwapTypes.StargateBridge
+          )[0]
+        );
+        const filteredArr = tochaindata.routes.slice(
+          index + 1,
+          tochaindata.routes.length
+        );
+
         tochaindata = {
           ...sd,
           routes: filteredArr,
@@ -284,41 +295,37 @@ function Main() {
           srcDesiredAmount: filteredArr[0].srcAmount,
           dstDesiredMinAmount: filteredArr[filteredArr.length - 1].dstMinAmount,
         };
-        console.log({tochaindata});
-        
-        // [s s b s s] [s s]
-        const payload = await getBytes(
-          tochaindata
-        );
-        const router = sd.routes.filter(item => item.swapType === SwapTypes.StargateBridge)[0].router
-        const quote = await quoteLayerZeroFee(router, BigNumber.from(sd.dstChainId), sd.to, payload, sd.gasForSwap as BigNumber);
-        console.log('sd', sd);
-        console.log('quote', quote[0].toString());
-        console.log('payload', payload);
 
-        aggrigatorSwap(
-          sd,
-          quote[0],
-          payload
+        // [s s b s s] [s s]
+        const payload = await getBytes(tochaindata);
+        const router = sd.routes.filter(
+          (item) => item.swapType === SwapTypes.StargateBridge
+        )[0].router;
+        const quote = await quoteLayerZeroFee(
+          router,
+          BigNumber.from(sd.dstChainId),
+          sd.to,
+          payload,
+          sd.gasForSwap as BigNumber
         );
+
+        aggrigatorSwap(sd, quote[0], payload);
       } else {
         aggrigatorSwap(
           sd,
           BigNumber.from("0"),
           new AbiCoder().encode(["string"], [""])
-        )
-          .catch(err => {
-            if (err?.code === 4001) {
-              dispatch(
-                changeSwapButtonState({
-                  state: SwapButonStates.SWAP,
-                  text: "Swap",
-                  isDisable: false,
-                })
-              );
-            }
-          });
-
+        ).catch((err) => {
+          if (err?.code === 4001) {
+            dispatch(
+              changeSwapButtonState({
+                state: SwapButonStates.SWAP,
+                text: "Swap",
+                isDisable: false,
+              })
+            );
+          }
+        });
       }
     }
   }
@@ -397,7 +404,7 @@ function Main() {
           );
           break;
         case SwapButonStates.SWAP:
-          multiCallSwap()
+          multiCallSwap();
           dispatch(
             changeSwapButtonState({
               state: SwapButonStates.SWAP,
@@ -418,8 +425,9 @@ function Main() {
   const [isVisible, setIsVisible] = useState(false);
   return (
     <main
-      className={`${themeMode === "light" ? "bg-slate-100" : "bg-[#393E46]"
-        } shadow-lg z-10`}
+      className={`${
+        themeMode === "light" ? "bg-slate-100" : "bg-[#393E46]"
+      } shadow-lg z-10`}
     >
       <div className='max-w-3xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[50px] pt-[50px] md:pt-[50px]'>
         <FromBox balance={balance} account={account} />
@@ -439,10 +447,11 @@ function Main() {
 
         <button
           onClick={handleSwapButtonClick}
-          className={`mt-[10px] py-1 w-[100%] h-[50px] text-center font-medium text-lg rounded-[10px] ${!swapButtonData.isDisable
-            ? "text-white bg-[#111111] hover:bg-[#111111] hover:text-[white] hover:shadow-none hover:border-[1px] hover:border-black transition duration-300 shadow-[0_8px_32px_#23293176]"
-            : "text-white bg-gray-300"
-            }`}
+          className={`mt-[10px] py-1 w-[100%] h-[50px] text-center font-medium text-lg rounded-[10px] ${
+            !swapButtonData.isDisable
+              ? "text-white bg-[#111111] hover:bg-[#111111] hover:text-[white] hover:shadow-none hover:border-[1px] hover:border-black transition duration-300 shadow-[0_8px_32px_#23293176]"
+              : "text-white bg-gray-300"
+          }`}
           {...isButtonDisable}
         >
           {swapButtonData.text}

@@ -40,7 +40,6 @@ const FromBox: FC<FromBoxProps> = ({ account, balance }) => {
   const fromToken = useSelector(({ route }: RootState) => route.fromToken);
   // const address =useAccount
   // const balance = useTokenBalance(fromToken.adress, address);
-  // console.log(fromToken, address);
 
   return (
     <StyledFromBox

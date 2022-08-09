@@ -176,7 +176,6 @@ function FromInput() {
                     // isRegularTransfer: true,
                   };
                 }
-                console.log("amm", { route0 });
 
                 if (swapDescription?.routes === undefined) {
                   swapDescription = {
@@ -212,14 +211,6 @@ function FromInput() {
                     router_addr,
                   } = routeStargateBridgeOperations;
                   let route0: RouteDescriptionStruct;
-                  console.log(
-                    "asdasml,dsakl",
-                    parseUnits(amount_in.toString(), 18).toString()
-                  );
-                  console.log(
-                    "asdasml,dsakl",
-                    parseUnits("0.09", 6).toString()
-                  );
 
                   route0 = {
                     srcToken: offer_token[0],
@@ -253,7 +244,6 @@ function FromInput() {
                       routes: [...swapDescription.routes, route0],
                     };
                   }
-
                 }
               }
 

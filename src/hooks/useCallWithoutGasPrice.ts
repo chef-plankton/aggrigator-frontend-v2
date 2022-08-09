@@ -13,7 +13,7 @@ export function useCallWithoutGasPrice<T extends Contract, U>() {
    * @param overrides An overrides object to pass to the method. gasPrice passed in here will take priority over the price returned by useGasPrice
    * @returns https://docs.ethers.io/v5/api/providers/types/#providers-TransactionReceipt
    */
-  function a(x: number) { }
+  function a(x: number) {}
   const callWithoutGasPrice = useCallback(
     async (
       contract: T,
@@ -36,10 +36,15 @@ export function useCallWithoutGasPrice<T extends Contract, U>() {
       overrides: CallOverrides = null
     ): Promise<U | TransactionResponse> => {
       const contractMethod = get(contract, methodName);
-      const estimateGas = await contract.estimateGas[methodName as string](...methodArgs, { ...overrides })
-      console.log(estimateGas.toString());
-      
-      const tx = await contractMethod(...methodArgs, { ...overrides, gasLimit: calculateGasMargin(estimateGas) });
+      const estimateGas = await contract.estimateGas[methodName as string](
+        ...methodArgs,
+        { ...overrides }
+      );
+
+      const tx = await contractMethod(...methodArgs, {
+        ...overrides,
+        gasLimit: calculateGasMargin(estimateGas),
+      });
       return tx;
     },
     []
@@ -48,5 +53,7 @@ export function useCallWithoutGasPrice<T extends Contract, U>() {
   return { callWithoutGasPrice, callWithGasPrice };
 }
 export function calculateGasMargin(value: BigNumber, margin = 1000): BigNumber {
-  return value.mul(BigNumber.from(10000).add(BigNumber.from(margin))).div(BigNumber.from(10000))
+  return value
+    .mul(BigNumber.from(10000).add(BigNumber.from(margin)))
+    .div(BigNumber.from(10000));
 }
