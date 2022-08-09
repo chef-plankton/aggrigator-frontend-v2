@@ -129,6 +129,7 @@ export default function Updater(): null {
                     break;
                 }
               }
+
               receipt.status === 1
                 ? Swal.fire({
                     position: "top-end",
@@ -142,12 +143,18 @@ export default function Updater(): null {
                     showConfirmButton: true,
                     confirmButtonColor: "black",
                     cancelButtonColor: "#d33",
-                    confirmButtonText: "Show on BSC Scan",
+                    confirmButtonText: `Show on ${chainId === 56 ? "BSC Scan" : chainId === 250 ? "FTM Scan" : ""}`,
                   }).then((data) => {
                     const { isDismissed, isConfirmed, isDenied } = data;
                     if (isConfirmed) {
                       window.open(
-                        `${"https://bscscan.com"}/tx/${tx.hash}`,
+                        `${
+                          chainId === 56
+                            ? "https://bscscan.com"
+                            : chainId === 250
+                            ? "https://ftmscan.com/"
+                            : ""
+                        }/tx/${tx.hash}`,
                         "_blank"
                       );
                     }

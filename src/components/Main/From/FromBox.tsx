@@ -1,5 +1,6 @@
-import { formatEther } from "@ethersproject/units";
+import { formatEther, formatUnits, parseUnits } from "@ethersproject/units";
 import { BigNumber } from "ethers";
+import _ from "lodash";
 import { FC } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
@@ -42,6 +43,8 @@ const FromBox: FC<FromBoxProps> = ({ account, balance }) => {
   // const balance = useTokenBalance(fromToken.adress, address);
   // console.log(fromToken, address);
 
+  console.log(balance?.toString());
+
   return (
     <StyledFromBox
       color={themeMode === "light" ? "black" : "white"}
@@ -52,20 +55,22 @@ const FromBox: FC<FromBoxProps> = ({ account, balance }) => {
       }
     >
       {/* box top bar */}
-      <div className='px-3 py-1 w-[100%] flex justify-between'>
+      <div className="px-3 py-1 w-[100%] flex justify-between">
         From
-        <div className='flex items-center'>
-          <span className='px-3 py-1 mx-1 rounded-[5px] bg-[#f3f3f3]'>
+        <div className="flex items-center">
+          <span className="px-3 py-1 mx-1 rounded-[5px] bg-[#f3f3f3]">
             Your Balance:{" "}
-            {balance ? Number(formatEther(balance?.toString()))?.toFixed(4) : 0}
+            {balance
+              ? Number(formatUnits(balance, fromToken.decimals)).toFixed(4)
+              : 0}
           </span>
           <FromRefresh />
           {/* <FromAdvanceSetting /> */}
         </div>
       </div>
       {/* box datas */}
-      <div className='px-3 py-2 flex justify-between flex-col md:flex-row'>
-        <div className='md:w-[60%] w-[100%} flex justify-between '>
+      <div className="px-3 py-2 flex justify-between flex-col md:flex-row">
+        <div className="md:w-[60%] w-[100%} flex justify-between ">
           {/* from network */}
           <FromChangeNetworkButton
             imageSrc={`${chainId === 56 ? bnblightIcon : ""}${
@@ -87,7 +92,7 @@ const FromBox: FC<FromBoxProps> = ({ account, balance }) => {
           />
         </div>
         {/* from input */}
-        <div className='md:w-[40%] w-[100%} mt-[30px] md:mt-0 flex flex-col justify-center'>
+        <div className="md:w-[40%] w-[100%} mt-[30px] md:mt-0 flex flex-col justify-center">
           <FromInput />
         </div>
       </div>
