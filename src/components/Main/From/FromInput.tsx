@@ -31,6 +31,7 @@ import {
 } from "../../../features/route/routeSlice";
 import getContractWithChainId from "../../../hooks/useSetContractWithChainId";
 import useWallet from "../../Wallets/useWallet";
+import {defaultDecimalPlaces} from '../../../config/constants/index'
 const StyledInput = styled.input`
   position: relative;
   text-overflow: ellipsis;
@@ -82,8 +83,10 @@ function FromInput() {
     if (fromToken.adress !== "" && toToken.adress !== "" && amount !== "") {
       axios
         .get(
-          `https://192.64.112.22:8084/route?token0=${fromToken.adress}&chain0=${fromChain === 56 ? "bsc" : fromChain === 250 ? "fantom" : ""
-          }&token1=${toToken.adress}&chain1=${toChain === 56 ? "bsc" : toChain === 250 ? "fantom" : ""
+          `https://192.64.112.22:8084/route?token0=${fromToken.adress}&chain0=${
+            fromChain === 56 ? "bsc" : fromChain === 250 ? "fantom" : ""
+          }&token1=${toToken.adress}&chain1=${
+            toChain === 56 ? "bsc" : toChain === 250 ? "fantom" : ""
           }&amount=${amount}`
         )
         .then((data) => {
@@ -109,34 +112,18 @@ function FromInput() {
     let swapDescription2: SwapDescriptionStruct;
     swapDescription = {
       ...swapDescription,
-      // srcDesiredAmount: parseEther(resData.input_amount.toString()),
-      // dstDesiredMinAmount: parseEther(resData.return_amount.toString()),
       dstChainId: 0,
       dstPoolId: 0,
       srcPoolId: 0,
-      // gasForSwap: BigNumber.from("2705617"),
       gasForSwap: BigNumber.from("1705617"),
       dstContractAddress: akkaContractAddress,
       to: account,
     };
-    const hasBridge =
-      resData.routes[0].operations_seperated.filter(
-        ({ chain }: RouteOperationsSeparated) => chain === BridgeName.Stargate
-      ).length === 1;
-    // resData.routes[0].operations_seperated.length===3
     resData.routes[0].operations_seperated.forEach(
       ({ chain, chain_id, gas_fee, operations }) => {
         swapDescription = {
           ...swapDescription,
         };
-        // if (chain === "bridge") {
-        //   swapDescription = {
-        //     ...swapDescription,
-        //     dstChainId: 0,
-        //     dstPoolId: 0,
-        //     srcPoolId: 0,
-        //   };
-        // }
         operations.forEach((data) => {
           switch (chain as NetworkName) {
             case NetworkName.FTM.toLowerCase():
@@ -157,21 +144,25 @@ function FromInput() {
                     offer_token,
                     router_addr,
                   } = routeRegularOperations;
+
                   route0 = {
                     srcToken: offer_token[0],
                     dstToken: ask_token[0],
-                    srcAmount: parseUnits(amount_in.toString(), offer_token[4]),
-                    dstMinAmount: parseUnits(amount_out.toString(), ask_token[4]),
+                    srcAmount: parseUnits(
+                      amount_in.toFixed(defaultDecimalPlaces),
+                      offer_token[4]
+                    ),
+                    dstMinAmount: parseUnits(
+                      amount_out.toFixed(defaultDecimalPlaces),
+                      ask_token[4]
+                    ),
                     path: [offer_token[0], ask_token[0]],
                     router: router_addr,
                     swapType: SwapTypes.Regular,
                   };
+                  console.log(route0);
                   swapDescription = {
                     ...swapDescription,
-                    // gasForSwap: parseEther(gas_fee.toString())
-                    // srcToken: operations[0].offer_token[0],
-                    // dstToken: operations[operations.length - 1].ask_token[0],
-                    // isRegularTransfer: true,
                   };
                 }
                 console.log("amm", { route0 });
@@ -210,20 +201,16 @@ function FromInput() {
                     router_addr,
                   } = routeStargateBridgeOperations;
                   let route0: RouteDescriptionStruct;
-                  console.log(
-                    "asdasml,dsakl",
-                    parseUnits(amount_in.toString(), 18).toString()
-                  );
-                  console.log(
-                    "asdasml,dsakl",
-                    parseUnits("0.09", 6).toString()
-                  );
-                    
+
+
                   route0 = {
                     srcToken: offer_token[0],
                     dstToken: ask_token[0],
-                    srcAmount: parseUnits(amount_in.toString(), offer_token[4]),
-                    dstMinAmount: parseUnits(amount_out.toString(), ask_token[4]),
+                    srcAmount: parseUnits(amount_in.toFixed(defaultDecimalPlaces), offer_token[4]),
+                    dstMinAmount: parseUnits(
+                      amount_out.toFixed(defaultDecimalPlaces),
+                      ask_token[4]
+                    ),
                     path: [offer_token[0], ask_token[0]],
                     router: router_addr,
                     swapType: SwapTypes.StargateBridge,
@@ -251,7 +238,6 @@ function FromInput() {
                       routes: [...swapDescription.routes, route0],
                     };
                   }
-
                 }
               }
 
@@ -280,8 +266,14 @@ function FromInput() {
           ...swapDescription,
           srcToken: arr[0].srcToken,
           dstToken: arr[arr.length - 1].dstToken,
-          srcDesiredAmount: parseUnits(resData.input_amount.toString(), operations[0].offer_token[4]),
-          dstDesiredMinAmount: parseUnits(resData.return_amount.toString(), operations[operations.length - 1].ask_token[4]),
+          srcDesiredAmount: parseUnits(
+            resData.input_amount.toFixed(defaultDecimalPlaces),
+            operations[0].offer_token[4]
+          ),
+          dstDesiredMinAmount: parseUnits(
+            resData.return_amount.toFixed(defaultDecimalPlaces),
+            operations[operations.length - 1].ask_token[4]
+          ),
         };
       }
     });
@@ -292,7 +284,7 @@ function FromInput() {
   return (
     <StyledInput
       color={themeMode === "light" ? "black" : "white"}
-      placeholder='Enter amount you want to sell'
+      placeholder="Enter amount you want to sell"
       value={amount}
       onChange={(e) => {
         const value = e.target.value;
