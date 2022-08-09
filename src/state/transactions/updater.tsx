@@ -117,7 +117,6 @@ export default function Updater(): null {
                         dispatch(changeApprovevalue(null));
                         dispatch(clearRouteAfterSwap());
                       }
-
                     } else {
                       dispatch(
                         changeSwapButtonState({
@@ -130,36 +129,34 @@ export default function Updater(): null {
                     break;
                 }
               }
-
               receipt.status === 1
                 ? Swal.fire({
-                  position: "top-end",
-                  icon: "success",
-                  title: `Transaction Confirmed`,
-                  html: `<p>Tx: ${tx.hash}</p>`,
-                  width: "500px",
-                  heightAuto: false,
-                  showCancelButton: true,
-                  showCloseButton: true,
-                  showConfirmButton: true,
-                  confirmButtonColor: "black",
-                  cancelButtonColor: "#d33",
-                  confirmButtonText: "Show on BSC Scan",
-
-                }).then((data) => {
-                  const { isDismissed, isConfirmed, isDenied } = data
-                  if (isConfirmed) {
-                    window.open(
-                      `${"https://bscscan.com"}/tx/${tx.hash}`,
-                      "_blank"
-                    );
-                  }
-                })
+                    position: "top-end",
+                    icon: "success",
+                    title: `Transaction Confirmed`,
+                    html: `<p>Tx: ${tx.hash}</p>`,
+                    width: "500px",
+                    heightAuto: false,
+                    showCancelButton: true,
+                    showCloseButton: true,
+                    showConfirmButton: true,
+                    confirmButtonColor: "black",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Show on BSC Scan",
+                  }).then((data) => {
+                    const { isDismissed, isConfirmed, isDenied } = data;
+                    if (isConfirmed) {
+                      window.open(
+                        `${"https://bscscan.com"}/tx/${tx.hash}`,
+                        "_blank"
+                      );
+                    }
+                  })
                 : Swal.fire({
-                  icon: "error",
-                  title: "Oops...",
-                  text: "Something went wrong!",
-                });
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Something went wrong!",
+                  });
             } else {
               dispatch(checkedTransaction({ chainId, hash }));
             }
