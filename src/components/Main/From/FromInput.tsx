@@ -29,7 +29,7 @@ import {
   changeShowRoute,
   changeSwapDescription,
 } from "../../../features/route/routeSlice";
-import useSetContractWithChainId from "../../../hooks/useSetContractWithChainId";
+import getContractWithChainId from "../../../hooks/useSetContractWithChainId";
 import useWallet from "../../Wallets/useWallet";
 const StyledInput = styled.input`
   position: relative;
@@ -73,7 +73,7 @@ function FromInput() {
   const chainId = useSelector(({ chains }: RootState) => chains.value);
   const counter = useSelector(({ route }: RootState) => route.counter);
   const wallet = useSelector(({ account }: RootState) => account.wallet);
-  const akkaContractAddress = useSetContractWithChainId(chainId);
+  const akkaContractAddress = getContractWithChainId(toChain);
   const Connectedwallet = useWallet(wallet);
   const { useAccount, useChainId } = Connectedwallet;
   const account = useAccount();
@@ -82,10 +82,8 @@ function FromInput() {
     if (fromToken.adress !== "" && toToken.adress !== "" && amount !== "") {
       axios
         .get(
-          `https://192.64.112.22:8084/route?token0=${fromToken.adress}&chain0=${
-            fromChain === 56 ? "bsc" : fromChain === 250 ? "fantom" : ""
-          }&token1=${toToken.adress}&chain1=${
-            toChain === 56 ? "bsc" : toChain === 250 ? "fantom" : ""
+          `https://192.64.112.22:8084/route?token0=${fromToken.adress}&chain0=${fromChain === 56 ? "bsc" : fromChain === 250 ? "fantom" : ""
+          }&token1=${toToken.adress}&chain1=${toChain === 56 ? "bsc" : toChain === 250 ? "fantom" : ""
           }&amount=${amount}`
         )
         .then((data) => {
@@ -111,9 +109,9 @@ function FromInput() {
     let swapDescription2: SwapDescriptionStruct;
     swapDescription = {
       ...swapDescription,
-      srcDesiredAmount: parseEther(resData.input_amount.toString()),
-      dstDesiredMinAmount: parseEther(resData.return_amount.toString()),
-      dstChainId: fromChain !== toChain ? 0 : 0,
+      // srcDesiredAmount: parseEther(resData.input_amount.toString()),
+      // dstDesiredMinAmount: parseEther(resData.return_amount.toString()),
+      dstChainId: 0,
       dstPoolId: 0,
       srcPoolId: 0,
       // gasForSwap: BigNumber.from("2705617"),
@@ -162,8 +160,8 @@ function FromInput() {
                   route0 = {
                     srcToken: offer_token[0],
                     dstToken: ask_token[0],
-                    srcAmount: parseEther(amount_in.toString()),
-                    dstMinAmount: parseEther(amount_out.toString()),
+                    srcAmount: parseUnits(amount_in.toString(), offer_token[4]),
+                    dstMinAmount: parseUnits(amount_out.toString(), ask_token[4]),
                     path: [offer_token[0], ask_token[0]],
                     router: router_addr,
                     swapType: SwapTypes.Regular,
@@ -220,12 +218,12 @@ function FromInput() {
                     "asdasml,dsakl",
                     parseUnits("0.09", 6).toString()
                   );
-
+                    
                   route0 = {
                     srcToken: offer_token[0],
                     dstToken: ask_token[0],
-                    srcAmount: parseEther(amount_in.toString()),
-                    dstMinAmount: parseUnits(amount_out.toString(), 6),
+                    srcAmount: parseUnits(amount_in.toString(), offer_token[4]),
+                    dstMinAmount: parseUnits(amount_out.toString(), ask_token[4]),
                     path: [offer_token[0], ask_token[0]],
                     router: router_addr,
                     swapType: SwapTypes.StargateBridge,
@@ -277,10 +275,13 @@ function FromInput() {
       }
 
       if (index === 0) {
+        const operations = resData.routes[0].operations;
         swapDescription = {
           ...swapDescription,
           srcToken: arr[0].srcToken,
           dstToken: arr[arr.length - 1].dstToken,
+          srcDesiredAmount: parseUnits(resData.input_amount.toString(), operations[0].offer_token[4]),
+          dstDesiredMinAmount: parseUnits(resData.return_amount.toString(), operations[operations.length - 1].ask_token[4]),
         };
       }
     });

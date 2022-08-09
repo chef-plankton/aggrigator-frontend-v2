@@ -29,6 +29,7 @@ export interface RouteResponseDto {
 export interface RouteRoutes {
     input_amount: number
     operations_seperated: Array<RouteOperationsSeparated>
+    operations: Array<RouteRegularOperations | RouteStargateBridgeOperations>
 
 }
 export interface RouteOperationsSeparated {
