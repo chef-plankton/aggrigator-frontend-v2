@@ -1,18 +1,15 @@
 import { wait } from "@testing-library/user-event/dist/utils";
 import { Web3ReactHooks } from "@web3-react/core";
 import { AddEthereumChainParameter } from "@web3-react/types";
-import { hexlify } from "ethers/lib/utils";
-import { useCallback, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../app/store";
-import { getAddChainParameters } from "../chains";
 import { metaMask } from "../connectors/metaMask";
 import { walletConnect } from "../connectors/walletConnect";
 import {
   changeAddress,
   changeWallet,
-  WalletName,
+  WalletName
 } from "../features/account/accountSlice";
 import { changeChain } from "../features/chains/chainsSlice";
 import { changeModalStatus } from "../features/modals/modalsSlice";
@@ -59,7 +56,6 @@ const useAuth = ({ useAccount, useChainId }: Web3ReactHooks): useAuthReturn => {
           //     dispatch(changeModalStatus(false));
           //     dispatch(changeChain(chainId));
           //     dispatch(changeWallet(walletName));
-          //     console.log("account", account);
           //     dispatch(changeAddress(account));
           //     await wait(500);
           //     void metaMask.connectEagerly().catch(() => {

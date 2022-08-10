@@ -1,5 +1,3 @@
-import { parseEther, parseUnits } from "@ethersproject/units";
-import { BigNumber } from "ethers";
 import { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
@@ -9,7 +7,7 @@ import useWallet from "../../components/Wallets/useWallet";
 import {
   ApprovalState,
   changeApprovalState,
-  changeApprovevalue,
+  changeApprovevalue
 } from "../../features/account/accountSlice";
 import { clearRouteAfterSwap } from "../../features/route/routeSlice";
 import { changeSwapButtonState } from "../../features/swapbutton/swapbuttonSlice";
@@ -108,15 +106,19 @@ export default function Updater(): null {
               if (tx) {
                 switch (tx.type) {
                   case "approve":
-                    if (receipt.status === 1)
+                    if (receipt.status === 1) {
                       dispatch(changeApprovalState(ApprovalState.APPROVED));
-                      // dispatch(changeApprovevalue());
+                    } else {
+                      dispatch(changeApprovalState(ApprovalState.NOT_APPROVED));
+                    }
                     break;
                   case "swap":
                     if (isActive) {
                       if (receipt.status === 1) {
                         dispatch(changeApprovevalue(null));
                         dispatch(clearRouteAfterSwap());
+                      } else {
+                        dispatch(changeApprovalState(ApprovalState.APPROVED));
                       }
                     } else {
                       dispatch(
@@ -144,7 +146,13 @@ export default function Updater(): null {
                     showConfirmButton: true,
                     confirmButtonColor: "black",
                     cancelButtonColor: "#d33",
-                    confirmButtonText: `Show on ${chainId === 56 ? "BSC Scan" : chainId === 250 ? "FTM Scan" : ""}`,
+                    confirmButtonText: `Show on ${
+                      chainId === 56
+                        ? "BSC Scan"
+                        : chainId === 250
+                        ? "FTM Scan"
+                        : ""
+                    }`,
                   }).then((data) => {
                     const { isDismissed, isConfirmed, isDenied } = data;
                     if (isConfirmed) {

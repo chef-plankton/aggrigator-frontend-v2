@@ -39,10 +39,6 @@ const FromBox: FC<FromBoxProps> = ({ account, balance }) => {
   const chainId = useSelector(({ route }: RootState) => route.fromChain);
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   const fromToken = useSelector(({ route }: RootState) => route.fromToken);
-  // const address =useAccount
-  // const balance = useTokenBalance(fromToken.adress, address);
-
-  console.log(balance?.toString());
 
   return (
     <StyledFromBox
@@ -54,10 +50,10 @@ const FromBox: FC<FromBoxProps> = ({ account, balance }) => {
       }
     >
       {/* box top bar */}
-      <div className="px-3 py-1 w-[100%] flex justify-between">
+      <div className='px-3 py-1 w-[100%] flex justify-between'>
         From
-        <div className="flex items-center">
-          <span className="px-3 py-1 mx-1 rounded-[5px] bg-[#f3f3f3]">
+        <div className='flex items-center'>
+          <span className='px-3 py-1 mx-1 rounded-[5px] bg-[#f3f3f3]'>
             Your Balance:{" "}
             {balance
               ? Number(formatUnits(balance, fromToken.decimals)).toFixed(4)
@@ -68,8 +64,8 @@ const FromBox: FC<FromBoxProps> = ({ account, balance }) => {
         </div>
       </div>
       {/* box datas */}
-      <div className="px-3 py-2 flex justify-between flex-col md:flex-row">
-        <div className="md:w-[60%] w-[100%} flex justify-between ">
+      <div className='px-3 py-2 flex justify-between flex-col md:flex-row'>
+        <div className='md:w-[60%] w-[100%} flex justify-between '>
           {/* from network */}
           <FromChangeNetworkButton
             imageSrc={`${chainId === 56 ? bnblightIcon : ""}${
@@ -91,7 +87,7 @@ const FromBox: FC<FromBoxProps> = ({ account, balance }) => {
           />
         </div>
         {/* from input */}
-        <div className="md:w-[40%] w-[100%} mt-[30px] md:mt-0 flex flex-col justify-center">
+        <div className='md:w-[40%] w-[100%} mt-[30px] md:mt-0 flex flex-col justify-center'>
           <FromInput />
         </div>
       </div>

@@ -178,7 +178,6 @@ export function useAkkaAggrigatorSwapCallback(): {
           summary: `swap ${inputAmount}`,
           type: "swap",
         });
-        console.log(tx);
 
         return tx as TransactionResponse;
       },

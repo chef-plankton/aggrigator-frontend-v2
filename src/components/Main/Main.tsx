@@ -23,6 +23,7 @@ import { changeApprovalState } from "../../features/account/accountSlice";
 import { changeChain } from "../../features/chains/chainsSlice";
 import { connectWalletStatus } from "../../features/modals/modalsSlice";
 import {
+  changeFromToken,
   changeResponseData,
   changeShowRoute,
 } from "../../features/route/routeSlice";
@@ -135,7 +136,18 @@ function Main() {
   }, [amount]);
 
   useEffect(() => {
-    if (walletChainId) dispatch(changeChain(walletChainId));
+    if (walletChainId) {
+      dispatch(changeChain(walletChainId));
+      dispatch(
+        changeFromToken({
+          name: "",
+          adress: "",
+          image: "",
+          symbol: "",
+          decimals: 0,
+        })
+      );
+    }
   }, [walletChainId]);
 
   useEffect(() => {

@@ -1,25 +1,17 @@
-import { formatUnits, parseEther, parseUnits } from "@ethersproject/units";
+import { parseUnits } from "@ethersproject/units";
 import axios from "axios";
 import { BigNumber } from "ethers";
-import React, { useEffect } from "react";
-import { useQuery } from "react-query";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { RootState } from "../../../app/store";
 import {
   RouteDescriptionStruct,
-  SwapDescriptionStruct,
+  SwapDescriptionStruct
 } from "../../../config/abi/types/AkkaAggrigator";
 import {
   NetworkName,
-  RouteRegularOperations,
-  RouteStargateBridgeOperations,
-  RouteResponseDto,
-  SwapTypes,
-  BridgeName,
-  RouteOperationsSeparated,
-  ChainId,
+  RouteRegularOperations, RouteResponseDto, RouteStargateBridgeOperations, SwapTypes
 } from "../../../config/constants/types";
 import {
   changeAmount,
@@ -27,11 +19,10 @@ import {
   changeResponseData,
   changeResponseString,
   changeShowRoute,
-  changeSwapDescription,
+  changeSwapDescription
 } from "../../../features/route/routeSlice";
 import getContractWithChainId from "../../../hooks/useSetContractWithChainId";
 import useWallet from "../../Wallets/useWallet";
-import { defaultDecimalPlaces } from '../../../config/constants/index'
 const StyledInput = styled.input`
   position: relative;
   text-overflow: ellipsis;
@@ -156,7 +147,6 @@ function FromInput() {
                     router: router_addr,
                     swapType: SwapTypes.Regular,
                   };
-                  console.log(route0);
                   swapDescription = {
                     ...swapDescription,
                   };
