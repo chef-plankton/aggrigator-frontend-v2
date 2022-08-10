@@ -264,6 +264,9 @@ function FromInput() {
       value={amount}
       onChange={(e) => {
         const value = e.target.value;
+        if(value === "."){
+          return
+        }
         if (/^\d*\.?\d*$/.test(value)) {
           dispatch(changeAmount(value));
         }
