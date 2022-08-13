@@ -45,6 +45,7 @@ import useWallet from "../Wallets/useWallet";
 import FromBox from "./From/FromBox";
 import ReceiverBox from "./Receiver/ReceiverBox";
 import Route from "./Route/Route";
+import SwitchBox from "./Switcher/SwitchBox";
 import ToBox from "./To/ToBox";
 export const useCurrentBlock = (): number => {
   const { data: currentBlock = 0 } = useSWRImmutable("blockNumber");
@@ -443,6 +444,7 @@ function Main() {
     >
       <div className='max-w-3xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[50px] pt-[50px] md:pt-[50px]'>
         <FromBox balance={balance} account={account} />
+        <SwitchBox />
         <ToBox />
         {/* <div className='w-[100%] flex mb-[10px] mt-0 pl-[5px] items-center'>
           <button

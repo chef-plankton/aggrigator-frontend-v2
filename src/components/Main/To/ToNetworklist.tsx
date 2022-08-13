@@ -6,7 +6,10 @@ import { changeModalStatus } from "../../../features/modals/modalsSlice";
 import bnblightIcon from "../../../assets/img/chains/binance-light.svg";
 import polygonIcon from "../../../assets/img/chains/polygon.svg";
 import fantomIcon from "../../../assets/img/chains/fantom.svg";
-import { changeToChain, changeToToken } from "../../../features/route/routeSlice";
+import {
+  changeToChain,
+  changeToToken,
+} from "../../../features/route/routeSlice";
 function ToNetworklist() {
   const dispatch = useDispatch();
 
@@ -32,12 +35,22 @@ function ToNetworklist() {
               onClick={() => {
                 dispatch(changeToChain(56));
                 dispatch(changeModalStatus(false));
-                dispatch(changeToToken({ name: "", adress: "", image: "", symbol: "" }));
+                dispatch(
+                  changeToToken({
+                    name: "",
+                    adress: "",
+                    image: "",
+                    symbol: "",
+                    decimals: 0,
+                  })
+                );
               }}
               className="flex flex-col items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-md dark:hover:text-white cursor-pointer"
             >
               <img src={bnblightIcon} alt="" className="w-[56px] mb-2" />
-              <span className="w-[60px] md:w-[100px] text-[12px] text-center">BNB Chain</span>
+              <span className="w-[60px] md:w-[100px] text-[12px] text-center">
+                BNB Chain
+              </span>
             </div>
           </li>
           <li className="m-2">
@@ -45,27 +58,47 @@ function ToNetworklist() {
               onClick={() => {
                 dispatch(changeToChain(250));
                 dispatch(changeModalStatus(false));
-                dispatch(changeToToken({ name: "", adress: "", image: "", symbol: "" }));
+                dispatch(
+                  changeToToken({
+                    name: "",
+                    adress: "",
+                    image: "",
+                    symbol: "",
+                    decimals: 0,
+                  })
+                );
               }}
               className="flex flex-col items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-md dark:hover:text-white cursor-pointer"
             >
               <img src={fantomIcon} alt="" className="w-[56px] mb-2" />
-              <span className="w-[60px] md:w-[100px] text-[12px] text-center">Fantom</span>
+              <span className="w-[60px] md:w-[100px] text-[12px] text-center">
+                Fantom
+              </span>
             </div>
           </li>
-          <li className="m-2">
+          {/* <li className="m-2">
             <div
               onClick={() => {
                 dispatch(changeToChain(97));
                 dispatch(changeModalStatus(false));
-                dispatch(changeToToken({ name: "", adress: "", image: "", symbol: "" }));
+                dispatch(
+                  changeToToken({
+                    name: "",
+                    adress: "",
+                    image: "",
+                    symbol: "",
+                    decimals: 0,
+                  })
+                );
               }}
               className="flex flex-col items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-md dark:hover:text-white cursor-pointer"
             >
               <img src={bnblightIcon} alt="" className="w-[56px] mb-2" />
-              <span className="w-[60px] md:w-[100px] text-[12px] text-center">BNB Chain Testnet</span>
+              <span className="w-[60px] md:w-[100px] text-[12px] text-center">
+                BNB Chain Testnet
+              </span>
             </div>
-          </li>
+          </li> */}
         </ul>
       </div>
     </>

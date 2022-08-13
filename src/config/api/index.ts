@@ -6,11 +6,12 @@ const instance = axios.create({
 });
 const api = <R>(
   method: HttpMethod,
-  path: RequestPath
+  path: RequestPath,
+  config?: any
 ): Promise<AxiosResponse<R, any>> => {
   switch (method) {
     case "GET":
-      return instance.get(path);
+      return instance.get(path, config);
     case "POST":
       instance.post(path).then((res) => res);
       break;
@@ -18,6 +19,19 @@ const api = <R>(
 };
 
 const getTokenlist = async (chain: NetworkName, limit: number = 1000) =>
-  await api<TokenListApi[]>("GET", `/tokens?chain=${chain.toLocaleLowerCase()}&limit=${limit}`);
+  await api<TokenListApi[]>(
+    "GET",
+    `/tokens?chain=${chain.toLocaleLowerCase()}&limit=${limit}`
+  );
+const getPriceOfToken = async (symbol: string, fiat: string = "USD") =>
+  await api(
+    "GET",
+    `https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=${symbol}&convert=${fiat}`,
+    {
+      headers: {
+        "X-CMC_PRO_API_KEY": "e8463497-8b56-49ba-80f3-91c455569f15",
+      },
+    }
+  );
 
-export { getTokenlist };
+export { getTokenlist, getPriceOfToken };
