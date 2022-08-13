@@ -41,6 +41,7 @@ import { useCallWithoutGasPrice } from "../../hooks/useCallWithoutGasPrice";
 import { useWBNBContract } from "../../hooks/useContract";
 import useTokenBalance from "../../hooks/useTokenBalance";
 import useWrapCallback from "../../hooks/useWrapCallback";
+import MyLoader from "../MyLoader";
 import useWallet from "../Wallets/useWallet";
 import FromBox from "./From/FromBox";
 import ReceiverBox from "./Receiver/ReceiverBox";
@@ -446,6 +447,7 @@ function Main() {
         <FromBox balance={balance} account={account} />
         <SwitchBox />
         <ToBox />
+        
         {/* <div className='w-[100%] flex mb-[10px] mt-0 pl-[5px] items-center'>
           <button
             className='w-[100%] flex items-center'
@@ -470,7 +472,7 @@ function Main() {
         >
           {swapButtonData.text}
         </button>
-
+        <MyLoader />
         <Route />
       </div>
     </main>
