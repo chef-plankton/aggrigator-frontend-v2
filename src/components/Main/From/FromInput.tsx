@@ -9,6 +9,7 @@ import {
   RouteDescriptionStruct,
   SwapDescriptionStruct,
 } from "../../../config/abi/types/AkkaAggrigator";
+import { getPriceOfToken } from "../../../config/api";
 import {
   NetworkName,
   RouteRegularOperations,
@@ -104,6 +105,11 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
             )
           );
         });
+    }
+  }, [amount, fromChain, toChain, fromToken, toToken, chainId, counter]);
+  useEffect(() => {
+    if (fromToken.adress !== "" && toToken.adress !== "" && amount !== "") {
+      getPriceOfToken("BTC").then(console.log).catch(console.log);
     }
   }, [amount, fromChain, toChain, fromToken, toToken, chainId, counter]);
   const convertResponseDataToSwapDescriptionStruct = (
@@ -296,9 +302,14 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
           }
         }}
       />
-      <button onClick={() => dispatch(changeAmount(balance))} className="absolute right-[25px]">max</button>
+      <button
+        onClick={() => dispatch(changeAmount(balance))}
+        className='absolute right-[25px]'
+      >
+        max
+      </button>
     </>
   );
-}
+};
 
 export default FromInput;

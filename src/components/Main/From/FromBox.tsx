@@ -7,6 +7,7 @@ import styled from "styled-components";
 import { RootState } from "../../../app/store";
 import bnblightIcon from "../../../assets/img/chains/binance-light.svg";
 import fantomIcon from "../../../assets/img/chains/fantom.svg";
+import FromAdvanceSettingButton from "./FromAdvanceSettingButton";
 import FromChangeNetworkButton from "./FromChangeNetworkButton";
 import FromChangeTokenButton from "./FromChangeTokenButton";
 import FromInput from "./FromInput";
@@ -22,7 +23,6 @@ const StyledFromBox = styled.div<{ color: string; backgroundColor: string }>`
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   width: 100%;
-  margin-bottom: 40px;
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -60,7 +60,7 @@ const FromBox: FC<FromBoxProps> = ({ account, balance }) => {
               : 0}
           </span>
           <FromRefresh />
-          {/* <FromAdvanceSetting /> */}
+          <FromAdvanceSettingButton />
         </div>
       </div>
       {/* box datas */}

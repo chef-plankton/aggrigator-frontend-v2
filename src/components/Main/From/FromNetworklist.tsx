@@ -119,7 +119,7 @@ function FromNetworklist() {
               </span>
             </div>
           </li>
-          <li className='m-2'>
+          {/* <li className='m-2'>
             <div
               onClick={() => {
                 // changeChainId(97);
@@ -141,7 +141,7 @@ function FromNetworklist() {
                 BNB Chain Testnet
               </span>
             </div>
-          </li>
+          </li> */}
         </ul>
       </div>
     </>
