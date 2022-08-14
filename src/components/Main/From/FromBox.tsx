@@ -88,7 +88,13 @@ const FromBox: FC<FromBoxProps> = ({ account, balance }) => {
         </div>
         {/* from input */}
         <div className='md:w-[40%] w-[100%} mt-[30px] md:mt-0 flex flex-col justify-center'>
-          <FromInput />
+          <FromInput
+            balance={
+              balance
+                ? Number(formatUnits(balance, fromToken.decimals)).toFixed(4)
+                : 0
+            }
+          />
         </div>
       </div>
     </StyledFromBox>
