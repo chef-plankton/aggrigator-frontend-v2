@@ -19,6 +19,7 @@ import {
 } from "../../../config/constants/types";
 import {
   changeAmount,
+  changeIsLoading,
   changeRecieve,
   changeResponseData,
   changeResponseString,
@@ -83,6 +84,7 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     if (fromToken.adress !== "" && toToken.adress !== "" && amount !== "") {
+      dispatch(changeIsLoading(true));
       axios
         .get(
           `https://192.64.112.22:8084/route?token0=${fromToken.adress}&chain0=${
@@ -104,6 +106,9 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
               )
             )
           );
+        })
+        .finally(() => {
+          dispatch(changeIsLoading(false));
         });
     }
   }, [amount, fromChain, toChain, fromToken, toToken, chainId, counter]);

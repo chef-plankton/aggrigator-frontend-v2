@@ -14,6 +14,7 @@ interface totokenType {
   decimals: number;
 }
 interface RouteState {
+  isLoading: boolean;
   fromChain: number;
   fromToken: FromtokenType;
   toChain: number;
@@ -38,10 +39,11 @@ interface RouteState {
   // slippageTolerance: number;
 }
 const initialState: RouteState = {
+  isLoading: false,
   fromChain: 56,
-  fromToken: { name: "", adress: "", image: "", symbol: "", decimals: 0},
+  fromToken: { name: "", adress: "", image: "", symbol: "", decimals: 0 },
   toChain: 56,
-  toToken: { name: "", adress: "", image: "", symbol: "" , decimals: 0},
+  toToken: { name: "", adress: "", image: "", symbol: "", decimals: 0 },
   amount: "",
   recieve: "",
   showRoute: false,
@@ -65,6 +67,9 @@ export const chainsSlice = createSlice({
   name: "route",
   initialState,
   reducers: {
+    changeIsLoading: (state, action) => {
+      state.isLoading = action.payload;
+    },
     changeFromChain: (state, action) => {
       state.fromChain = action.payload;
     },
@@ -107,6 +112,7 @@ export const chainsSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const {
+  changeIsLoading,
   changeFromChain,
   changeFromToken,
   changeToChain,

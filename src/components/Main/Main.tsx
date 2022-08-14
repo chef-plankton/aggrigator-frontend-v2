@@ -69,6 +69,7 @@ enum SwapButonStates {
   INSUFFICIENT_BALANCE = "INSUFFICIENT_BALANCE",
 }
 function Main() {
+  const isLoadingRoute = useSelector(({ route }: RootState) => route.isLoading);
   const inputValue = useSelector(({ route }: RootState) => route.amount);
   const fromToken = useSelector(({ route }: RootState) => route.fromToken);
   const toToken = useSelector(({ route }: RootState) => route.toToken);
@@ -447,7 +448,7 @@ function Main() {
         <FromBox balance={balance} account={account} />
         <SwitchBox />
         <ToBox />
-        
+
         {/* <div className='w-[100%] flex mb-[10px] mt-0 pl-[5px] items-center'>
           <button
             className='w-[100%] flex items-center'
@@ -472,8 +473,8 @@ function Main() {
         >
           {swapButtonData.text}
         </button>
-        <MyLoader />
-        <Route />
+
+        {isLoadingRoute ? <MyLoader /> : <Route />}
       </div>
     </main>
   );
