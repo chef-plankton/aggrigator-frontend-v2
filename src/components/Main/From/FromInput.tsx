@@ -26,7 +26,10 @@ import {
   changeShowRoute,
   changeSwapDescription,
 } from "../../../features/route/routeSlice";
-import getContractWithChainId from "../../../hooks/useSetContractWithChainId";
+import {
+  setContractWithChainId,
+  dstSetContractWithChainId,
+} from "../../../hooks/useSetContractWithChainId";
 import useWallet from "../../Wallets/useWallet";
 const StyledInput = styled.input`
   position: relative;
@@ -77,7 +80,11 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
   const chainId = useSelector(({ chains }: RootState) => chains.value);
   const counter = useSelector(({ route }: RootState) => route.counter);
   const wallet = useSelector(({ account }: RootState) => account.wallet);
-  const akkaContractAddress = getContractWithChainId(toChain);
+  const akkaContractAddress = setContractWithChainId(toChain);
+  
+  const akkaDstContractAddress = dstSetContractWithChainId(toChain);
+  
+
   const Connectedwallet = useWallet(wallet);
   const { useAccount, useChainId } = Connectedwallet;
   const account = useAccount();
@@ -87,7 +94,9 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
       dispatch(changeIsLoading(true));
       axios
         .get(
-          `https://www.api.akka.finance/route?token0=${fromToken.adress}&chain0=${
+          `https://www.api.akka.finance/route?token0=${
+            fromToken.adress
+          }&chain0=${
             fromChain === 56 ? "bsc" : fromChain === 250 ? "fantom" : ""
           }&token1=${toToken.adress}&chain1=${
             toChain === 56 ? "bsc" : toChain === 250 ? "fantom" : ""
@@ -127,8 +136,8 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
       dstChainId: 0,
       dstPoolId: 0,
       srcPoolId: 0,
-      gasForSwap: BigNumber.from("1705617"),
-      dstContractAddress: akkaContractAddress,
+      gasForSwap: BigNumber.from("1205617"),
+      dstContractAddress: akkaDstContractAddress,
       to: account,
     };
     resData.routes[0].operations_seperated.forEach(
@@ -261,6 +270,8 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
       }
 
       if (index === 0) {
+        
+        
         const operations = resData.routes[0].operations;
         swapDescription = {
           ...swapDescription,

@@ -16,7 +16,7 @@ import { parseUnits } from "@ethersproject/units";
 import { useDispatch } from "react-redux";
 import { changeApprovevalue } from "../features/account/accountSlice";
 import { Erc20 } from "../config/abi/types";
-import useSetContractWithChainId from "./useSetContractWithChainId";
+import {setContractWithChainId} from "./useSetContractWithChainId";
 export enum ApprovalState {
   UNKNOWN,
   NOT_APPROVED,
@@ -163,6 +163,6 @@ export function useApproveCallbackFromTrade(
   return useApproveCallback(
     tokenAddress,
     amountToApprove,
-    useSetContractWithChainId(chainId)
+    setContractWithChainId(chainId)
   );
 }
