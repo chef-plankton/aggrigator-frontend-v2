@@ -87,7 +87,7 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
       dispatch(changeIsLoading(true));
       axios
         .get(
-          `https://192.64.112.22:8084/route?token0=${fromToken.adress}&chain0=${
+          `https://www.api.akka.finance/route?token0=${fromToken.adress}&chain0=${
             fromChain === 56 ? "bsc" : fromChain === 250 ? "fantom" : ""
           }&token1=${toToken.adress}&chain1=${
             toChain === 56 ? "bsc" : toChain === 250 ? "fantom" : ""

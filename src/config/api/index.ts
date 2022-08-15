@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import { NetworkName } from "../constants/types";
 import { HttpMethod, RequestPath, TokenListApi } from "./types";
 const instance = axios.create({
-  baseURL: "https://192.64.112.22:8084",
+  baseURL: "https://www.api.akka.finance",
 });
 const api = <R>(
   method: HttpMethod,

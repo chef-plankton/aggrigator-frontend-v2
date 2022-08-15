@@ -54,10 +54,10 @@ function FromTokenlist() {
     let url = "";
 
     if (chainId === 56) {
-      url = "https://192.64.112.22:8084/tokens?chain=bsc&limit=100";
+      url = "https://www.api.akka.finance/tokens?chain=bsc&limit=100";
     }
     if (chainId === 250) {
-      url = "https://192.64.112.22:8084/tokens?chain=fantom&limit=100";
+      url = "https://www.api.akka.finance/tokens?chain=fantom&limit=100";
     }
     if (chainId === 97) {
       url = "https://localhost:4000/BSC-testnet";
