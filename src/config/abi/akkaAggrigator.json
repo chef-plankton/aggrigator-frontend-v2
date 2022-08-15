@@ -16,11 +16,6 @@
     "type": "constructor"
   },
   {
-    "inputs": [],
-    "name": "MsgValueError",
-    "type": "error"
-  },
-  {
     "anonymous": false,
     "inputs": [
       {
@@ -113,11 +108,17 @@
       {
         "indexed": false,
         "internalType": "address",
-        "name": "token",
+        "name": "srcToken",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "dstToken",
         "type": "address"
       }
     ],
-    "name": "SwapConfermationDetail",
+    "name": "SwapConfirmationDetails",
     "type": "event"
   },
   {
