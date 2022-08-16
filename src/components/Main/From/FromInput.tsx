@@ -93,31 +93,34 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
     if (fromToken.adress !== "" && toToken.adress !== "" && amount !== "") {
       dispatch(changeIsLoading(true));
       if (!isNaN(Number(amount)) && amount !== "0" && Number(amount) !== 0) {
-        axios
-          .get(
-            `https://www.api.akka.finance/route?token0=${
-              fromToken.adress
-            }&chain0=${
-              fromChain === 56 ? "bsc" : fromChain === 250 ? "fantom" : ""
-            }&token1=${toToken.adress}&chain1=${
-              toChain === 56 ? "bsc" : toChain === 250 ? "fantom" : ""
-            }&amount=${amount}`
-          )
-          .then((data) => {
-            dispatch(changeResponseString(JSON.stringify(data)));
-            dispatch(changeResponseData(data));
-            dispatch(changeShowRoute(true));
-            dispatch(
-              changeSwapDescription(
-                JSON.stringify(
-                  convertResponseDataToSwapDescriptionStruct(data.data)
+        const getData = setTimeout(() => {
+          axios
+            .get(
+              `https://www.api.akka.finance/route?token0=${
+                fromToken.adress
+              }&chain0=${
+                fromChain === 56 ? "bsc" : fromChain === 250 ? "fantom" : ""
+              }&token1=${toToken.adress}&chain1=${
+                toChain === 56 ? "bsc" : toChain === 250 ? "fantom" : ""
+              }&amount=${amount}`
+            )
+            .then((data) => {
+              dispatch(changeResponseString(JSON.stringify(data)));
+              dispatch(changeResponseData(data));
+              dispatch(changeShowRoute(true));
+              dispatch(
+                changeSwapDescription(
+                  JSON.stringify(
+                    convertResponseDataToSwapDescriptionStruct(data.data)
+                  )
                 )
-              )
-            );
-          })
-          .finally(() => {
-            dispatch(changeIsLoading(false));
-          });
+              );
+            })
+            .finally(() => {
+              dispatch(changeIsLoading(false));
+            });
+        }, 1000);
+        return () => clearTimeout(getData);
       }
     }
   }, [amount, fromChain, toChain, fromToken, toToken, chainId, counter]);
@@ -224,8 +227,7 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
                     router: router_addr,
                     swapType: SwapTypes.StargateBridge,
                   };
-                  
-                  
+
                   swapDescription = {
                     ...swapDescription,
                     // srcToken: operations[0].offer_token[0],
@@ -256,7 +258,6 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
               break;
           }
         });
-
       }
     );
     swapDescription = { ...swapDescription, isRegularTransfer: true };
@@ -266,7 +267,7 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
           swapDescription = { ...swapDescription, isRegularTransfer: false };
         }
       }
-      if (index === 0) {       
+      if (index === 0) {
         const operations = resData.routes[0].operations;
         swapDescription = {
           ...swapDescription,
