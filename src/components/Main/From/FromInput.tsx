@@ -1,6 +1,7 @@
 import { parseUnits } from "@ethersproject/units";
 import axios from "axios";
 import { BigNumber } from "ethers";
+import { isNumber } from "lodash";
 import { FC, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
@@ -81,9 +82,8 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
   const counter = useSelector(({ route }: RootState) => route.counter);
   const wallet = useSelector(({ account }: RootState) => account.wallet);
   const akkaContractAddress = setContractWithChainId(toChain);
-  
+
   const akkaDstContractAddress = dstSetContractWithChainId(toChain);
-  
 
   const Connectedwallet = useWallet(wallet);
   const { useAccount, useChainId } = Connectedwallet;
@@ -92,33 +92,33 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
   useEffect(() => {
     if (fromToken.adress !== "" && toToken.adress !== "" && amount !== "") {
       dispatch(changeIsLoading(true));
-      axios
-        .get(
-          `https://www.api.akka.finance/route?token0=${
-            fromToken.adress
-          }&chain0=${
-            fromChain === 56 ? "bsc" : fromChain === 250 ? "fantom" : ""
-          }&token1=${toToken.adress}&chain1=${
-            toChain === 56 ? "bsc" : toChain === 250 ? "fantom" : ""
-          }&amount=${amount}`
-        )
-        .then((data) => {
-          dispatch(changeResponseString(JSON.stringify(data)));
-          dispatch(changeResponseData(data));
-          dispatch(changeShowRoute(true));
-          // dispatch(changech(true));
-
-          dispatch(
-            changeSwapDescription(
-              JSON.stringify(
-                convertResponseDataToSwapDescriptionStruct(data.data)
+      if (!isNaN(Number(amount)) && amount !== "0" && Number(amount) !== 0) {
+        axios
+          .get(
+            `https://www.api.akka.finance/route?token0=${
+              fromToken.adress
+            }&chain0=${
+              fromChain === 56 ? "bsc" : fromChain === 250 ? "fantom" : ""
+            }&token1=${toToken.adress}&chain1=${
+              toChain === 56 ? "bsc" : toChain === 250 ? "fantom" : ""
+            }&amount=${amount}`
+          )
+          .then((data) => {
+            dispatch(changeResponseString(JSON.stringify(data)));
+            dispatch(changeResponseData(data));
+            dispatch(changeShowRoute(true));
+            dispatch(
+              changeSwapDescription(
+                JSON.stringify(
+                  convertResponseDataToSwapDescriptionStruct(data.data)
+                )
               )
-            )
-          );
-        })
-        .finally(() => {
-          dispatch(changeIsLoading(false));
-        });
+            );
+          })
+          .finally(() => {
+            dispatch(changeIsLoading(false));
+          });
+      }
     }
   }, [amount, fromChain, toChain, fromToken, toToken, chainId, counter]);
   useEffect(() => {
@@ -136,7 +136,7 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
       dstChainId: 0,
       dstPoolId: 0,
       srcPoolId: 0,
-      gasForSwap: BigNumber.from("1205617"),
+      gasForSwap: BigNumber.from("1605617"),
       dstContractAddress: akkaDstContractAddress,
       to: account,
     };
@@ -224,7 +224,8 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
                     router: router_addr,
                     swapType: SwapTypes.StargateBridge,
                   };
-
+                  
+                  
                   swapDescription = {
                     ...swapDescription,
                     // srcToken: operations[0].offer_token[0],
@@ -256,9 +257,6 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
           }
         });
 
-        // if (chain === NetworkName.BSC.toLowerCase()){
-
-        // }
       }
     );
     swapDescription = { ...swapDescription, isRegularTransfer: true };
@@ -268,10 +266,7 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
           swapDescription = { ...swapDescription, isRegularTransfer: false };
         }
       }
-
-      if (index === 0) {
-        
-        
+      if (index === 0) {       
         const operations = resData.routes[0].operations;
         swapDescription = {
           ...swapDescription,
@@ -296,7 +291,7 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
     <>
       <StyledInput
         color={themeMode === "light" ? "black" : "white"}
-        placeholder='Enter amount you want to sell'
+        placeholder="Enter amount you want to sell"
         value={amount}
         onChange={(e) => {
           const value = e.target.value;
@@ -320,7 +315,7 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
       />
       <button
         onClick={() => dispatch(changeAmount(balance))}
-        className='absolute right-[25px]'
+        className="absolute right-[25px]"
       >
         max
       </button>

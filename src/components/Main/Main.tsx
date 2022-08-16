@@ -297,9 +297,6 @@ function Main() {
             (item) => item.swapType === SwapTypes.StargateBridge
           )[0]
         );
-        console.log("index", index);
-
-        console.log("tochaindata.routes", tochaindata.routes);
 
         const filteredArr = tochaindata.routes.slice(
           tochaindata.routes.length === 1
@@ -309,12 +306,6 @@ function Main() {
             : 1,
           tochaindata.routes.length
         );
-        console.log("filteredArr", filteredArr);
-
-        console.log(filteredArr[0]);
-
-        console.log(filteredArr[0].srcToken);
-
         tochaindata = {
           ...sd,
           routes: filteredArr,
