@@ -254,7 +254,7 @@ function Main() {
         })
       );
     }
-  }, [approveState]);
+  }, [approveState,amount]);
   // check if user has gone through approval process, used to show two step buttons, reset on token change
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false);
   // mark when a user has submitted an approval, reset onTokenSelection for input field
