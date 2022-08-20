@@ -306,6 +306,8 @@ function Main() {
             : 1,
           tochaindata.routes.length
         );
+        console.log("filteredArr",filteredArr);
+        
         tochaindata = {
           ...sd,
           routes: filteredArr,
@@ -314,7 +316,8 @@ function Main() {
           srcDesiredAmount: filteredArr[0].srcAmount,
           dstDesiredMinAmount: filteredArr[filteredArr.length - 1].dstMinAmount,
         };
-
+        console.log({tochaindata});
+        
         // [s s b s s] [s s]
         const payload = await getBytes(tochaindata);
         const router = sd.routes.filter(
