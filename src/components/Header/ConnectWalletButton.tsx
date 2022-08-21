@@ -29,11 +29,7 @@ function ConnectWalletButton() {
       onClick={() => {
         dispatch(connectWalletStatus(true));
       }}
-      className={`py-2 px-2 font-medium text-white ${
-        themeMode === "light"
-          ? "bg-[#111111] hover:bg-[#ffffff] hover:text-[#111111]"
-          : "bg-[#4ECCA3] hover:bg-[#79d8b8]"
-      } rounded transition duration-300`}
+      className={`py-2 px-5 font-medium text-white border-[2px] border-white border-solid`}
     >
       {isActive ? summarizeString(account, 6, "...") : "Connnect Wallet"}
     </button>

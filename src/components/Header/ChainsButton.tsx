@@ -24,7 +24,7 @@ const ChainsButton: FC<{
         data-for="chainsbutton"
         onClick={toggleChains}
         className={`py-2 px-3 font-medium ${
-          themeMode === "light" ? "text-gray-500" : "text-white"
+          themeMode === "light" ? "text-white" : "text-white"
         }  rounded transition duration-300 flex items-center chainslistbtn`}
       >
         <img
@@ -43,9 +43,9 @@ const ChainsButton: FC<{
           className="w-[12px] h-[12px] ml-2 -mb-0.5"
         />
       </button>
-      <ReactTooltip id="chainsbutton" type="info" effect="solid" place="bottom">
+      {/* <ReactTooltip id="chainsbutton" type="info" effect="solid" place="bottom">
         <span>Select your network</span>
-      </ReactTooltip>
+      </ReactTooltip> */}
     </>
   );
 };
