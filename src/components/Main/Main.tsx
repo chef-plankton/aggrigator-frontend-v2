@@ -306,6 +306,8 @@ function Main() {
             : 1,
           tochaindata.routes.length
         );
+        console.log("filteredArr",filteredArr);
+        
         tochaindata = {
           ...sd,
           routes: filteredArr,
@@ -314,7 +316,8 @@ function Main() {
           srcDesiredAmount: filteredArr[0].srcAmount,
           dstDesiredMinAmount: filteredArr[filteredArr.length - 1].dstMinAmount,
         };
-
+        console.log({tochaindata});
+        
         // [s s b s s] [s s]
         const payload = await getBytes(tochaindata);
         const router = sd.routes.filter(
@@ -445,7 +448,7 @@ function Main() {
   return (
     <main
       className={`${
-        themeMode === "light" ? "bg-slate-100" : "bg-[#393E46]"
+        themeMode === "light" ? "bg-[#E5E5E5]" : "bg-[#393E46]"
       } shadow-lg z-10`}
     >
       <div className='max-w-3xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[50px] pt-[50px] md:pt-[50px]'>

@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { RootState } from "../../app/store";
 import ArrowDownFont from "../../assets/arrow-down-sign-to-navigate.png";
-import lightlogoPic from "../../assets/lightlogo.png";
+import lightlogoPic from "../../assets/lightlogo2.png";
 import logoPic from "../../assets/mainlogo.png";
 import ChainsButton from "./ChainsButton";
 import ChainsDropdown from "./ChainsDropdown";
@@ -23,17 +23,17 @@ function Header() {
   return (
     <nav
       className={`${
-        themeMode === "light" ? "bg-white" : "bg-[#232931]"
-      } bg-white shadow-lg z-10`}
+        themeMode === "light" ? "bg-[#22223d]" : "bg-[#22223d]"
+      } bg-white shadow-lg z-10 pt-[6px] px-[50px] `}
     >
-      <div className='max-w-full mx-auto px-4'>
+      <div className='max-w-full mx-auto border-b-[1px] border-b-[#FFFFFF] border-opacity-[0.1]'>
         <div className='flex justify-between'>
           <div className='flex space-x-7'>
             <div>
               <Link to='/' className='flex items-center py-4 px-2'>
                 {/* Main Menu Logo */}
                 <Logo
-                  logoPic={themeMode === "light" ? logoPic : lightlogoPic}
+                  logoPic={themeMode === "light" ? lightlogoPic : lightlogoPic}
                 />
               </Link>
             </div>

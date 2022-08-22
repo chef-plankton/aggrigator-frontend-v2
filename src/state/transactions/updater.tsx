@@ -7,7 +7,7 @@ import useWallet from "../../components/Wallets/useWallet";
 import {
   ApprovalState,
   changeApprovalState,
-  changeApprovevalue
+  changeApprovevalue,
 } from "../../features/account/accountSlice";
 import { clearRouteAfterSwap } from "../../features/route/routeSlice";
 import { changeSwapButtonState } from "../../features/swapbutton/swapbuttonSlice";
@@ -171,7 +171,35 @@ export default function Updater(): null {
                 : Swal.fire({
                     icon: "error",
                     title: "Oops...",
-                    text: "Something went wrong!",
+                    html: `<p>Tx: ${tx.hash}</p>`,
+                    width: "500px",
+                    heightAuto: false,
+                    showCancelButton: true,
+                    showCloseButton: true,
+                    showConfirmButton: true,
+                    confirmButtonColor: "black",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: `Show on ${
+                      chainId === 56
+                        ? "BSC Scan"
+                        : chainId === 250
+                        ? "FTM Scan"
+                        : ""
+                    }`,
+                  }).then((data) => {
+                    const { isDismissed, isConfirmed, isDenied } = data;
+                    if (isConfirmed) {
+                      window.open(
+                        `${
+                          chainId === 56
+                            ? "https://bscscan.com"
+                            : chainId === 250
+                            ? "https://ftmscan.com/"
+                            : ""
+                        }/tx/${tx.hash}`,
+                        "_blank"
+                      );
+                    }
                   });
             } else {
               dispatch(checkedTransaction({ chainId, hash }));

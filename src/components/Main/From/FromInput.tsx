@@ -66,7 +66,7 @@ const StyledInput = styled.input`
 `;
 function test(n: number, decimal: number) {
   // return parseUnits(n.toFixed(decimal), decimal)
-  return BigNumber.from("0");
+  return parseUnits(n.toFixed(decimal),decimal);
 }
 interface FromInputProps {
   balance: number | string;
@@ -269,6 +269,7 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
           swapDescription = { ...swapDescription, isRegularTransfer: false };
         }
       }
+
       if (index === 0) {
         const operations = resData.routes[0].operations;
         swapDescription = {

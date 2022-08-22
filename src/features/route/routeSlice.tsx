@@ -41,9 +41,9 @@ interface RouteState {
 const initialState: RouteState = {
   isLoading: false,
   fromChain: 56,
-  fromToken: { name: "", adress: "", image: "", symbol: "", decimals: 0 },
-  toChain: 56,
-  toToken: { name: "", adress: "", image: "", symbol: "", decimals: 0 },
+  fromToken: { name: "BNB", adress: "0x0000000000000000000000000000000000000000", image: "", symbol: "BNB", decimals: 18 },
+  toChain: 250,
+  toToken: { name: "USD Coin", adress: "0x04068DA6C83AFCFA0e13ba15A6696662335D5B75", image: "", symbol: "USDC", decimals: 6 },
   amount: "",
   recieve: "",
   showRoute: false,
