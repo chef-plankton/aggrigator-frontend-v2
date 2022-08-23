@@ -37,14 +37,12 @@ const StyledInput = styled.input`
   text-overflow: ellipsis;
   font-weight: 400;
   font-size: 20px;
-  padding: 0px;
+  padding: 10px;
   display: block;
-  color: "palevioletred";
-  background: none;
-  border: none;
+  color: white;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid #2F2E3C;
   outline: none;
-  border-bottom: 1px solid ${({ color }) => (color ? color : "#757575")};
-  border-radius: 3px;
   width: 90%;
   height: 100%;
   white-space: nowrap;
@@ -295,7 +293,7 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
     <>
       <StyledInput
         color={themeMode === "light" ? "black" : "white"}
-        placeholder="Enter amount you want to sell"
+        placeholder="Enter amount"
         value={amount}
         onChange={(e) => {
           const value = e.target.value;
@@ -319,9 +317,9 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
       />
       <button
         onClick={() => dispatch(changeAmount(balance))}
-        className="absolute right-[25px]"
+        className="absolute right-[35px] bottom-[-25px] py-1 px-4 bg-[#22223D] rounded-[50px]"
       >
-        max
+        Max
       </button>
     </>
   );

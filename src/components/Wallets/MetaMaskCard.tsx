@@ -17,13 +17,13 @@ const MetaMaskCard: FC<{
 
   return (
     <div
-      className="flex items-center justify-between border-[1px] rounded-xl border-[#D3D3D3] px-[12px] py-[15px] bg-[#edeef2] mb-2 cursor-pointer"
+      className="flex flex-col items-center justify-between px-[12px] py-[15px] bg-[#22223D] mb-2 cursor-pointer hover:border-[5px] hover:border-[#814AFB]"
       onClick={handleClick}
     >
-      <h6 className="font-medium text-[16px]">MetaMask</h6>
       <div>
-        <img src={metaMaskIcon} alt="" className="w-[32px]" />
+        <img src={metaMaskIcon} alt="" className="w-[32px] mb-2" />
       </div>
+      <h6 className="font-medium text-[16px] text-white">MetaMask</h6>
     </div>
   );
 };

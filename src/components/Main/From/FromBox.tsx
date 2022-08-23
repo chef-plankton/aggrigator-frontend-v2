@@ -15,13 +15,10 @@ import FromRefresh from "./FromRefresh";
 
 // From Box Styles
 const StyledFromBox = styled.div<{ color: string; backgroundColor: string }>`
-  background: ${({ backgroundColor }) =>
-    backgroundColor ? backgroundColor : "rgba(255, 255, 255, 0.25)"};
-  box-shadow: 0 8px 32px 0 #23293176;
+  background: transparent;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
   width: 100%;
   padding: 10px;
   display: flex;
@@ -42,29 +39,27 @@ const FromBox: FC<FromBoxProps> = ({ account, balance }) => {
 
   return (
     <StyledFromBox
-      color={themeMode === "light" ? "black" : "white"}
+      color={themeMode === "light" ? "white" : "white"}
       backgroundColor={
         themeMode === "light"
-          ? "rgba(255, 255, 255, 0.25)"
-          : "rgba(255, 255, 255, 0.25)"
+          ? "transparent"
+          : "transparent"
       }
     >
       {/* box top bar */}
-      <div className='px-3 py-1 w-[100%] flex justify-between'>
+      <div className='py-1 w-[100%] flex justify-between'>
         From
         <div className='flex items-center'>
-          <span className='px-3 py-1 mx-1 rounded-[5px] bg-[#f3f3f3]'>
-            Your Balance:{" "}
+          <span className='px-3 py-1 mx-1 rounded-[5px] bg-[#1B1A2E] text-[#9996B3]'>
+            Balance:{" "}
             {balance
               ? Number(formatUnits(balance, fromToken.decimals)).toFixed(4)
               : 0}
           </span>
-          <FromRefresh />
-          <FromAdvanceSettingButton />
         </div>
       </div>
       {/* box datas */}
-      <div className='px-3 py-2 flex justify-between flex-col md:flex-row'>
+      <div className='py-2 flex justify-between flex-col md:flex-row'>
         <div className='md:w-[60%] w-[100%} flex justify-between '>
           {/* from network */}
           <FromChangeNetworkButton
@@ -87,7 +82,7 @@ const FromBox: FC<FromBoxProps> = ({ account, balance }) => {
           />
         </div>
         {/* from input */}
-        <div className='md:w-[40%] w-[100%} mt-[30px] md:mt-0 flex flex-col justify-center'>
+        <div className='md:w-[40%] w-[100%] mt-[30px] md:mt-0 flex flex-col justify-center'>
           <FromInput
             balance={
               balance

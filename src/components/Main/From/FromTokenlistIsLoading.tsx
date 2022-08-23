@@ -7,7 +7,7 @@ function FromTokenlistIsLoading() {
         className="w-12 h-12 rounded-full animate-spin
                     border-x-2 border-solid border-[#1378a6] border-t-transparent my-5"
       ></div>
-      <span>Loading ...</span>
+      <span className="text-white">Loading ...</span>
     </div>
   );
 }

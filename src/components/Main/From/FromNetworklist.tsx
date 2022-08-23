@@ -58,9 +58,9 @@ function FromNetworklist() {
 
   return (
     <>
-      <div className='flex justify-between items-center mb-5 pt-5 pr-5 pl-5'>
+      <div className='flex justify-between items-center mb-5 pb-4 border-b-[2px] border-[rgb(255, 255, 255, 0.1)] bg-clip-padding'>
         <div>
-          <h4 className='font-medium'>Select your network</h4>
+          <h4 className='font-medium text-white'>Select your network</h4>
         </div>
         <div>
           <img
@@ -71,9 +71,9 @@ function FromNetworklist() {
           />
         </div>
       </div>
-      <div className='w-[100%] p-5'>
-        <ul className='w-[100%] h-[100%] py-1 text-sm text-gray-700 dark:text-gray-200 flex justify-center items-center'>
-          <li className='m-2'>
+      <div className='w-[100%]'>
+        <ul className='w-[100%] h-[100%] text-sm text-gray-700 dark:text-gray-200 flex justify-center items-center'>
+          <li className='m-2 w-[50%]'>
             <div
               onClick={() => {
                 // changeChainId(56);
@@ -88,15 +88,15 @@ function FromNetworklist() {
                   })
                 );
               }}
-              className='flex flex-col items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-md dark:hover:text-white cursor-pointer'
+              className='flex flex-col items-center justify-between px-[12px] py-[15px] bg-[#22223D] mb-2 cursor-pointer hover:border-[5px] hover:border-[#814AFB]'
             >
               <img src={bnblightIcon} alt='' className='w-[56px] mb-2' />
-              <span className='w-[60px] md:w-[100px] text-[12px] text-center'>
+              <span className='w-[60px] md:w-[100px] text-[12px] text-center text-white'>
                 BNB Chain
               </span>
             </div>
           </li>
-          <li className='m-2'>
+          <li className='m-2 w-[50%]'>
             <div
               onClick={() => {
                 // changeChainId(250);
@@ -111,10 +111,10 @@ function FromNetworklist() {
                   })
                 );
               }}
-              className='flex flex-col items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-md dark:hover:text-white cursor-pointer'
+              className='flex flex-col items-center justify-between px-[12px] py-[15px] bg-[#22223D] mb-2 cursor-pointer hover:border-[5px] hover:border-[#814AFB]'
             >
               <img src={fantomIcon} alt='' className='w-[56px] mb-2' />
-              <span className='w-[60px] md:w-[100px] text-[12px] text-center'>
+              <span className='w-[60px] md:w-[100px] text-[12px] text-center text-white'>
                 Fantom
               </span>
             </div>

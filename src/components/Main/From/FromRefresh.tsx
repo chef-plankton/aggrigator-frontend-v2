@@ -1,5 +1,5 @@
 import React from "react";
-import refreshImage from "../../../assets/img/refresh.png";
+import refreshImage from "../../../assets/img/refreshicon.png";
 import ReactTooltip from "react-tooltip";
 import { useDispatch } from "react-redux";
 import { changeCounter } from "../../../features/route/routeSlice";
@@ -16,7 +16,7 @@ function FromRefresh() {
     <>
       <div
         onClick={refresher}
-        className="hover:bg-[#EEEEEE] p-2 rounded-md cursor-pointer"
+        className="hover:bg-[#1B1A2E] p-2 rounded-md cursor-pointer"
       >
         <div>
           <img

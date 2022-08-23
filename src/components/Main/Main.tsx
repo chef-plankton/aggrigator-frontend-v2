@@ -16,6 +16,7 @@ import Swal from "sweetalert2";
 import useSWRImmutable from "swr/immutable";
 import { RootState } from "../../app/store";
 import plusIcon from "../../assets/plus.png";
+import NoiseIcon from "../../assets/img/Noise.png";
 import { Weth } from "../../config/abi/types";
 import { SwapDescriptionStruct } from "../../config/abi/types/AkkaAggrigator";
 import { SwapTypes } from "../../config/constants/types";
@@ -48,6 +49,8 @@ import ReceiverBox from "./Receiver/ReceiverBox";
 import Route from "./Route/Route";
 import SwitchBox from "./Switcher/SwitchBox";
 import ToBox from "./To/ToBox";
+import FromRefresh from "./From/FromRefresh";
+import FromAdvanceSettingButton from "./From/FromAdvanceSettingButton";
 export const useCurrentBlock = (): number => {
   const { data: currentBlock = 0 } = useSWRImmutable("blockNumber");
   return currentBlock;
@@ -58,6 +61,14 @@ const Inner = styled.div`
     content: "";
     display: table;
   }
+`;
+const MainStyled = styled.main`
+  background-color: #22223d;
+  background-image: url(${NoiseIcon});
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center top;
+  padding: 67px;
 `;
 enum SwapButonStates {
   CONNECT_TO_WALLET = "CONNECT_TO_WALLET",
@@ -254,7 +265,7 @@ function Main() {
         })
       );
     }
-  }, [approveState,amount]);
+  }, [approveState, amount]);
   // check if user has gone through approval process, used to show two step buttons, reset on token change
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false);
   // mark when a user has submitted an approval, reset onTokenSelection for input field
@@ -306,8 +317,8 @@ function Main() {
             : 1,
           tochaindata.routes.length
         );
-        console.log("filteredArr",filteredArr);
-        
+        console.log("filteredArr", filteredArr);
+
         tochaindata = {
           ...sd,
           routes: filteredArr,
@@ -316,8 +327,8 @@ function Main() {
           srcDesiredAmount: filteredArr[0].srcAmount,
           dstDesiredMinAmount: filteredArr[filteredArr.length - 1].dstMinAmount,
         };
-        console.log({tochaindata});
-        
+        console.log({ tochaindata });
+
         // [s s b s s] [s s]
         const payload = await getBytes(tochaindata);
         const router = sd.routes.filter(
@@ -446,17 +457,21 @@ function Main() {
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   const [isVisible, setIsVisible] = useState(false);
   return (
-    <main
-      className={`${
-        themeMode === "light" ? "bg-[#E5E5E5]" : "bg-[#393E46]"
-      } shadow-lg z-10`}
-    >
-      <div className='max-w-3xl mx-auto px-4 min-h-screen flex flex-col items-center pb-[50px] pt-[50px] md:pt-[50px]'>
-        <FromBox balance={balance} account={account} />
-        <SwitchBox />
-        <ToBox />
+    <MainStyled>
+      <div className='max-w-2xl mx-auto px-4 flex flex-col items-center pb-[50px] pt-[50px] md:pt-[50px]'>
+        <div className='text-white flex justify-between w-[100%] pb-3'>
+          <span>Swap</span>
+          <div className='flex'>
+            <FromAdvanceSettingButton />
+            <FromRefresh />
+          </div>
+        </div>
+        <div className='w-[100%] bg-[#1B1A2E] px-5 py-[30px] flex flex-col justify-center items-center'>
+          <FromBox balance={balance} account={account} />
+          <SwitchBox />
+          <ToBox />
 
-        {/* <div className='w-[100%] flex mb-[10px] mt-0 pl-[5px] items-center'>
+          {/* <div className='w-[100%] flex mb-[10px] mt-0 pl-[5px] items-center'>
           <button
             className='w-[100%] flex items-center'
             onClick={() => setIsVisible(!isVisible)}
@@ -469,21 +484,22 @@ function Main() {
           <ReceiverBox />
         </SlideToggleContent> */}
 
-        <button
-          onClick={handleSwapButtonClick}
-          className={`mt-[10px] py-1 w-[100%] h-[50px] text-center font-medium text-lg rounded-[10px] ${
-            !swapButtonData.isDisable
-              ? "text-white bg-[#111111] hover:bg-[#111111] hover:text-[white] hover:shadow-none hover:border-[1px] hover:border-black transition duration-300 shadow-[0_8px_32px_#23293176]"
-              : "text-white bg-gray-300"
-          }`}
-          {...isButtonDisable}
-        >
-          {swapButtonData.text}
-        </button>
+          <button
+            onClick={handleSwapButtonClick}
+            className={`mt-[10px] py-1 w-[100%] h-[50px] text-center font-medium text-lg ${
+              !swapButtonData.isDisable
+                ? "text-white bg-[#6100FF] hover:shadow-none hover:border-[1px] hover:border-black transition duration-300 shadow-[0_8px_32px_#23293176]"
+                : "text-white bg-gray-300"
+            }`}
+            {...isButtonDisable}
+          >
+            {swapButtonData.text}
+          </button>
 
-        {isLoadingRoute ? <MyLoader /> : <Route />}
+          {isLoadingRoute ? <MyLoader /> : <Route />}
+        </div>
       </div>
-    </main>
+    </MainStyled>
   );
 }
 

@@ -27,7 +27,7 @@ function DisconnectWallet() {
   };
   return (
     <div
-      className="flex items-center justify-between border-[1px] rounded-xl border-[#D3D3D3] px-[12px] py-[15px] bg-[#edeef2] mb-2 cursor-pointer"
+      className="flex items-center justify-between text-white border-[1px] border-[white] px-[12px] py-[15px] mb-2 cursor-pointer"
       onClick={() => disconnectwallet()}
     >
       <h6 className="font-medium text-[16px]">

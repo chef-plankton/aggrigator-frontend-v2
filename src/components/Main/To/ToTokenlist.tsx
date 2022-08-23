@@ -20,10 +20,10 @@ const StyledInput = styled.input<HTMLAttributes<HTMLInputElement>>`
   margin-bottom: 30px;
   margin-top: 10px;
   text-decoration: none;
-  border-radius: 15px;
-  background-color: #eeeeee;
-  border: 1px solid #1378a6;
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid #814afb;
   backdrop-filter: blur(30px);
+  color: white;
   font-size: 20px;
   &:focus {
     outline: none;
@@ -69,10 +69,12 @@ function ToTokenlist() {
     //   setOrgListItems(res.data);
     //   setTokens(res.data);
     // });
-    getTokenlist(chainId===250?NetworkName.FTM:NetworkName.BSC).then((res) => {
-      setOrgListItems(res.data);
-      setTokens(res.data);
-    });
+    getTokenlist(chainId === 250 ? NetworkName.FTM : NetworkName.BSC).then(
+      (res) => {
+        setOrgListItems(res.data);
+        setTokens(res.data);
+      }
+    );
   }, []);
 
   useEffect(() => {
@@ -131,25 +133,25 @@ function ToTokenlist() {
 
   return (
     <>
-      <div className="flex justify-between items-center mb-5 pt-5 pr-5 pl-5">
+      <div className='flex justify-between items-center mb-5 pb-4 border-b-[2px] border-[rgb(255, 255, 255, 0.1)] bg-clip-padding'>
         <div>
-          <h4 className="font-medium">Select a token</h4>
+          <h4 className='font-medium text-white'>Select a token</h4>
         </div>
         <div>
           <img
             src={CloseIcon}
-            alt=""
+            alt=''
             onClick={() => dispatch(changeModalStatus(false))}
-            className="cursor-pointer w-[15px]"
+            className='cursor-pointer w-[15px]'
           />
         </div>
       </div>
 
       {/* Tokens list search box */}
-      <div className="px-5">
+      <div className=''>
         <StyledInput
-          type="text"
-          placeholder="Search name or paste address"
+          type='text'
+          placeholder='Search name or paste address'
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
@@ -157,7 +159,7 @@ function ToTokenlist() {
 
       {/* Tokens list box */}
       <div
-        className="flex flex-col w-[100%] overflow-y-scroll h-[500px] scrollbar"
+        className='flex flex-col w-[100%] overflow-y-scroll h-[500px] scrollbar'
         onScroll={handleScroll}
       >
         {tokens.length == 0 ? (
@@ -168,11 +170,6 @@ function ToTokenlist() {
             <ToToken token={token} index={index} key={uuidv4()} />
           ))
         )}
-      </div>
-
-      {/* Manage Token list */}
-      <div className="w-[100%] border-[1px] rounded-xl rounded-t-none px-[12px] py-[15px] bg-[#edeef2] mt-2 cursor-pointer">
-        <p className="text-[14px] text-center">Manage Tokenlist</p>
       </div>
     </>
   );

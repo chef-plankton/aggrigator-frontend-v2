@@ -43,11 +43,11 @@ function ConnectWalletModal() {
   };
   return (
     <>
-      <div className='flex justify-between items-center mb-5 pr-5 pl-5 pt-5 pb-2'>
+      <div className='flex justify-between items-center mb-5 pb-4 border-b-[2px] border-[rgb(255, 255, 255, 0.1)] bg-clip-padding'>
         <div>
           <h4
             className={`font-medium ${
-              themeMode === "light" ? "text-black" : "text-white"
+              themeMode === "light" ? "text-white" : "text-white"
             }`}
           >
             Connect a Wallet
@@ -62,7 +62,7 @@ function ConnectWalletModal() {
           />
         </div>
       </div>
-      <div className='flex flex-col w-[100%] px-5'>
+      <div className='flex flex-col w-[100%]'>
         {isActive ? (
           <DisconnectWallet />
         ) : isLoading ? (
@@ -70,18 +70,9 @@ function ConnectWalletModal() {
         ) : (
           <>
             <MetaMaskCard handleClick={connectMetamaskHandler} />
-            <WalletConnectCard handleClick={connectWalletConnectHandler} />
+            {/* <WalletConnectCard handleClick={connectWalletConnectHandler} /> */}
           </>
         )}
-      </div>
-      <div className='px-5 pt-2 pb-5'>
-        <div className='w-[100%] border-[1px] rounded-xl px-[12px] py-[15px] bg-[#edeef2]'>
-          <p className='text-[14px]'>
-            By connecting a wallet, you agree to Akka Labs’ Terms of Service and
-            acknowledge that you have read and understand the Akka Protocol
-            Disclaimer.
-          </p>
-        </div>
       </div>
     </>
   );

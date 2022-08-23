@@ -44,7 +44,7 @@ function GeneralModal() {
         onRequestClose={() => dispatch(changeModalStatus(false))}
         style={{
           overlay: {
-            backgroundColor: "rgba(0, 0, 0, 0.9)",
+            backgroundColor: "rgba(34, 34, 61, 0.7)",
             zIndex: 100,
           },
           content: {
@@ -59,19 +59,13 @@ function GeneralModal() {
             maxWidth: "420px",
             maxHeight: "90vh",
             marginRight: "-50%",
-            padding: "0px",
+            padding: "24px",
+            borderRadius: "0px",
             backgroundColor:
-              themeMode === "light" ? "rgb(255, 255, 255)" : "rgb(35, 41, 49)",
-            border:
-              themeMode === "light"
-                ? "1px solid rgb(247, 248, 250)"
-                : "rgb(26, 30, 36)",
-            boxShadow:
-              themeMode === "light"
-                ? "rgb(47 128 237 / 5%) 0px 4px 8px 10px"
-                : "rgb(35 41 49 / 5%) 0px 4px 8px 10px",
-            borderRadius: "10px",
+              themeMode === "light" ? "#171629" : "rgb(35, 41, 49)",
+                border: "none",
             overflow: "hidden",
+            boxSizing: "border-box",
           },
         }}
         contentLabel="General Modal"

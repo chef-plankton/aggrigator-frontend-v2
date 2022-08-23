@@ -14,10 +14,9 @@ const StyledButton = styled.div<{ backgroundColor: string }>`
   padding: 10px 15px;
   margin: 0 10px;
   text-decoration: none;
-  border-radius: 15px;
   background-color: ${({ backgroundColor }) =>
     backgroundColor ? backgroundColor : "#EEEEEE"};
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid #2F2E3C;
   backdrop-filter: blur(30px);
   font-size: 14px;
   cursor: pointer;
@@ -33,7 +32,7 @@ const ToChangeNetworkButton: FC<{
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   return (
     <StyledButton
-      backgroundColor={themeMode === "light" ? "#EEEEEE" : "#393E46"}
+      backgroundColor={themeMode === "light" ? "rgba(255, 255, 255, 0.02)" : "rgba(255, 255, 255, 0.02)"}
       onClick={() => dispatch(ToNetworklistStatus(true))}
     >
       <div className="w-[20%]">

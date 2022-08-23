@@ -17,10 +17,9 @@ const StyledButton = styled.div<
   padding: 10px 15px;
   margin: 0 10px;
   text-decoration: none;
-  border-radius: 15px;
   background-color: ${({ backgroundColor }) =>
     backgroundColor ? backgroundColor : "#EEEEEE"};
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid #2F2E3C;
   backdrop-filter: blur(30px);
   font-size: 14px;
   cursor: pointer;
@@ -39,7 +38,7 @@ const FromChangeChainButton: FC<{
   const fromChain = useSelector(({ route }: RootState) => route.fromChain);
   return (
     <StyledButton
-      backgroundColor={themeMode === "light" ? "#EEEEEE" : "#393E46"}
+      backgroundColor={themeMode === "light" ? "rgba(255, 255, 255, 0.02)" : "#393E46"}
       onClick={() => dispatch(fromTokenlistStatus(true))}
     >
       <div className="w-[20%]">

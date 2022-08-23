@@ -44,15 +44,15 @@ function ChainsDropdown({ setDropdown, setHidden }: Props) {
     setHidden(false)
   };
   return (
-    <div className="z-10 bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 chainslistdrowdown">
-      <ul className="py-1 text-sm text-gray-700 dark:text-gray-200">
+    <div className="z-10 bg-[#1B1A2E] divide-y divide-gray-100 rounded shadow w-44 dark:bg-[#22223D] chainslistdrowdown">
+      <ul className="py-1 text-sm text-[white]">
         <li>
           <div
             onClick={() => {
               changeChainId(56);
               setDropdown(false);
             }}
-            className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+            className="flex items-center px-4 py-2 hover:bg-[#22223D] dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
           >
             <img src={bnblightIcon} alt="" className="w-[24px] mr-2" />
             BNB Chain
@@ -64,7 +64,7 @@ function ChainsDropdown({ setDropdown, setHidden }: Props) {
               changeChainId(250);
               setDropdown(false);
             }}
-            className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+            className="flex items-center px-4 py-2 hover:bg-[#22223D] dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
           >
             <img src={fantomIcon} alt="" className="w-[24px] mr-2" />
             Fantom
@@ -77,7 +77,7 @@ function ChainsDropdown({ setDropdown, setHidden }: Props) {
               changeChainId(97);
               setDropdown(false);
             }}
-            className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+            className="flex items-center px-4 py-2 hover:bg-[#22223D] dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
           >
             <img src={bnblightIcon} alt="" className="w-[24px] mr-2" />
             BSC Testnet
