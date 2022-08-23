@@ -60,7 +60,7 @@ const FromBox: FC<FromBoxProps> = ({ account, balance }) => {
       </div>
       {/* box datas */}
       <div className='py-2 flex justify-between flex-col md:flex-row'>
-        <div className='md:w-[60%] w-[100%} flex justify-between '>
+        <div className='md:w-[60%] w-[100%] flex justify-between '>
           {/* from network */}
           <FromChangeNetworkButton
             imageSrc={`${chainId === 56 ? bnblightIcon : ""}${

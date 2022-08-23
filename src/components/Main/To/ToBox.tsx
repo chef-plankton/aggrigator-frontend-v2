@@ -9,8 +9,6 @@ import { RootState } from "../../../app/store";
 import bnblightIcon from "../../../assets/img/chains/binance-light.svg";
 import fantomIcon from "../../../assets/img/chains/fantom.svg";
 const StyledToBox = styled.div<{ color: string; backgroundColor: string }>`
-  background: ${({ backgroundColor }) =>
-    backgroundColor ? backgroundColor : "rgba(255, 255, 255, 0.25)"};
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   border-radius: 10px;
@@ -34,12 +32,12 @@ function ToBox() {
           : "transparent"
       }
     >
-      <div className='px-3 py-1 w-[100%] flex justify-between'>
+      <div className='py-1 w-[100%] flex justify-between'>
         <div>To</div>
         {/* <ToBalance /> */}
       </div>
-      <div className='px-3 py-2 flex justify-between flex-col md:flex-row'>
-        <div className='md:w-[60%] w-[100%} flex justify-between'>
+      <div className='py-2 flex justify-between flex-col md:flex-row'>
+        <div className='md:w-[60%] w-[100%] flex justify-between'>
           <ToChangeNetworkButton
             imageSrc={`${chainId === 56 ? bnblightIcon : ""}${
               chainId === 250 ? fantomIcon : ""

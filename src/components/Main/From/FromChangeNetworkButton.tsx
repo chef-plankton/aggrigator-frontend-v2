@@ -18,7 +18,7 @@ const StyledButton = styled.div<{ backgroundColor: string }>`
     backgroundColor ? backgroundColor : "#EEEEEE"};
   border: 1px solid #2F2E3C;
   backdrop-filter: blur(30px);
-  font-size: 14px;
+  font-size: 12px;
   cursor: pointer;
   @media (max-width: 768px) {
     padding: 10px 15px;
