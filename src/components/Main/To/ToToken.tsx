@@ -42,7 +42,7 @@ function ToToken({ token, index }) {
         <div className="text-[14px]">{token.symbol}</div>
         <div className="text-[14px]">{token.name}</div>
       </div>
-      <div className="w-[10%] flex justify-end text-white">0</div>
+      {/* <div className="w-[10%] flex justify-end text-white">0</div> */}
     </div>
   );
 }

@@ -58,7 +58,7 @@ const ToChangeChainButton: FC<{
           className="w-[32px] rounded-[50%]"
         />
       </div>
-      <div className="mx-4 w-[60%] text-center">
+      <div className="mx-4 w-[60%] text-center font-outfit font-[500] text-[14px]">
         <h2>{toToken.symbol === "" ? "Select Token" : toToken.symbol}</h2>
       </div>
       <div className="w-[20%]">

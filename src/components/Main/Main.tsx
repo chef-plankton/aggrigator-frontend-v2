@@ -51,6 +51,7 @@ import SwitchBox from "./Switcher/SwitchBox";
 import ToBox from "./To/ToBox";
 import FromRefresh from "./From/FromRefresh";
 import FromAdvanceSettingButton from "./From/FromAdvanceSettingButton";
+import InfoBox from "./Info/InfoBox";
 export const useCurrentBlock = (): number => {
   const { data: currentBlock = 0 } = useSWRImmutable("blockNumber");
   return currentBlock;
@@ -460,7 +461,7 @@ function Main() {
     <MainStyled>
       <div className='max-w-2xl mx-auto px-4 flex flex-col items-center pb-[50px] pt-[50px] md:pt-[50px]'>
         <div className='text-white flex justify-between w-[100%] pb-3'>
-          <span>Swap</span>
+          <span className="font-clash font-[600] text-[20px]">Swap</span>
           <div className='flex'>
             <FromAdvanceSettingButton />
             <FromRefresh />
@@ -486,7 +487,7 @@ function Main() {
 
           <button
             onClick={handleSwapButtonClick}
-            className={`mt-[10px] py-1 w-[100%] h-[50px] text-center font-medium text-lg ${
+            className={`mt-[10px] py-1 w-[100%] h-[50px] text-center font-clash font-[600] text-[18px] text-lg ${
               !swapButtonData.isDisable
                 ? "text-white bg-[#6100FF] hover:shadow-none hover:border-[1px] hover:border-black transition duration-300 shadow-[0_8px_32px_#23293176]"
                 : "text-white bg-gray-300"
@@ -496,6 +497,7 @@ function Main() {
             {swapButtonData.text}
           </button>
 
+          {isLoadingRoute ? <MyLoader /> : <InfoBox />}
           {isLoadingRoute ? <MyLoader /> : <Route />}
         </div>
       </div>

@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { RootState } from "../../../app/store";
 import CloseIcon from "../../../assets/img/close.png";
+import SearchIcon from "../../../assets/img/search-line.png";
 import { changeModalStatus } from "../../../features/modals/modalsSlice";
 import FromToken from "./FromToken";
 import FromTokenlistIsLoading from "./FromTokenlistIsLoading";
@@ -14,8 +15,10 @@ const StyledInput = styled.input<HTMLAttributes<HTMLInputElement>>`
   width: 100%;
   height: 100%;
   padding: 15px 15px;
+  padding-left: 45px;
   margin-bottom: 30px;
   margin-top: 10px;
+  position: relative;
   text-decoration: none;
   background-color: rgba(255, 255, 255, 0.02);
   border: 1px solid #814afb;
@@ -140,12 +143,18 @@ function FromTokenlist() {
       </div>
 
       {/* Tokens list search box */}
-      <div className=''>
+      <div className='relative'>
         <StyledInput
+          className='font-outfit font-[500] text-[16px]'
           type='text'
           placeholder='Search name or paste address'
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <img
+          src={SearchIcon}
+          alt=''
+          className='absolute top-[28px] left-[15px] w-[16px]'
         />
       </div>
 

@@ -5,6 +5,10 @@ module.exports = {
   ],
   theme: {
     extend: {},
+    fontFamily: {
+      'clash': ['Clash Display', 'sans-serif'],
+      'outfit': ['Outfit', 'sans-serif'],
+    },
   },
   plugins: [],
 };

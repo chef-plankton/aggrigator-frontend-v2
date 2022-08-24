@@ -47,10 +47,10 @@ const FromBox: FC<FromBoxProps> = ({ account, balance }) => {
       }
     >
       {/* box top bar */}
-      <div className='py-1 w-[100%] flex justify-between'>
+      <div className='py-1 w-[100%] flex justify-between font-clash font-[500] text-[16px]'>
         From
         <div className='flex items-center'>
-          <span className='px-3 py-1 mx-1 rounded-[5px] bg-[#1B1A2E] text-[#9996B3]'>
+          <span className='px-3 py-1 mx-1 rounded-[5px] bg-[#1B1A2E] text-[#9996B3] font-outfit'>
             Balance:{" "}
             {balance
               ? Number(formatUnits(balance, fromToken.decimals)).toFixed(4)

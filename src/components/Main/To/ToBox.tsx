@@ -33,7 +33,7 @@ function ToBox() {
       }
     >
       <div className='py-1 w-[100%] flex justify-between'>
-        <div>To</div>
+        <div className="font-clash font-[500] text-[16px]">To</div>
         {/* <ToBalance /> */}
       </div>
       <div className='py-2 flex justify-between flex-col md:flex-row'>

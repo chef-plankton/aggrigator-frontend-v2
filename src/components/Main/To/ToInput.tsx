@@ -11,7 +11,7 @@ const StyledInput = styled.input`
   display: block;
   color: white;
   background: rgba(255, 255, 255, 0.02);
-  border: 1px solid #2F2E3C;
+  border: 1px solid #2f2e3c;
   outline: none;
   width: 90%;
   height: 100%;
@@ -40,9 +40,14 @@ function ToInput() {
   );
   return (
     <StyledInput
+      className='font-outfit font-[500] text-[20px]'
       color={themeMode === "light" ? "black" : "white"}
-      placeholder="Recieve amount"
-      value={responseData.data.return_amount ? Math.round(responseData.data.return_amount * 100000) / 100000 : ""}
+      placeholder='Recieve amount'
+      value={
+        responseData.data.return_amount
+          ? Math.round(responseData.data.return_amount * 100000) / 100000
+          : ""
+      }
       disabled
     />
   );

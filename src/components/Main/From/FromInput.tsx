@@ -292,6 +292,7 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
   return (
     <>
       <StyledInput
+      className="font-outfit font-[500] text-[20px]"
         color={themeMode === "light" ? "black" : "white"}
         placeholder="Enter amount"
         value={amount}
@@ -317,7 +318,7 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
       />
       <button
         onClick={() => dispatch(changeAmount(balance))}
-        className="absolute right-[35px] bottom-[-25px] py-1 px-4 bg-[#22223D] rounded-[50px]"
+        className="absolute right-[35px] bottom-[-25px] py-1 px-4 bg-[#22223D] rounded-[50px] font-outfit font-[500] text-[16px]"
       >
         Max
       </button>
