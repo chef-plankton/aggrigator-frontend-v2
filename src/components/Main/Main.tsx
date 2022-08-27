@@ -449,14 +449,14 @@ function Main() {
   return (
     <MainStyled>
       <div className='max-w-2xl mx-auto px-4 flex flex-col items-center pb-[50px] pt-[50px] md:pt-[50px]'>
-        <div className='text-white flex justify-between w-[100%] pb-3'>
-          <span className='font-clash font-[600] text-[20px]'>Swap</span>
-          <div className='flex'>
-            <FromAdvanceSettingButton />
-            <FromRefresh />
+        <div className='w-[100%] bg-[#1B1A2E] px-[30px] py-[30px] flex flex-col justify-center items-center'>
+          <div className='text-[#ebebeb] flex justify-between w-[100%] pb-3'>
+            <span className='font-clash font-[600] text-[24px]'>Swap</span>
+            <div className='flex'>
+              <FromAdvanceSettingButton />
+              <FromRefresh />
+            </div>
           </div>
-        </div>
-        <div className='w-[100%] bg-[#1B1A2E] px-5 py-[30px] flex flex-col justify-center items-center'>
           <FromBox balance={balance} account={account} />
           <SwitchBox />
           <ToBox />
@@ -476,10 +476,10 @@ function Main() {
 
           <button
             onClick={handleSwapButtonClick}
-            className={`mt-[10px] py-1 w-[100%] h-[50px] text-center font-clash font-[600] text-[18px] text-lg ${
+            className={`py-1 w-[100%] h-[48px] text-center font-clash font-[600] text-[18px] text-lg ${
               !swapButtonData.isDisable
                 ? "text-white bg-[#6100FF] hover:shadow-none hover:border-[1px] hover:border-black transition duration-300 shadow-[0_8px_32px_#23293176]"
-                : "text-white bg-gray-300"
+                : "text-[#717070] bg-[#979797]"
             }`}
             {...isButtonDisable}
           >

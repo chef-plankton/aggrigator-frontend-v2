@@ -10,7 +10,7 @@ const StyledButton = styled.div<
   HTMLAttributes<HTMLElement> & { backgroundColor: string }
 >`
   width: 50%;
-  min-height: 55px;
+  min-height: 48px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -19,7 +19,7 @@ const StyledButton = styled.div<
   text-decoration: none;
   background-color: ${({ backgroundColor }) =>
     backgroundColor ? backgroundColor : "#EEEEEE"};
-  border: 1px solid #2F2E3C;
+  border: 1px solid #414141;
   backdrop-filter: blur(30px);
   font-size: 14px;
   cursor: pointer;
@@ -58,10 +58,10 @@ const ToChangeChainButton: FC<{
           className="w-[32px] rounded-[50%]"
         />
       </div>
-      <div className="mx-4 w-[60%] text-center font-outfit font-[500] text-[14px]">
+      <div className="mx-2 w-[70%] text-left font-outfit font-[500] text-[14px]">
         <h2>{toToken.symbol === "" ? "Select Token" : toToken.symbol}</h2>
       </div>
-      <div className="w-[20%]">
+      <div className="w-[10%]">
         <img src={ArrowDownFont} alt="" className="w-[10px]" />
       </div>
     </StyledButton>

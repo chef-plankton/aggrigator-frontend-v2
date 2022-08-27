@@ -20,7 +20,7 @@ const StyledFromBox = styled.div<{ color: string; backgroundColor: string }>`
   -webkit-backdrop-filter: blur(4px);
   border-radius: 10px;
   width: 100%;
-  padding: 10px;
+  padding: 10px 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -47,7 +47,7 @@ const FromBox: FC<FromBoxProps> = ({ account, balance }) => {
       }
     >
       {/* box top bar */}
-      <div className='py-1 w-[100%] flex justify-between font-clash font-[500] text-[16px]'>
+      <div className='py-1 w-[100%] flex justify-between font-clash font-[500] text-[16px] items-center h-[32px]'>
         From
         <div className='flex items-center'>
           <span className='px-3 py-1 mx-1 rounded-[5px] bg-[#1B1A2E] text-[#9996B3] font-outfit'>

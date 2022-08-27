@@ -13,8 +13,8 @@ const StyledToBox = styled.div<{ color: string; backgroundColor: string }>`
   -webkit-backdrop-filter: blur(4px);
   border-radius: 10px;
   width: 100%;
-  margin-bottom: 35px;
-  padding: 10px;
+  margin-bottom: 24px;
+  padding: 10px 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -55,7 +55,7 @@ function ToBox() {
             chain={"mainnet"}
           />
         </div>
-        <div className='md:w-[40%] w-[100%} mt-[50px] md:mt-0 flex justify-center'>
+        <div className='md:w-[40%] w-[100%] mt-[30px] md:mt-0 flex flex-col justify-center'>
           <ToInput />
         </div>
       </div>

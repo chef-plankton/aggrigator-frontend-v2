@@ -36,12 +36,11 @@ const StyledInput = styled.input`
   position: relative;
   text-overflow: ellipsis;
   font-weight: 400;
-  font-size: 20px;
   padding: 10px;
   display: block;
   color: white;
   background: rgba(255, 255, 255, 0.02);
-  border: 1px solid #2F2E3C;
+  border: 1px solid #414141;
   outline: none;
   width: 90%;
   height: 100%;
@@ -290,8 +289,8 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
   return (
     <>
       <StyledInput
-      className="font-outfit font-[500] text-[20px]"
-        color={themeMode === "light" ? "black" : "white"}
+      className="font-outfit font-[500] text-[14px]"
+        color={themeMode === "light" ? "white" : "white"}
         placeholder="Enter amount"
         value={amount}
         onChange={(e) => {
@@ -316,7 +315,7 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
       />
       <button
         onClick={() => dispatch(changeAmount(balance))}
-        className="absolute right-[35px] bottom-[-25px] py-1 px-4 bg-[#22223D] rounded-[50px] font-outfit font-[500] text-[16px]"
+        className="absolute right-[25px] bottom-[-25px] py-1 px-4 bg-[#22223D] rounded-[50px] font-outfit font-[500] text-[16px]"
       >
         Max
       </button>

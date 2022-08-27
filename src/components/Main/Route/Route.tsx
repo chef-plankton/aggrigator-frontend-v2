@@ -16,7 +16,7 @@ import DexBox from "./DexBox";
 const MainStyled = styled.div`
   background: #22223d;
   padding: 20px 20px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   margin-top: 20px;
   display: flex;
   flex-direction: column;
@@ -57,9 +57,9 @@ function Route() {
   return (
     <>
       {showRoute ? (
-        <div className='flex flex-col w-[100%] justify-center items-center bg-[#22223D] mt-3 p-5'>
-          <div className='text-[#4FC37E] w-[100%] mt-3 font-outfit'>
-            Most Optimized Route:
+        <div className='flex flex-col w-[100%] justify-center items-center bg-[#22223D] mt-[20px] p-[20px]'>
+          <div className='text-[#bfbfbf] w-[100%] font-outfit text-center'>
+            Most Optimized Route
           </div>
           <div className='mt-3 w-[100%]'>
             {oprationSeperated[0].chain === "bridge" &&

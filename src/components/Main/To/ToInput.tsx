@@ -6,12 +6,11 @@ const StyledInput = styled.input`
   position: relative;
   text-overflow: ellipsis;
   font-weight: 400;
-  font-size: 20px;
   padding: 10px;
   display: block;
   color: white;
   background: rgba(255, 255, 255, 0.02);
-  border: 1px solid #2f2e3c;
+  border: 1px solid #414141;
   outline: none;
   width: 90%;
   height: 100%;
@@ -40,7 +39,7 @@ function ToInput() {
   );
   return (
     <StyledInput
-      className='font-outfit font-[500] text-[20px]'
+      className='font-outfit font-[500] text-[14px]'
       color={themeMode === "light" ? "black" : "white"}
       placeholder='Recieve amount'
       value={

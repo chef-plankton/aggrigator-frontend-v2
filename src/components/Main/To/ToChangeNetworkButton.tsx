@@ -7,7 +7,7 @@ import ArrowDownFont from "../../../assets/arrow-down-sign-to-navigate.png";
 import { ToNetworklistStatus } from "../../../features/modals/modalsSlice";
 const StyledButton = styled.div<{ backgroundColor: string }>`
   width: 50%;
-  min-height: 55px;
+  min-height: 48px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,7 +15,7 @@ const StyledButton = styled.div<{ backgroundColor: string }>`
   text-decoration: none;
   background-color: ${({ backgroundColor }) =>
     backgroundColor ? backgroundColor : "#EEEEEE"};
-  border: 1px solid #2F2E3C;
+  border: 1px solid #414141;
   backdrop-filter: blur(30px);
   font-size: 12px;
   cursor: pointer;
@@ -37,10 +37,10 @@ const ToChangeNetworkButton: FC<{
       <div className="w-[20%]">
         <img src={imageSrc} alt="" className="w-[32px]" />
       </div>
-      <div className="mx-4 w-[60%] text-center font-outfit font-[500] text-[14px]">
+      <div className="mx-2 w-[70%] text-left font-outfit font-[500] text-[14px]">
         <h3>{coinName}</h3>
       </div>
-      <div className="w-[20%]">
+      <div className="w-[10%]">
         <img src={ArrowDownFont} alt="" className="w-[10px]" />
       </div>
     </StyledButton>

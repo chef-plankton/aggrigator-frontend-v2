@@ -16,7 +16,7 @@ import { TokenListApi } from "../../../config/api/types";
 import { NetworkName } from "../../../config/constants/types";
 const StyledInput = styled.input<HTMLAttributes<HTMLInputElement>>`
   width: 100%;
-  height: 100%;
+  height: 48px;
   padding: 15px 15px;
   padding-left: 45px;
   margin-bottom: 30px;
@@ -24,12 +24,20 @@ const StyledInput = styled.input<HTMLAttributes<HTMLInputElement>>`
   position: relative;
   text-decoration: none;
   background-color: rgba(255, 255, 255, 0.02);
-  border: 1px solid #814afb;
+  border: 1px solid #414141;
   backdrop-filter: blur(30px);
   color: white;
   font-size: 20px;
+  line-height: 20px;
   &:focus {
     outline: none;
+  }
+  ::placeholder,
+  ::-webkit-input-placeholder {
+    font-size: 16px;
+  }
+  :-ms-input-placeholder {
+    font-size: 16px;
   }
 `;
 function ToTokenlist() {
