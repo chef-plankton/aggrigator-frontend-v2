@@ -55,7 +55,7 @@ function ToBox() {
             chain={"mainnet"}
           />
         </div>
-        <div className='md:w-[40%] w-[100%] mt-[30px] md:mt-0 flex flex-col justify-center'>
+        <div className='md:w-[40%] w-[100%] mt-[30px] md:mt-0 flex justify-end'>
           <ToInput />
         </div>
       </div>

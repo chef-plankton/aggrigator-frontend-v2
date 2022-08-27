@@ -33,7 +33,6 @@ import {
 } from "../../../hooks/useSetContractWithChainId";
 import useWallet from "../../Wallets/useWallet";
 const StyledInput = styled.input`
-  position: relative;
   text-overflow: ellipsis;
   font-weight: 400;
   padding: 10px;
@@ -63,7 +62,7 @@ const StyledInput = styled.input`
 `;
 function test(n: number, decimal: number) {
   // return parseUnits(n.toFixed(decimal), decimal)
-  return parseUnits(n.toFixed(decimal),decimal);
+  return parseUnits(n.toFixed(decimal), decimal);
 }
 interface FromInputProps {
   balance: number | string;
@@ -104,7 +103,7 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
             .then((data) => {
               dispatch(changeResponseString(JSON.stringify(data)));
               dispatch(changeResponseData(data.data));
-              dispatch(changeShowRoute(true));              
+              dispatch(changeShowRoute(true));
               dispatch(
                 changeSwapDescription(
                   JSON.stringify(
@@ -289,9 +288,9 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
   return (
     <>
       <StyledInput
-      className="font-outfit font-[500] text-[14px]"
+        className='font-outfit font-[500] text-[14px]'
         color={themeMode === "light" ? "white" : "white"}
-        placeholder="Enter amount"
+        placeholder='Enter amount'
         value={amount}
         onChange={(e) => {
           const value = e.target.value;
@@ -313,12 +312,6 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
           }
         }}
       />
-      <button
-        onClick={() => dispatch(changeAmount(balance))}
-        className="absolute right-[25px] bottom-[-25px] py-1 px-4 bg-[#22223D] rounded-[50px] font-outfit font-[500] text-[16px]"
-      >
-        Max
-      </button>
     </>
   );
 };

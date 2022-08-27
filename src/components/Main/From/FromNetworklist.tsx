@@ -58,7 +58,7 @@ function FromNetworklist() {
 
   return (
     <>
-      <div className='flex justify-between items-center mb-5 pb-4 border-b-[2px] border-[rgb(255, 255, 255, 0.1)] bg-clip-padding'>
+      <div className='flex justify-between items-center mb-5 pb-4 border-b-[2px] border-[#ffffff1a] bg-clip-padding'>
         <div>
           <h4 className='font-medium text-white'>Select your network</h4>
         </div>

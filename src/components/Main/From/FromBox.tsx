@@ -2,11 +2,13 @@ import { formatEther, formatUnits, parseUnits } from "@ethersproject/units";
 import { BigNumber } from "ethers";
 import _ from "lodash";
 import { FC } from "react";
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { RootState } from "../../../app/store";
 import bnblightIcon from "../../../assets/img/chains/binance-light.svg";
 import fantomIcon from "../../../assets/img/chains/fantom.svg";
+import { changeAmount } from "../../../features/route/routeSlice";
 import FromAdvanceSettingButton from "./FromAdvanceSettingButton";
 import FromChangeNetworkButton from "./FromChangeNetworkButton";
 import FromChangeTokenButton from "./FromChangeTokenButton";
@@ -36,15 +38,12 @@ const FromBox: FC<FromBoxProps> = ({ account, balance }) => {
   const chainId = useSelector(({ route }: RootState) => route.fromChain);
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   const fromToken = useSelector(({ route }: RootState) => route.fromToken);
+  const dispatch = useDispatch();
 
   return (
     <StyledFromBox
       color={themeMode === "light" ? "white" : "white"}
-      backgroundColor={
-        themeMode === "light"
-          ? "transparent"
-          : "transparent"
-      }
+      backgroundColor={themeMode === "light" ? "transparent" : "transparent"}
     >
       {/* box top bar */}
       <div className='py-1 w-[100%] flex justify-between font-clash font-[500] text-[16px] items-center h-[32px]'>
@@ -56,6 +55,23 @@ const FromBox: FC<FromBoxProps> = ({ account, balance }) => {
               ? Number(formatUnits(balance, fromToken.decimals)).toFixed(4)
               : 0}
           </span>
+          <button
+            onClick={() =>
+              dispatch(
+                changeAmount(
+                  balance
+                    ? (
+                        Number(formatUnits(balance, fromToken.decimals)) *
+                        0.9999
+                      ).toFixed(4)
+                    : 0
+                )
+              )
+            }
+            className='font-outfit font-[500] text-[16px] border-0 border-b-[2px] border-[#6100FF] border-solid	'
+          >
+            Max
+          </button>
         </div>
       </div>
       {/* box datas */}
@@ -82,7 +98,7 @@ const FromBox: FC<FromBoxProps> = ({ account, balance }) => {
           />
         </div>
         {/* from input */}
-        <div className='md:w-[40%] w-[100%] mt-[30px] md:mt-0 flex flex-col justify-center'>
+        <div className='md:w-[40%] w-[100%] mt-[30px] md:mt-0 flex justify-end'>
           <FromInput
             balance={
               balance
