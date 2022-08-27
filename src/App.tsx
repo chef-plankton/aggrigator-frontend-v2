@@ -38,12 +38,12 @@ function App() {
   }, [chainId]);
 
   return (
-    <>
+    <div className="min-h-screen">
       <Header />
       <Main />
       <Footer />
       <GeneralModal />
-    </>
+    </div>
   );
 }
 

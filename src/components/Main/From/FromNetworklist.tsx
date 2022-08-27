@@ -88,7 +88,7 @@ function FromNetworklist() {
                   })
                 );
               }}
-              className='flex flex-col items-center justify-between px-[12px] py-[15px] bg-[#22223D] mb-2 cursor-pointer hover:border-[5px] hover:border-[#814AFB]'
+              className='flex flex-col items-center justify-between px-[12px] py-[15px] border-[5px] border-[#22223D] bg-[#22223D] mb-2 cursor-pointer hover:border-[5px] hover:border-[#814AFB]'
             >
               <img src={bnblightIcon} alt='' className='w-[56px] mb-2' />
               <span className='w-[60px] md:w-[100px] text-[12px] text-center text-white'>
@@ -111,7 +111,7 @@ function FromNetworklist() {
                   })
                 );
               }}
-              className='flex flex-col items-center justify-between px-[12px] py-[15px] bg-[#22223D] mb-2 cursor-pointer hover:border-[5px] hover:border-[#814AFB]'
+              className='flex flex-col items-center justify-between px-[12px] py-[15px] border-[5px] border-[#22223D] bg-[#22223D] mb-2 cursor-pointer hover:border-[5px] hover:border-[#814AFB]'
             >
               <img src={fantomIcon} alt='' className='w-[56px] mb-2' />
               <span className='w-[60px] md:w-[100px] text-[12px] text-center text-white'>

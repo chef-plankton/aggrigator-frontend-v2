@@ -38,10 +38,15 @@ const ToChangeChainButton: FC<{
   const toChain = useSelector(({ route }: RootState) => route.toChain);
   return (
     <StyledButton
-      backgroundColor={themeMode === "light" ? "rgba(255, 255, 255, 0.02)" : "rgba(255, 255, 255, 0.02)"}
+      className='hover:border-[#814AFB]'
+      backgroundColor={
+        themeMode === "light"
+          ? "rgba(255, 255, 255, 0.02)"
+          : "rgba(255, 255, 255, 0.02)"
+      }
       onClick={() => dispatch(ToTokenlistStatus(true))}
     >
-      <div className="w-[20%]">
+      <div className='w-[20%]'>
         <img
           src={
             toToken.adress
@@ -54,15 +59,15 @@ const ToChangeChainButton: FC<{
                 }/assets/${toToken.adress}/logo.png`
               : tokenImage
           }
-          alt=""
-          className="w-[32px] rounded-[50%]"
+          alt=''
+          className='w-[32px] rounded-[50%]'
         />
       </div>
-      <div className="mx-2 w-[70%] text-left font-outfit font-[500] text-[14px]">
+      <div className='mx-2 w-[70%] text-left font-outfit font-[500] text-[14px]'>
         <h2>{toToken.symbol === "" ? "Select Token" : toToken.symbol}</h2>
       </div>
-      <div className="w-[10%]">
-        <img src={ArrowDownFont} alt="" className="w-[10px]" />
+      <div className='w-[10%]'>
+        <img src={ArrowDownFont} alt='' className='w-[10px]' />
       </div>
     </StyledButton>
   );

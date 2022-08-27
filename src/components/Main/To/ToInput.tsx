@@ -39,7 +39,7 @@ function ToInput() {
   );
   return (
     <StyledInput
-      className='font-outfit font-[500] text-[14px]'
+      className='font-outfit font-[500] text-[14px] hover:border-[#814AFB]'
       color={themeMode === "light" ? "black" : "white"}
       placeholder='Recieve amount'
       value={

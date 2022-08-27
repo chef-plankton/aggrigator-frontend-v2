@@ -163,7 +163,7 @@ function FromTokenlist() {
         <img
           src={SearchIcon}
           alt=''
-          className='absolute top-[28px] left-[15px] w-[16px]'
+          className='absolute top-[26px] left-[15px] w-[16px]'
         />
       </div>
 

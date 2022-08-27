@@ -288,7 +288,7 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
   return (
     <>
       <StyledInput
-        className='font-outfit font-[500] text-[14px]'
+        className='font-outfit font-[500] text-[14px] hover:border-[#814AFB] focus:border-[#814AFB]'
         color={themeMode === "light" ? "white" : "white"}
         placeholder='Enter amount'
         value={amount}

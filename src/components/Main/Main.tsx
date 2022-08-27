@@ -69,7 +69,7 @@ const MainStyled = styled.main`
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center top;
-  padding: 67px;
+  padding: 20px;
 `;
 enum SwapButonStates {
   CONNECT_TO_WALLET = "CONNECT_TO_WALLET",
@@ -448,7 +448,7 @@ function Main() {
   const [isVisible, setIsVisible] = useState(false);
   return (
     <MainStyled>
-      <div className='max-w-2xl mx-auto px-4 flex flex-col items-center pb-[50px] pt-[50px] md:pt-[50px]'>
+      <div className='max-w-2xl mx-auto px-4 flex flex-col items-center pb-[50px] pt-[50px] md:pt-[50px] min-h-[750px]'>
         <div className='w-[100%] bg-[#1B1A2E] px-[30px] py-[30px] flex flex-col justify-center items-center'>
           <div className='text-[#ebebeb] flex justify-between w-[100%] pb-3'>
             <span className='font-clash font-[600] text-[24px]'>Swap</span>
