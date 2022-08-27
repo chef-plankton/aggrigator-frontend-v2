@@ -104,10 +104,8 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
             )
             .then((data) => {
               dispatch(changeResponseString(JSON.stringify(data)));
-              dispatch(changeResponseData(data));
-              dispatch(changeShowRoute(true));
-              console.log(data.data);
-              
+              dispatch(changeResponseData(data.data));
+              dispatch(changeShowRoute(true));              
               dispatch(
                 changeSwapDescription(
                   JSON.stringify(

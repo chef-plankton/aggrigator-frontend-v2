@@ -44,8 +44,8 @@ function ToInput() {
       color={themeMode === "light" ? "black" : "white"}
       placeholder='Recieve amount'
       value={
-        responseData.data.return_amount
-          ? Math.round(responseData.data.return_amount * 100000) / 100000
+        responseData?.return_amount
+          ? Math.round(responseData.return_amount * 100000) / 100000
           : ""
       }
       disabled

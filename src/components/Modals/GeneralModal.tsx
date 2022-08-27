@@ -1,5 +1,8 @@
 import Modal from "react-modal";
-import { changeModalStatus } from "../../features/modals/modalsSlice";
+import {
+  changeModalStatus,
+  SuccessModalStateStatus,
+} from "../../features/modals/modalsSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
@@ -9,7 +12,9 @@ import FromNetworklist from "../Main/From/FromNetworklist";
 import ToTokenlist from "../Main/To/ToTokenlist";
 import ToNetworklist from "../Main/To/ToNetworklist";
 import FromAdvanceSetting from "../Main/From/FromAdvanceSetting";
-import { isMobile } from 'react-device-detect';
+import { isMobile } from "react-device-detect";
+import SuccessTransactionModal from "./SuccessTransactionModal";
+import FailedTransactionModal from "./FailedTransactionModal";
 
 Modal.setAppElement("#root");
 
@@ -35,6 +40,12 @@ function GeneralModal() {
   );
   const fromAdvanceSettingModal = useSelector(
     ({ modals }: RootState) => modals.fromAdvanceSettingModal
+  );
+  const successModalState = useSelector(
+    ({ modals }: RootState) => modals.SuccessModalState
+  );
+  const failedModalState = useSelector(
+    ({ modals }: RootState) => modals.FailedModalState
   );
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   return (
@@ -63,12 +74,12 @@ function GeneralModal() {
             borderRadius: "0px",
             backgroundColor:
               themeMode === "light" ? "#171629" : "rgb(35, 41, 49)",
-                border: "none",
+            border: "none",
             overflow: "hidden",
             boxSizing: "border-box",
           },
         }}
-        contentLabel="General Modal"
+        contentLabel='General Modal'
       >
         {/* Check if needs to show Connect wallet modal */}
         {connectWalletModal ? <ConnectWalletModal /> : ""}
@@ -82,6 +93,10 @@ function GeneralModal() {
         {ToNetworklistModal ? <ToNetworklist /> : ""}
         {/* Check if needs to show to advance setting modal */}
         {fromAdvanceSettingModal ? <FromAdvanceSetting /> : ""}
+        {/* Check if needs to show to success ttansaction modal */}
+        {successModalState.status ? <SuccessTransactionModal /> : ""}
+        {/* Check if needs to show to failed ttansaction modal */}
+        {failedModalState.status ? <FailedTransactionModal /> : ""}
       </Modal>
     </div>
   );

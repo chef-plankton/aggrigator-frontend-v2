@@ -27,9 +27,9 @@ function SwitchBox() {
     dispatch(changeToToken(fromToken));
     dispatch(
       changeAmount(
-        responseData.data.return_amount
+        responseData?.return_amount
           ? (
-              Math.round(responseData.data.return_amount * 100000) / 100000
+              Math.round(responseData.return_amount * 100000) / 100000
             ).toString()
           : ""
       )

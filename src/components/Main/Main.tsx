@@ -125,6 +125,7 @@ function Main() {
   const transactions = useSelector(
     ({ transactions }: RootState) => transactions
   );
+
   const chainId = useSelector(({ chains }: RootState) => chains.value);
   const balance = useTokenBalance(fromToken.adress, account);
 
@@ -134,19 +135,7 @@ function Main() {
   useEffect(() => {
     if (amount === "") {
       dispatch(changeShowRoute(false));
-      dispatch(
-        changeResponseData({
-          data: {
-            return_amount: undefined,
-            routes: [
-              {
-                operations: [],
-                operations_seperated: [],
-              },
-            ],
-          },
-        })
-      );
+      dispatch(changeResponseData(undefined));
     }
   }, [amount]);
 
@@ -461,7 +450,7 @@ function Main() {
     <MainStyled>
       <div className='max-w-2xl mx-auto px-4 flex flex-col items-center pb-[50px] pt-[50px] md:pt-[50px]'>
         <div className='text-white flex justify-between w-[100%] pb-3'>
-          <span className="font-clash font-[600] text-[20px]">Swap</span>
+          <span className='font-clash font-[600] text-[20px]'>Swap</span>
           <div className='flex'>
             <FromAdvanceSettingButton />
             <FromRefresh />

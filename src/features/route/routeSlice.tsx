@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { RouteResponseDto } from "../../config/constants/types";
 interface FromtokenType {
   name: string;
   adress: string;
@@ -13,6 +14,7 @@ interface totokenType {
   symbol: string;
   decimals: number;
 }
+
 interface RouteState {
   isLoading: boolean;
   fromChain: number;
@@ -23,17 +25,7 @@ interface RouteState {
   recieve: number | string;
   showRoute: boolean;
   counter: number;
-  responseData: {
-    data: {
-      return_amount: number;
-      routes: [
-        {
-          operations: [];
-          operations_seperated: [];
-        }
-      ];
-    };
-  };
+  responseData: RouteResponseDto;
   swapDescription: string;
   responseString: string;
   // slippageTolerance: number;
@@ -49,17 +41,7 @@ const initialState: RouteState = {
   showRoute: false,
   counter: 0,
   swapDescription: null,
-  responseData: {
-    data: {
-      return_amount: undefined,
-      routes: [
-        {
-          operations: undefined,
-          operations_seperated: undefined,
-        },
-      ],
-    },
-  },
+  responseData: null,
   responseString: "",
   // slippageTolerance: 0.01,
 };
