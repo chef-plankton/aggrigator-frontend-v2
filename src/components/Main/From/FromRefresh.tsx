@@ -16,7 +16,7 @@ function FromRefresh() {
     <>
       <div
         onClick={refresher}
-        className="hover:bg-[#1B1A2E] p-2 rounded-md cursor-pointer"
+        className="hover:bg-[#1B1A2E] p-2 pr-0 rounded-md cursor-pointer"
       >
         <div>
           <img
