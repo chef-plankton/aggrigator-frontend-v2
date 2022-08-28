@@ -475,9 +475,9 @@ function Main() {
 
             <button
               onClick={handleSwapButtonClick}
-              className={`rounded-[5px] py-1 w-[100%] h-[48px] text-center font-clash font-[600] text-[18px] text-lg ${
+              className={`rounded-[5px] py-[16px] w-[100%] h-[56px] text-center font-clash font-[600] text-[18px] text-lg ${
                 !swapButtonData.isDisable
-                  ? "text-white bg-[#BE35FF] hover:shadow-none hover:border-[1px] hover:border-black transition duration-300 shadow-[0_8px_32px_#23293176]"
+                  ? "text-white bg-[#BE35FF73] hover:shadow-none hover:border-[1px] hover:border-black transition duration-300 shadow-[0_8px_32px_#23293176]"
                   : "text-[#717070] bg-[#979797]"
               }`}
               {...isButtonDisable}

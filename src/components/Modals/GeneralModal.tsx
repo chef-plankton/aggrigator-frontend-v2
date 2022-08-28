@@ -71,7 +71,7 @@ function GeneralModal() {
             maxHeight: "90vh",
             marginRight: "-50%",
             padding: "24px",
-            borderRadius: "0px",
+            borderRadius: "5px",
             backgroundColor:
               themeMode === "light" ? "#171629" : "rgb(35, 41, 49)",
             border: "none",

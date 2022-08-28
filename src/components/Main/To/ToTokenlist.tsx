@@ -161,12 +161,17 @@ function ToTokenlist() {
       {/* Tokens list search box */}
       <div className='relative'>
         <StyledInput
+          className='font-outfit font-[500] text-[16px] rounded-[5px]'
           type='text'
           placeholder='Search name or paste address'
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-        <img src={SearchIcon} alt="" className="absolute top-[26px] left-[15px] w-[16px]" />
+        <img
+          src={SearchIcon}
+          alt=''
+          className='absolute top-[26px] left-[15px] w-[16px]'
+        />
       </div>
 
       {/* Tokens list box */}

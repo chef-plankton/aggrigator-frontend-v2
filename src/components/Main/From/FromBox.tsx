@@ -68,7 +68,7 @@ const FromBox: FC<FromBoxProps> = ({ account, balance }) => {
                 )
               )
             }
-            className='font-outfit font-[500] text-[16px] border-0 border-b-[2px] border-[#6100FF] border-solid	'
+            className='font-outfit font-[500] text-[16px]'
           >
             Max
           </button>
