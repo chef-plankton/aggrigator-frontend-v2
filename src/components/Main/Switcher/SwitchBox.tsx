@@ -37,7 +37,7 @@ function SwitchBox() {
   };
   return (
     <div
-      className="rounded-[50%] bg-[#22223D] w-[36px] mt-[14px] mb-[14px] p-2 cursor-pointer"
+      className="rounded-[5px] bg-[#22223D] w-[36px] mt-[14px] mb-[14px] p-2 cursor-pointer"
       onClick={() => swapBoxes()}
     >
       <img src={swapIcon} alt="" />

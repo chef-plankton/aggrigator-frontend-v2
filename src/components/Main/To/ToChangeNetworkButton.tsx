@@ -21,6 +21,7 @@ const StyledButton = styled.div<{ backgroundColor: string }>`
   cursor: pointer;
   @media (max-width: 768px) {
     padding: 10px 15px;
+    margin-right: 5px;
   }
 `;
 const ToChangeNetworkButton: FC<{

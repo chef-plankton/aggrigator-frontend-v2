@@ -37,7 +37,6 @@ function ChainsDropdown({ setDropdown, setHidden }: Props) {
   const dispatch = useDispatch();
   const { login } = useAuth(web3Hooks)
 
-  
   const changeChainId = async (chainid: number) => {
     setHidden(true)
     await login(getAddChainParameters(chainid), chainid,wallet)

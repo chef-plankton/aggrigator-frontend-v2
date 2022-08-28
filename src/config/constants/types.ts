@@ -33,7 +33,7 @@ export interface RouteRoutes {
 
 }
 export interface RouteOperationsSeparated {
-    chain: string,
+    chain: NetworkName,
     chain_id: number,
     gas_fee: number,
     operations: Array<RouteRegularOperations | RouteStargateBridgeOperations>

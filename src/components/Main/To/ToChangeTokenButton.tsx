@@ -25,6 +25,8 @@ const StyledButton = styled.div<
   cursor: pointer;
   @media (max-width: 768px) {
     padding: 10px 15px;
+    margin: 0;
+    margin-left: 5px;
   }
 `;
 const ToChangeChainButton: FC<{
