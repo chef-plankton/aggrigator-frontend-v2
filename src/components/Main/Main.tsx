@@ -442,23 +442,25 @@ function Main() {
     }
   };
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
+  const showRoute = useSelector(({ route }: RootState) => route.showRoute);
   const [isVisible, setIsVisible] = useState(false);
   return (
     <MainStyled>
-      <div className='max-w-2xl mx-auto px-0 md:px-4 flex flex-col items-center pb-[50px] pt-[50px] md:pt-[50px] min-h-[750px]'>
-        <div className='w-[100%] bg-[#1B1A2E] px-[30px] py-[30px] flex flex-col justify-center items-center'>
-          <div className='text-[#ebebeb] flex justify-between w-[100%] pb-3'>
-            <span className='font-clash font-[600] text-[24px]'>Swap</span>
-            <div className='flex'>
-              <FromAdvanceSettingButton />
-              <FromRefresh />
+      <div className='max-w-6xl mx-auto px-0 md:px-4 flex flex-col items-center pb-[50px] pt-[50px] md:pt-[50px] min-h-[750px]'>
+        <div className='w-[100%] py-[30px] flex flex-col md:flex-row justify-center items-center'>
+          <div className='w-full md:h-[500px] md:w-[650px] px-[30px] bg-[#1B1A2E] py-[30px] flex flex-col justify-center items-center'>
+            <div className='text-[#ebebeb] flex justify-between w-[100%] pb-3'>
+              <span className='font-clash font-[600] text-[24px]'>Swap</span>
+              <div className='flex'>
+                <FromAdvanceSettingButton />
+                <FromRefresh />
+              </div>
             </div>
-          </div>
-          <FromBox balance={balance} account={account} />
-          <SwitchBox />
-          <ToBox />
+            <FromBox balance={balance} account={account} />
+            <SwitchBox />
+            <ToBox />
 
-          {/* <div className='w-[100%] flex mb-[10px] mt-0 pl-[5px] items-center'>
+            {/* <div className='w-[100%] flex mb-[10px] mt-0 pl-[5px] items-center'>
           <button
             className='w-[100%] flex items-center'
             onClick={() => setIsVisible(!isVisible)}
@@ -471,20 +473,26 @@ function Main() {
           <ReceiverBox />
         </SlideToggleContent> */}
 
-          <button
-            onClick={handleSwapButtonClick}
-            className={`py-1 w-[100%] h-[48px] text-center font-clash font-[600] text-[18px] text-lg ${
-              !swapButtonData.isDisable
-                ? "text-white bg-[#6100FF] hover:shadow-none hover:border-[1px] hover:border-black transition duration-300 shadow-[0_8px_32px_#23293176]"
-                : "text-[#717070] bg-[#979797]"
-            }`}
-            {...isButtonDisable}
-          >
-            {swapButtonData.text}
-          </button>
-
-          {isLoadingRoute ? <MyLoader /> : <InfoBox />}
-          {isLoadingRoute ? <MyLoader /> : <Route />}
+            <button
+              onClick={handleSwapButtonClick}
+              className={`rounded-[5px] py-1 w-[100%] h-[48px] text-center font-clash font-[600] text-[18px] text-lg ${
+                !swapButtonData.isDisable
+                  ? "text-white bg-[#BE35FF] hover:shadow-none hover:border-[1px] hover:border-black transition duration-300 shadow-[0_8px_32px_#23293176]"
+                  : "text-[#717070] bg-[#979797]"
+              }`}
+              {...isButtonDisable}
+            >
+              {swapButtonData.text}
+            </button>
+          </div>
+          {showRoute ? (
+            <div className='w-full md:h-[500px] md:w-[650px] px-[30px] bg-[#1B1A2E] py-[30px] flex flex-col justify-between items-center'>
+              {isLoadingRoute ? <MyLoader /> : <InfoBox />}
+              {isLoadingRoute ? <MyLoader /> : <Route />}
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </MainStyled>

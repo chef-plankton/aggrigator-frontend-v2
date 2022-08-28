@@ -45,6 +45,7 @@ const StyledInput = styled.input`
   height: 100%;
   white-space: nowrap;
   overflow: hidden;
+  border-radius: 5px;
   appearance: textfield;
   @media (max-width: 768px) {
     width: 100%;
