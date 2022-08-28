@@ -448,7 +448,7 @@ function Main() {
     <MainStyled>
       <div className='max-w-6xl mx-auto px-0 md:px-4 flex flex-col items-center pb-[50px] pt-[50px] md:pt-[50px] min-h-[750px]'>
         <div className='w-[100%] py-[30px] flex flex-col md:flex-row justify-center items-center'>
-          <div className='w-full md:h-[500px] md:w-[650px] px-[30px] bg-[#1B1A2E] py-[30px] flex flex-col justify-center items-center'>
+          <div className='w-full md:h-[490px] md:w-[650px] px-[24px] bg-[#1B1A2E] py-[24px] flex flex-col justify-center items-center'>
             <div className='text-[#ebebeb] flex justify-between w-[100%] pb-3'>
               <span className='font-clash font-[600] text-[24px]'>Swap</span>
               <div className='flex'>
@@ -486,7 +486,7 @@ function Main() {
             </button>
           </div>
           {showRoute ? (
-            <div className='w-full md:h-[500px] md:w-[650px] px-[30px] bg-[#1B1A2E] py-[30px] flex flex-col justify-between items-center'>
+            <div className='w-full md:h-[490px] md:w-[650px] px-[24px] bg-[#1B1A2E] py-[24px] flex flex-col justify-center items-center'>
               {isLoadingRoute ? <MyLoader /> : <InfoBox />}
               {isLoadingRoute ? <MyLoader /> : <Route />}
             </div>

@@ -59,7 +59,7 @@ function Route() {
     <>
       {showRoute ? (
         <div className='rounded-[5px] flex flex-col w-[100%] justify-center items-center bg-[#22223D] mt-[20px] p-[20px]'>
-          <div className='text-[#bfbfbf] w-[100%] font-outfit text-center'>
+          <div className='text-[#4FC37E] w-[100%] font-outfit text-left'>
             Most Optimized Route
           </div>
           <div className='mt-3 w-[100%]'>
