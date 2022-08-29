@@ -154,7 +154,7 @@ function FromTokenlist() {
       {/* Tokens list search box */}
       <div className='relative'>
         <StyledInput
-          className='font-outfit font-[500] text-[16px] rounded-[5px]'
+          className='font-outfit font-[500] text-[16px] rounded-[5px] hover:border-[#ffffff]/[0.2] focus:border-[#D6C1FC]'
           type='text'
           placeholder='Search name or paste address'
           value={searchQuery}

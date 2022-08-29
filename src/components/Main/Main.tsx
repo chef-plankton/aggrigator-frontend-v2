@@ -446,7 +446,7 @@ function Main() {
   const [isVisible, setIsVisible] = useState(false);
   return (
     <MainStyled>
-      <div className='max-w-6xl mx-auto px-0 md:px-4 flex flex-col items-center pb-[35px] pt-[5px] md:pt-[35px] min-h-[600px]'>
+      <div className='max-w-6xl mx-auto px-0 md:px-4 flex flex-col items-center pb-[35px] pt-[5px] md:pt-[35px]'>
         <div className='w-[100%] flex flex-col md:flex-row justify-center items-center'>
           <div className='w-full md:h-[420px] md:w-[550px] px-[24px] bg-[#1B1A2E] py-[24px] flex flex-col justify-center items-center'>
             <div className='text-[#ebebeb] flex justify-between w-[100%] pb-3'>
@@ -478,7 +478,7 @@ function Main() {
               className={`rounded-[5px] py-[16px] w-[100%] h-[56px] text-center font-clash font-[400] text-[18px] text-lg ${
                 !swapButtonData.isDisable
                   ? "text-white bg-[#BE35FF]/[0.45] hover:shadow-none hover:border-[1px] hover:border-black transition duration-300 shadow-[0_8px_32px_#23293176]"
-                  : "text-[#717070] bg-[#979797]"
+                  : "text-[#717070] bg-[#979797] text-black"
               }`}
               {...isButtonDisable}
             >
