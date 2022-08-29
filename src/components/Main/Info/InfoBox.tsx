@@ -7,7 +7,7 @@ function InfoBox() {
   return (
     <>
       {showRoute ? (
-        <div className='rounded-[5px] p-[20px] bg-[#22223D] w-[100%] mt-[20px] font-outfit font-[500] text-[16px]'>
+        <div className='rounded-[5px] pt-[10px] pb-[10px] p-[15px] bg-[#ffffff]/[0.07] w-[100%] mt-[20px] font-outfit font-[400] text-[14px]'>
           <div className='flex justify-between text-white mb-5'>
             <span className='text-[#bfbfbf]'>Estimated Gas</span>
             <span>$44.21</span>

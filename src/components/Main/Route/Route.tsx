@@ -58,17 +58,17 @@ function Route() {
   return (
     <>
       {showRoute ? (
-        <div className='rounded-[5px] flex flex-col w-[100%] justify-center items-center bg-[#22223D] mt-[20px] p-[20px]'>
-          <div className='text-[#4FC37E] w-[100%] font-outfit text-left'>
+        <div className='rounded-[5px] flex flex-col w-[100%] justify-center items-center mt-[25px] pt-[10px] pb-[10px] p-[15px] bg-[#ffffff]/[0.07] font-outfit font-[400] text-[14px]'>
+          <div className='font-[500] text-[#4FC37E] w-[100%] font-outfit text-left'>
             Most Optimized Route
           </div>
           <div className='mt-3 w-[100%]'>
             {oprationSeperated[0].chain === NetworkName.BRIDGE.toLowerCase() &&
               oprationSeperated.length == 1 && (
-                <div className='text-white mt-3 flex justify-between w-[100%]'>
-                  <span className='font-outfit'>Bridge</span>
+                <div className='text-white my-3 flex justify-between w-[100%]'>
+                  <span className='font-outfit text-[#bfbfbf]'>Bridge</span>
                   <div>
-                    <span className='font-outfit'>Stargate</span>
+                    <span className='font-outfit text-[13px]'>Stargate</span>
                   </div>
                 </div>
               )}
@@ -76,16 +76,16 @@ function Route() {
             {oprationSeperated[0]?.chain === NetworkName.BRIDGE.toLowerCase() &&
               oprationSeperated?.length == 2 && (
                 <>
-                  <div className='text-white mt-3 flex justify-between w-[100%]'>
-                    <span className='font-outfit'>Bridge</span>
+                  <div className='text-white my-3 flex justify-between w-[100%]'>
+                    <span className='font-outfit text-[#bfbfbf]'>Bridge</span>
                     <div>
-                      <span className='font-outfit'>Stargate</span>
+                      <span className='font-outfit text-[13px]'>Stargate</span>
                     </div>
                   </div>
-                  <div className='text-white mt-3 flex justify-between w-[100%]'>
-                    <span className='font-outfit'>Fantom</span>
+                  <div className='text-white my-3 flex justify-between w-[100%]'>
+                    <span className='font-outfit text-[#bfbfbf]'>Fantom</span>
                     <div>
-                      <span className='font-outfit'>{`${oprationSeperated[1]?.operations[0].offer_token[3]} > `}</span>
+                      <span className='font-outfit text-[13px]'>{`${oprationSeperated[1]?.operations[0].offer_token[3]} > `}</span>
                       {oprationSeperated[1]?.operations.map((e, index) =>
                         index ===
                         oprationSeperated[1]?.operations.length - 1 ? (
@@ -102,10 +102,10 @@ function Route() {
             {oprationSeperated[1]?.chain === NetworkName.BRIDGE.toLowerCase() &&
               oprationSeperated?.length == 2 && (
                 <>
-                  <div className='text-white mt-3 flex justify-between w-[100%]'>
-                    <span className='font-outfit'>BNB Chain</span>
+                  <div className='text-white my-3 flex justify-between w-[100%]'>
+                    <span className='font-outfit text-[#bfbfbf]'>BNB Chain</span>
                     <div>
-                      <span className='font-outfit'>{`${oprationSeperated[0]?.operations[0].offer_token[3]} > `}</span>
+                      <span className='font-outfit text-[13px]'>{`${oprationSeperated[0]?.operations[0].offer_token[3]} > `}</span>
                       {oprationSeperated[0]?.operations.map((e, index) =>
                         index ===
                         oprationSeperated[0]?.operations.length - 1 ? (
@@ -116,10 +116,10 @@ function Route() {
                       )}
                     </div>
                   </div>
-                  <div className='text-white mt-3 flex justify-between w-[100%]'>
-                    <span className='font-outfit'>Bridge</span>
+                  <div className='text-white my-3 flex justify-between w-[100%]'>
+                    <span className='font-outfit text-[#bfbfbf]'>Bridge</span>
                     <div>
-                      <span className='font-outfit'>Stargate</span>
+                      <span className='font-outfit text-[13px]'>Stargate</span>
                     </div>
                   </div>
                 </>
@@ -128,15 +128,15 @@ function Route() {
             {oprationSeperated[1]?.chain === NetworkName.BRIDGE.toLowerCase() &&
               oprationSeperated?.length == 3 && (
                 <>
-                  <div className='text-white mt-3 flex justify-between w-[100%]'>
-                    <span className='font-outfit'>
+                  <div className='text-white my-3 flex justify-between w-[100%]'>
+                    <span className='font-outfit text-[#bfbfbf]'>
                       {oprationSeperated[0]?.chain ===
                       NetworkName.BSC.toLowerCase()
                         ? "BNB Chain"
                         : "Fantom"}
                     </span>
                     <div>
-                      <span className='font-outfit'>{`${oprationSeperated[0]?.operations[0].offer_token[3]} > `}</span>
+                      <span className='font-outfit text-[13px]'>{`${oprationSeperated[0]?.operations[0].offer_token[3]} > `}</span>
                       {oprationSeperated[0]?.operations.map((e, index) =>
                         index ===
                         oprationSeperated[0]?.operations.length - 1 ? (
@@ -147,21 +147,21 @@ function Route() {
                       )}
                     </div>
                   </div>
-                  <div className='text-white mt-3 flex justify-between w-[100%]'>
-                    <span className='font-outfit'>Bridge</span>
+                  <div className='text-white my-3 flex justify-between w-[100%]'>
+                    <span className='font-outfit text-[#bfbfbf]'>Bridge</span>
                     <div>
-                      <span className='font-outfit'>Stargate</span>
+                      <span className='font-outfit text-[13px]'>Stargate</span>
                     </div>
                   </div>
-                  <div className='text-white mt-3 flex justify-between w-[100%]'>
-                    <span className='font-outfit'>
+                  <div className='text-white my-3 flex justify-between w-[100%]'>
+                    <span className='font-outfit text-[#bfbfbf]'>
                       {oprationSeperated[2]?.chain ===
                       NetworkName.BSC.toLowerCase()
                         ? "BNB Chain"
                         : "Fantom"}
                     </span>
                     <div>
-                      <span className='font-outfit'>{`${oprationSeperated[2]?.operations[0].offer_token[3]} > `}</span>
+                      <span className='font-outfit text-[13px]'>{`${oprationSeperated[2]?.operations[0].offer_token[3]} > `}</span>
                       {oprationSeperated[2]?.operations.map((e, index) =>
                         index ===
                         oprationSeperated[2]?.operations.length - 1 ? (
@@ -178,10 +178,10 @@ function Route() {
             {oprationSeperated[0]?.chain === NetworkName.FTM.toLowerCase() &&
               oprationSeperated?.length == 1 && (
                 <>
-                  <div className='text-white mt-3 flex justify-between w-[100%]'>
-                    <span className='font-outfit'>Fantom</span>
+                  <div className='text-white my-3 flex justify-between w-[100%]'>
+                    <span className='font-outfit text-[#bfbfbf]'>Fantom</span>
                     <div>
-                      <span className='font-outfit'>{`${oprationSeperated[0]?.operations[0].offer_token[3]} > `}</span>
+                      <span className='font-outfit text-[13px]'>{`${oprationSeperated[0]?.operations[0].offer_token[3]} > `}</span>
                       {oprationSeperated[0]?.operations.map((e, index) =>
                         index ===
                         oprationSeperated[0]?.operations.length - 1 ? (
@@ -197,8 +197,8 @@ function Route() {
             {oprationSeperated[0]?.chain === NetworkName.BSC.toLowerCase() &&
               oprationSeperated?.length == 1 && (
                 <>
-                  <div className='text-white mt-3 flex justify-between w-[100%]'>
-                    <span className='font-outfit'>BNB Chain</span>
+                  <div className='text-white my-3 flex justify-between w-[100%]'>
+                    <span className='font-outfit text-[#bfbfbf]'>BNB Chain</span>
                     <div>
                       <span className='font-outfit'>{`${oprationSeperated[0]?.operations[0].offer_token[3]} > `}</span>
                       {oprationSeperated[0]?.operations.map((e, index) =>

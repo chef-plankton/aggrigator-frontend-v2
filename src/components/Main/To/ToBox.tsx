@@ -14,7 +14,7 @@ const StyledToBox = styled.div<{ color: string; backgroundColor: string }>`
   border-radius: 10px;
   width: 100%;
   margin-bottom: 24px;
-  padding: 10px 0;
+  // padding: 10px 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -32,11 +32,11 @@ function ToBox() {
           : "transparent"
       }
     >
-      <div className='py-1 w-[100%] flex justify-between'>
-        <div className="font-clash font-[500] text-[16px]">To</div>
+      <div className='pb-[10px] py-1 w-[100%] flex justify-between'>
+        <div className="font-clash font-[400] text-[16px]">To</div>
         {/* <ToBalance /> */}
       </div>
-      <div className='py-2 flex justify-between flex-col md:flex-row'>
+      <div className='flex justify-between flex-col md:flex-row p-[5px] rounded-[5px] bg-[#ffffff]/[0.07]'>
         <div className='md:w-[60%] w-[100%] flex justify-between'>
           <ToChangeNetworkButton
             imageSrc={`${chainId === 56 ? bnblightIcon : ""}${

@@ -20,9 +20,9 @@ const StyledFromBox = styled.div<{ color: string; backgroundColor: string }>`
   background: transparent;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
-  border-radius: 10px;
+  border-radius: 5px;
   width: 100%;
-  padding: 10px 0;
+  padding: 0 0 10px 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -34,7 +34,7 @@ interface FromBoxProps {
 }
 // From Box Component
 const FromBox: FC<FromBoxProps> = ({ account, balance }) => {
-  // Get data from redux
+  // Get data from reduxل
   const chainId = useSelector(({ route }: RootState) => route.fromChain);
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   const fromToken = useSelector(({ route }: RootState) => route.fromToken);
@@ -46,7 +46,7 @@ const FromBox: FC<FromBoxProps> = ({ account, balance }) => {
       backgroundColor={themeMode === "light" ? "transparent" : "transparent"}
     >
       {/* box top bar */}
-      <div className='py-1 w-[100%] flex justify-between font-clash font-[500] text-[16px] items-center h-[32px]'>
+      <div className='py-1 pb-[10px] w-[100%] flex justify-between font-clash font-[400] text-[15px] items-center h-[32px]'>
         From
         <div className='flex items-center'>
           <span className='px-3 py-1 mx-1 rounded-[5px] bg-[#1B1A2E] text-[#9996B3] font-outfit'>
@@ -68,14 +68,14 @@ const FromBox: FC<FromBoxProps> = ({ account, balance }) => {
                 )
               )
             }
-            className='font-outfit font-[500] text-[16px]'
+            className='font-outfit font-[500] text-[16px] border-0 border-b-[2px] border-solid border-[#1b1a2e] hover:border-b-[2px] hover:border-[#6100FF] hover:border-solid	'
           >
             Max
           </button>
         </div>
       </div>
       {/* box datas */}
-      <div className='py-2 flex justify-between flex-col md:flex-row'>
+      <div className='flex justify-between flex-col md:flex-row p-[5px] rounded-[5px] bg-[#ffffff]/[0.07]'>
         <div className='md:w-[60%] w-[100%] flex justify-between'>
           {/* from network */}
           <FromChangeNetworkButton

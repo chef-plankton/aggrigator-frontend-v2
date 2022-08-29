@@ -14,13 +14,13 @@ const StyledButton = styled.div<
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px 15px;
+  padding: 5px;
   margin: 0 10px;
   text-decoration: none;
-  background-color: ${({ backgroundColor }) =>
+  // background-color: ${({ backgroundColor }) =>
     backgroundColor ? backgroundColor : "#EEEEEE"};
-  border: 1px solid #414141;
-  backdrop-filter: blur(30px);
+  border: 1px solid rgba(255,255,255,0.01);
+  // backdrop-filter: blur(30px);
   border-radius: 5px;
   font-size: 14px;
   cursor: pointer;
@@ -41,7 +41,7 @@ const FromChangeChainButton: FC<{
   const fromChain = useSelector(({ route }: RootState) => route.fromChain);
   return (
     <StyledButton
-      className='hover:border-[#814AFB]'
+      className='hover:border-[#ffffff]/[0.2]'
       backgroundColor={
         themeMode === "light" ? "rgba(255, 255, 255, 0.02)" : "#393E46"
       }
@@ -64,7 +64,7 @@ const FromChangeChainButton: FC<{
           className='w-[32px] rounded-[50%]'
         />
       </div>
-      <div className='mx-2 w-[70%] text-left font-outfit font-[500] text-[14px]'>
+      <div className='mx-2 w-[70%] text-left font-outfit font-[500] text-[13px]'>
         <h2>{fromToken.symbol === "" ? "Select Token" : fromToken.symbol}</h2>
       </div>
       <div className='w-[10%]'>

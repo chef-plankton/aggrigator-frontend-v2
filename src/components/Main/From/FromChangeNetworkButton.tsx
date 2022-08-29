@@ -8,17 +8,17 @@ import ArrowDownFont from "../../../assets/arrow-down-sign-to-navigate.png";
 import { fromNetworklistStatus } from "../../../features/modals/modalsSlice";
 const StyledButton = styled.div<{ backgroundColor: string }>`
   width: 50%;
-  min-height: 48px;
+  min-height: 45px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px 15px;
+  padding: 5px;
   text-decoration: none;
-  background-color: ${({ backgroundColor }) =>
+  // background-color: ${({ backgroundColor }) =>
     backgroundColor ? backgroundColor : "#EEEEEE"};
-  border: 1px solid #414141;
+  border: 1px solid rgba(255,255,255,0.01);
   border-radius: 5px;
-  backdrop-filter: blur(30px);
+  // backdrop-filter: blur(30px);
   font-size: 12px;
   cursor: pointer;
   @media (max-width: 768px) {
@@ -34,7 +34,7 @@ const FromChangeNetworkButton: FC<{
   return (
     <>
       <StyledButton
-        className='hover:border-[#814AFB]'
+        className='hover:border-[#ffffff]/[0.2]'
         backgroundColor={
           themeMode === "light" ? "rgba(255, 255, 255, 0.02)" : "#393E46"
         }
@@ -43,7 +43,7 @@ const FromChangeNetworkButton: FC<{
         <div className='w-[20%]'>
           <img src={imageSrc} alt='' className='w-[32px]' />
         </div>
-        <div className='mx-2 w-[70%] text-left font-outfit font-[500] text-[14px]'>
+        <div className='mx-2 w-[70%] text-left font-outfit font-[500] text-[13px]'>
           <h3>{coinName}</h3>
         </div>
         <div className='w-[10%]'>

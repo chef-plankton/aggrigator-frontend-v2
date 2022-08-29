@@ -10,18 +10,18 @@ const StyledButton = styled.div<
   HTMLAttributes<HTMLElement> & { backgroundColor: string }
 >`
   width: 50%;
-  min-height: 48px;
+  min-height: 45px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px 15px;
+  padding: 5px;
   margin: 0 10px;
   text-decoration: none;
-  background-color: ${({ backgroundColor }) =>
+  // background-color: ${({ backgroundColor }) =>
     backgroundColor ? backgroundColor : "#EEEEEE"};
-  border: 1px solid #414141;
+  border: 1px solid rgba(255,255,255,0.01);
   border-radius: 5px;
-  backdrop-filter: blur(30px);
+  // backdrop-filter: blur(30px);
   font-size: 14px;
   cursor: pointer;
   border-radius: 5px;
@@ -42,7 +42,7 @@ const ToChangeChainButton: FC<{
   const toChain = useSelector(({ route }: RootState) => route.toChain);
   return (
     <StyledButton
-      className='hover:border-[#814AFB]'
+      className='hover:border-[#ffffff]/[0.2]'
       backgroundColor={
         themeMode === "light"
           ? "rgba(255, 255, 255, 0.02)"
@@ -67,7 +67,7 @@ const ToChangeChainButton: FC<{
           className='w-[32px] rounded-[50%]'
         />
       </div>
-      <div className='mx-2 w-[70%] text-left font-outfit font-[500] text-[14px]'>
+      <div className='mx-2 w-[70%] text-left font-outfit font-[500] text-[13px]'>
         <h2>{toToken.symbol === "" ? "Select Token" : toToken.symbol}</h2>
       </div>
       <div className='w-[10%]'>

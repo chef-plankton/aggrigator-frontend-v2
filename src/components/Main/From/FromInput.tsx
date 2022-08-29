@@ -33,15 +33,16 @@ import {
 } from "../../../hooks/useSetContractWithChainId";
 import useWallet from "../../Wallets/useWallet";
 const StyledInput = styled.input`
+  text-align: right;
   text-overflow: ellipsis;
   font-weight: 400;
-  padding: 10px;
+  padding: 10px; 
   display: block;
   color: white;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid #414141;
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid rgba(255,255,255,0.01);
   outline: none;
-  width: 90%;
+  width: 100%;
   height: 100%;
   white-space: nowrap;
   overflow: hidden;
@@ -289,9 +290,9 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
   return (
     <>
       <StyledInput
-        className='font-outfit font-[500] text-[14px] hover:border-[#814AFB] focus:border-[#814AFB]'
+        className='font-outfit font-[500] text-[14px] hover:border-[#ffffff]/[0.2] focus:border-[#D6C1FC]'
         color={themeMode === "light" ? "white" : "white"}
-        placeholder='Enter amount'
+        placeholder='Sell amount'
         value={amount}
         onChange={(e) => {
           const value = e.target.value;

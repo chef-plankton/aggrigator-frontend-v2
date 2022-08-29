@@ -32,7 +32,7 @@ const ChainsButton: FC<{
             chainId === 250 ? fantomIcon : ""
           }${chainId === 97 ? bnblightIcon : ""}`}
           alt=""
-          className="w-[32px] h-[32px] mr-2"
+          className="w-[24px] h-[24px] mr-2"
         />
         {chainId === 56 ? "BNB Chain" : ""}
         {chainId === 250 ? "Fantom" : ""}

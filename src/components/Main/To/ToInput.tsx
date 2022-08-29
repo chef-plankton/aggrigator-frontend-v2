@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { RootState } from "../../../app/store";
 const StyledInput = styled.input`
+  text-align: right;
   position: relative;
   text-overflow: ellipsis;
   font-weight: 400;
@@ -10,14 +11,13 @@ const StyledInput = styled.input`
   display: block;
   color: white;
   background: rgba(255, 255, 255, 0.02);
-  border: 1px solid #414141;
+  border: 1px solid rgba(255,255,255,0.01);
   outline: none;
-  width: 90%;
+  width: 100%;
   height: 100%;
   white-space: nowrap;
   overflow: hidden;
   appearance: textfield;
-  border-radius: 5px;
   @media (max-width: 768px) {
     width: 100%;
   }
@@ -40,7 +40,7 @@ function ToInput() {
   );
   return (
     <StyledInput
-      className='font-outfit font-[500] text-[14px] hover:border-[#814AFB]'
+      className='font-outfit font-[500] text-[14px] focus:border-[#D6C1FC]'
       color={themeMode === "light" ? "black" : "white"}
       placeholder='Recieve amount'
       value={
