@@ -32,7 +32,7 @@ const ToChangeNetworkButton: FC<{
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   return (
     <StyledButton
-      className='hover:border-[#ffffff]/[0.2]'
+      className='hover:bg-[#ffffff]/[0.2]'
       backgroundColor={
         themeMode === "light"
           ? "rgba(255, 255, 255, 0.02)"
@@ -40,10 +40,10 @@ const ToChangeNetworkButton: FC<{
       }
       onClick={() => dispatch(ToNetworklistStatus(true))}
     >
-      <div className='w-[20%]'>
+      <div className='w-[25%]'>
         <img src={imageSrc} alt='' className='w-[32px]' />
       </div>
-      <div className='mx-2 w-[70%] text-left font-outfit font-[500] text-[13px]'>
+      <div className='mx-2 w-[65%] text-left font-outfit font-[500] text-[13px]'>
         <h3>{coinName}</h3>
       </div>
       <div className='w-[10%]'>

@@ -477,7 +477,7 @@ function Main() {
               onClick={handleSwapButtonClick}
               className={`rounded-[5px] py-[16px] w-[100%] h-[56px] text-center font-clash font-[400] text-[18px] text-lg ${
                 !swapButtonData.isDisable
-                  ? "text-white bg-[#BE35FF]/[0.45] hover:shadow-none hover:border-[1px] hover:border-black transition duration-300 shadow-[0_8px_32px_#23293176]"
+                  ? "text-white bg-[#BE35FF]/[0.45] hover:bg-[#BE35FF]/[0.65]"
                   : "text-[#717070] bg-[#979797] text-black"
               }`}
               {...isButtonDisable}
@@ -486,9 +486,9 @@ function Main() {
             </button>
           </div>
           {showRoute ? (
-            <div className='w-full md:h-[420px] md:w-[440px] px-[24px] bg-[#1B1A2E] py-[24px] flex flex-col justify-center items-center'>
+            <div className='w-full md:h-[420px] md:w-[440px] px-[24px] bg-[#1B1A2E] pb-[24px] md:py-[24px] flex flex-col justify-center items-center'>
               {isLoadingRoute ? <MyLoader /> : <InfoBox />}
-              {isLoadingRoute ? <MyLoader /> : <Route />}
+              {isLoadingRoute ? '' : <Route />}
             </div>
           ) : (
             ""

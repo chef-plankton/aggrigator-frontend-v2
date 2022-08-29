@@ -41,13 +41,13 @@ const FromChangeChainButton: FC<{
   const fromChain = useSelector(({ route }: RootState) => route.fromChain);
   return (
     <StyledButton
-      className='hover:border-[#ffffff]/[0.2]'
+      className='hover:bg-[#ffffff]/[0.2]'
       backgroundColor={
         themeMode === "light" ? "rgba(255, 255, 255, 0.02)" : "#393E46"
       }
       onClick={() => dispatch(fromTokenlistStatus(true))}
     >
-      <div className='w-[20%]'>
+      <div className='w-[25%]'>
         <img
           src={
             fromToken.adress
@@ -64,7 +64,7 @@ const FromChangeChainButton: FC<{
           className='w-[32px] rounded-[50%]'
         />
       </div>
-      <div className='mx-2 w-[70%] text-left font-outfit font-[500] text-[13px]'>
+      <div className='mx-2 w-[65%] text-left font-outfit font-[500] text-[13px]'>
         <h2>{fromToken.symbol === "" ? "Select Token" : fromToken.symbol}</h2>
       </div>
       <div className='w-[10%]'>
