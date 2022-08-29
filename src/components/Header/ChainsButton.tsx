@@ -23,7 +23,7 @@ const ChainsButton: FC<{
         data-tip
         data-for="chainsbutton"
         onClick={toggleChains}
-        className={`py-2 px-3 font-medium ${
+        className={`py-2 px-3 text-[14px] ${
           themeMode === "light" ? "text-white" : "text-white"
         }  rounded transition duration-300 flex items-center chainslistbtn`}
       >
@@ -32,7 +32,7 @@ const ChainsButton: FC<{
             chainId === 250 ? fantomIcon : ""
           }${chainId === 97 ? bnblightIcon : ""}`}
           alt=""
-          className="w-[24px] h-[24px] mr-2"
+          className="w-[32px] h-[32px] mr-2"
         />
         {chainId === 56 ? "BNB Chain" : ""}
         {chainId === 250 ? "Fantom" : ""}

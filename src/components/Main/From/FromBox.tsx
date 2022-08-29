@@ -76,7 +76,7 @@ const FromBox: FC<FromBoxProps> = ({ account, balance }) => {
       </div>
       {/* box datas */}
       <div className='flex justify-between flex-col md:flex-row p-[5px] rounded-[5px] bg-[#ffffff]/[0.07]'>
-        <div className='md:w-[60%] w-[100%] flex justify-between'>
+        <div className='md:w-[65%] w-[100%] flex justify-between'>
           {/* from network */}
           <FromChangeNetworkButton
             imageSrc={`${chainId === 56 ? bnblightIcon : ""}${
@@ -98,7 +98,7 @@ const FromBox: FC<FromBoxProps> = ({ account, balance }) => {
           />
         </div>
         {/* from input */}
-        <div className='md:w-[40%] w-[100%] mt-[30px] md:mt-0 flex justify-end'>
+        <div className='md:w-[35%] w-[100%] mt-[5px] md:mt-0 flex justify-end'>
           <FromInput
             balance={
               balance

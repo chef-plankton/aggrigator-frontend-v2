@@ -24,7 +24,7 @@ function Header() {
     <nav
       className={`${
         themeMode === "light" ? "bg-[#22223d]" : "bg-[#22223d]"
-      } shadow-lg z-10 pt-[6px] px-[50px] `}
+      } shadow-lg z-10 pt-[6px] md:px-[50px] px-[15px] `}
     >
       <div className='max-w-full mx-auto border-b-[1px] border-b-[#FFFFFF] border-opacity-[0.1]'>
         <div className='flex justify-between'>
