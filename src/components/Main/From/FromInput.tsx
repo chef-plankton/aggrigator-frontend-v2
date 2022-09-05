@@ -137,7 +137,7 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
       dstChainId: 0,
       dstPoolId: 0,
       srcPoolId: 0,
-      gasForSwap: BigNumber.from("1005617"),
+      gasForSwap: BigNumber.from("505617"),
       dstContractAddress: akkaDstContractAddress,
       to: account,
     };
@@ -283,6 +283,8 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
         };
       }
     });
+    
+    
     console.log({ swapDescription });
 
     return swapDescription;

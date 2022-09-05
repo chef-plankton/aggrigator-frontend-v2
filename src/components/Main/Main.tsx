@@ -70,6 +70,9 @@ const MainStyled = styled.main`
   background-size: contain;
   background-position: center top;
   padding: 20px;
+  @media (min-width: 960px) {
+    height: 72vh;
+  }
 `;
 enum SwapButonStates {
   CONNECT_TO_WALLET = "CONNECT_TO_WALLET",
@@ -169,7 +172,7 @@ function Main() {
         return;
       }
 
-      if (balance !== null && balance?.lt(parseUnits(amount, 18))) {
+      if (balance !== null && balance?.lt(parseUnits(amount, fromToken.decimals))) {
         dispatch(
           changeSwapButtonState({
             state: SwapButonStates.INSUFFICIENT_BALANCE,
@@ -182,7 +185,7 @@ function Main() {
 
       if (
         approvevalue !== null &&
-        BigNumber.from(approvevalue)?.lt(parseUnits(amount, 18))
+        BigNumber.from(approvevalue)?.lt(parseUnits(amount, fromToken.decimals))
       ) {
         dispatch(
           changeSwapButtonState({
@@ -196,7 +199,7 @@ function Main() {
 
       if (
         approvevalue &&
-        BigNumber.from(approvevalue)?.gte(parseUnits(amount, 18))
+        BigNumber.from(approvevalue)?.gte(parseUnits(amount, fromToken.decimals))
       ) {
         dispatch(
           changeSwapButtonState({
@@ -328,7 +331,8 @@ function Main() {
           payload,
           sd.gasForSwap as BigNumber
         );
-
+        console.log(quote.toString());
+          
         aggrigatorSwap(sd, quote[0], payload);
       } else {
         aggrigatorSwap(

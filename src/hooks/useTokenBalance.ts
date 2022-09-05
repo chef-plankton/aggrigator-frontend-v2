@@ -29,6 +29,7 @@ function useTokenBalance(
         contract.balanceOf(owner).then((data) => {
           setBalance(data);
         });
+        
       }
     }
   }, [owner, tokenAdress]);
