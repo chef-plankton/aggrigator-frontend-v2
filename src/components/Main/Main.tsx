@@ -322,7 +322,6 @@ function Main() {
           srcDesiredAmount: filteredArr[0].srcAmount,
           dstDesiredMinAmount: filteredArr[filteredArr.length - 1].dstMinAmount,
         };
-        console.log({ tochaindata });
 
         // [s s b s s] [s s]
         const payload = await getBytes(tochaindata);
@@ -336,9 +335,6 @@ function Main() {
           payload,
           sd.gasForSwap as BigNumber
         );
-        // console.log(quote.toString());
-        console.log("str",sd.dstDesiredMinAmount.toString());
-        console.log({sd});
         aggrigatorSwap(sd, quote[0], payload);
       } else {
         aggrigatorSwap(

@@ -107,6 +107,8 @@ export default function Updater(): null {
                 })
               );
               const tx = transactions[hash];
+              console.log(tx);
+              
               if (tx) {
                 switch (tx.type) {
                   case "approve":
@@ -136,9 +138,26 @@ export default function Updater(): null {
                     break;
                 }
               }
-              receipt.status === 1
-                ? dispatch(SuccessModalStateStatus({status: true, txHash: tx.hash, chainId: chainId}))
-                : dispatch(FailedModalStateStatus({status: true, txHash: tx.hash, chainId: chainId}));
+              if (receipt.status === 1) {
+                if (tx.type === "swap") {
+                  dispatch(
+                    SuccessModalStateStatus({
+                      status: true,
+                      txHash: tx.hash,
+                      chainId: chainId,
+                    })
+                  );
+                }
+              } else {
+                dispatch(
+                  FailedModalStateStatus({
+                    status: true,
+                    txHash: tx.hash,
+                    chainId: chainId,
+                  })
+                );
+              }
+
               // receipt.status === 1
               //   ? Swal.fire({
               //       position: "top-end",
