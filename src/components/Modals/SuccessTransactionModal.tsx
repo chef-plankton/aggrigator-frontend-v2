@@ -27,8 +27,20 @@ function SuccessTransactionModal() {
       </div>{" "}
       <div className='flex flex-col items-center justify-between my-1'>
         <span className='text-[#4FC37E] my-2 text-center font-outfit'>
-          Tx Hash: <span className="break-all font-outfit">{successModalState?.txHash}</span>
+          Tx Hash:{" "}
+          <span className='break-all font-outfit'>
+            {successModalState?.txHash}
+          </span>
         </span>
+        <a
+          href={
+            successModalState?.chainId === 56
+              ? `https://bscscan.com/tx/${successModalState?.txHash}`
+              : `https://ftmscan.com/tx/${successModalState?.txHash}`
+          }
+        >
+          Show on {successModalState?.chainId === 56 ? "BSC" : "FTM"} Scan
+        </a>
         <span className='text-white my-2 text-center font-outfit'>
           Transaction has been submitted to the blockchain It may take up to 20
           min to receive funds
