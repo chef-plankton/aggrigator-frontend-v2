@@ -33,7 +33,7 @@ function SuccessTransactionModal() {
           </span>
         </span>
         <a
-        className="text-white py-2 px-2 border-solid border-white border-[px]"
+        className="text-white py-2 px-2 border-solid border-white border-[1px]"
           target='_blank'
           href={
             successModalState?.chainId === 56
