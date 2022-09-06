@@ -214,14 +214,16 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
                     amount_out,
                     contract_addr,
                     router_addr,
+                    amount_out_wei
                   } = routeStargateBridgeOperations;
                   let route0: RouteDescriptionStruct;
 
+                  
                   route0 = {
                     srcToken: offer_token[0],
                     dstToken: ask_token[0],
                     srcAmount: test(amount_in, +offer_token[4]),
-                    dstMinAmount: test(amount_out, +offer_token[4]),
+                    dstMinAmount: BigNumber.from(amount_out_wei),
                     path: [offer_token[0], ask_token[0]],
                     protocolAddresses: [router_addr],
                     protocolType: 1,
@@ -262,14 +264,14 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
     );
     swapDescription = { ...swapDescription, isRegularTransfer: true };
     swapDescription?.routes.forEach((s, index, arr) => {
-      if (s.swapType === SwapTypes.StargateBridge) {
-        if (arr[index + 1] !== undefined) {
-          swapDescription = { ...swapDescription, isRegularTransfer: false };
-        }
-      }
-
       if (index === 0) {
         const operations = resData.routes[0].operations;
+
+        console.log(resData.return_amount_wei.toString());
+        // parseUnits(
+        //   resData.return_amount.toString(),
+        //   +operations[operations.length - 1].ask_token[4]
+        // )
         swapDescription = {
           ...swapDescription,
           srcToken: arr[0].srcToken,
@@ -279,11 +281,21 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
             +operations[0].offer_token[4]
           ),
           dstDesiredMinAmount: parseUnits(
-            resData.return_amount.toString(),
+            resData.return_amount_wei,
             +operations[operations.length - 1].ask_token[4]
           ),
         };
       }
+      
+      if (s.swapType === SwapTypes.StargateBridge) {
+        if (arr[index + 1] !== undefined) {
+          swapDescription = { ...swapDescription, isRegularTransfer: false };
+        }
+      console.log("index",resData.routes[0].operations_seperated[index]);
+        
+      }
+
+     
     });
 
     console.log({ swapDescription });
