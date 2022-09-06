@@ -25,7 +25,7 @@ function FromToken({ token, index }) {
         dispatch(changeModalStatus(false));
       }}
     >
-      <div className="w-[10%] flex justify-start">
+      <div className="w-[15%] md:w-[10%] flex justify-start">
         <img
           className="w-[32px] h-[32px] rounded-[50%]"
           alt=""
@@ -40,7 +40,7 @@ function FromToken({ token, index }) {
         />
       </div>
 
-      <div className="w-[80%] flex flex-col items-start text-white leading-[16px]">
+      <div className="w-[75%] md:w-[80%] flex flex-col items-start text-white leading-[16px]">
         <div className="font-outfit font-[500] text-[14px]">{token.symbol}</div>
         <div className="font-outfit font-[500] text-[14px] text-[#bfbfbf]">{token.name}</div>
       </div>

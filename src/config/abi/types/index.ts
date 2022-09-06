@@ -4,9 +4,11 @@
 export type { AkkaAggrigator } from "./AkkaAggrigator";
 export type { Erc20Bytes32 } from "./Erc20Bytes32";
 export type { Erc20 } from "./Erc20";
+export type { IAkkaAggrigator } from "./IAkkaAggrigator";
 export type { Weth } from "./Weth";
 
 export { AkkaAggrigator__factory } from "./factories/AkkaAggrigator__factory";
 export { Erc20Bytes32__factory } from "./factories/Erc20Bytes32__factory";
 export { Erc20__factory } from "./factories/Erc20__factory";
+export { IAkkaAggrigator__factory } from "./factories/IAkkaAggrigator__factory";
 export { Weth__factory } from "./factories/Weth__factory";

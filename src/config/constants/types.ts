@@ -24,6 +24,8 @@ export enum SwapTypes {
 export interface RouteResponseDto {
     input_amount: number,
     return_amount: number,
+    input_amount_wei: number,
+    return_amount_wei: string,
     routes: Array<RouteRoutes>
 }
 export interface RouteRoutes {
@@ -56,6 +58,7 @@ export class RouteStargateBridgeOperations {
     }
     amount_in: number
     amount_out: number
+    amount_out_wei: string
     offer_token: Array<string>
     ask_token: Array<string>
     exchange: BridgeName

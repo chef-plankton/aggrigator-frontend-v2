@@ -176,7 +176,7 @@ export function useAkkaAggrigatorSwapCallback(): {
         );
         addTransaction(tx, {
           summary: `swap ${inputAmount}`,
-          type: "swap",
+          type: fromChain === toChain ? "swap" : "multichain-swap",
         });
 
         return tx as TransactionResponse;

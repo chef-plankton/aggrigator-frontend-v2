@@ -18,7 +18,7 @@ import { RootState } from "../../app/store";
 import plusIcon from "../../assets/plus.png";
 import NoiseIcon from "../../assets/img/Noise.png";
 import { Weth } from "../../config/abi/types";
-import { SwapDescriptionStruct } from "../../config/abi/types/AkkaAggrigator";
+import { SwapDescriptionStruct } from "../../config/abi/types/IAkkaAggrigator";
 import { SwapTypes } from "../../config/constants/types";
 import { changeApprovalState } from "../../features/account/accountSlice";
 import { changeChain } from "../../features/chains/chainsSlice";
@@ -172,7 +172,10 @@ function Main() {
         return;
       }
 
-      if (balance !== null && balance?.lt(parseUnits(amount, fromToken.decimals))) {
+      if (
+        balance !== null &&
+        balance?.lt(parseUnits(amount, fromToken.decimals))
+      ) {
         dispatch(
           changeSwapButtonState({
             state: SwapButonStates.INSUFFICIENT_BALANCE,
@@ -199,7 +202,9 @@ function Main() {
 
       if (
         approvevalue &&
-        BigNumber.from(approvevalue)?.gte(parseUnits(amount, fromToken.decimals))
+        BigNumber.from(approvevalue)?.gte(
+          parseUnits(amount, fromToken.decimals)
+        )
       ) {
         dispatch(
           changeSwapButtonState({
@@ -305,8 +310,8 @@ function Main() {
           tochaindata.routes.length === 1
             ? 0
             : tochaindata.routes.length > 1
-            ? 1
-            : 1,
+              ? index+1
+              : 1,
           tochaindata.routes.length
         );
         tochaindata = {
@@ -314,16 +319,21 @@ function Main() {
           routes: filteredArr,
           srcToken: filteredArr[0].srcToken,
           dstToken: filteredArr[filteredArr.length - 1].dstToken,
-          srcDesiredAmount: filteredArr[0].srcAmount,
+          srcDesiredAmount: filteredArr[0].dstMinAmount,
           dstDesiredMinAmount: filteredArr[filteredArr.length - 1].dstMinAmount,
         };
         console.log({ tochaindata });
+        // console.log({ filteredArr });
+        // console.log("filteredArr", BigNumber.from(filteredArr[0].dstMinAmount).toString());
+        // console.log("filteredArr", BigNumber.from(filteredArr[0].srcAmount).toString());
+        // console.log("data", BigNumber.from(tochaindata.dstDesiredMinAmount).toString());
+        // console.log(parseUnits('20168000000'));
 
         // [s s b s s] [s s]
         const payload = await getBytes(tochaindata);
         const router = sd.routes.filter(
           (item) => item.swapType === SwapTypes.StargateBridge
-        )[0].router;
+        )[0].protocolAddresses[0];
         const quote = await quoteLayerZeroFee(
           router,
           BigNumber.from(sd.dstChainId),
@@ -331,9 +341,14 @@ function Main() {
           payload,
           sd.gasForSwap as BigNumber
         );
-        console.log(quote.toString());
-          
-        aggrigatorSwap(sd, quote[0], payload);
+        // console.log(quote.toString());
+        // console.log("str", sd.dstDesiredMinAmount.toString());
+        // console.log({ sd });
+        // console.log(index);
+        const a: SwapDescriptionStruct = { ...sd, dstDesiredMinAmount: sd.routes[index].dstMinAmount, routes: sd.routes.slice(0, index+1) }
+        console.log({ a });
+
+        aggrigatorSwap(a, quote[0], payload);
       } else {
         aggrigatorSwap(
           sd,
@@ -479,11 +494,10 @@ function Main() {
 
             <button
               onClick={handleSwapButtonClick}
-              className={`rounded-[5px] py-[16px] w-[100%] h-[56px] text-center font-clash font-[400] text-[18px] text-lg ${
-                !swapButtonData.isDisable
+              className={`rounded-[5px] py-[16px] w-[100%] h-[56px] text-center font-clash font-[400] text-[18px] text-lg ${!swapButtonData.isDisable
                   ? "text-white bg-[#BE35FF]/[0.45] hover:bg-[#BE35FF]/[0.65]"
                   : "text-[#717070] bg-[#979797] text-black"
-              }`}
+                }`}
               {...isButtonDisable}
             >
               {swapButtonData.text}
@@ -492,7 +506,7 @@ function Main() {
           {showRoute ? (
             <div className='w-full md:h-[420px] md:w-[440px] px-[24px] bg-[#1B1A2E] pb-[24px] md:py-[24px] flex flex-col justify-center items-center'>
               {isLoadingRoute ? <MyLoader /> : <InfoBox />}
-              {isLoadingRoute ? '' : <Route />}
+              {isLoadingRoute ? "" : <Route />}
             </div>
           ) : (
             ""

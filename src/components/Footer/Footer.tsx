@@ -4,7 +4,7 @@ import InstagramIcon from '../../assets/img/socials/instagram.png'
 import TelegramIcon from '../../assets/img/socials/telegram.png'
 function Footer() {
   return (
-    <footer className='w-[100%] flex justify-center bg-[#18172E] py-[15px] px-[50px] md:h-[18vh]'>
+    <footer className='w-[100%] flex justify-center items-center bg-[#18172E] py-[15px] px-[50px] md:h-[18vh]'>
       <div className='flex flex-col'>
         <img src={Logo} alt='Logo' className="h-[50px] my-2" />
         <div className="flex justify-evenly py-5 mt-2 items-center">

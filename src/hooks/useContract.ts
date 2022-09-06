@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 // Imports below migrated from Exchange useContract.ts
 import { Contract } from "@ethersproject/contracts";
 import WETH_ABI from "../config/abi/weth.json";
-import AKKA_ABI from "../config/abi/akkaAggrigator.json";
+import AKKA_ABI from "../config/abi/AkkaAggrigator.json";
 import { getBep20Contract } from "../utils/contractHelpers";
 import { getContract, getProviderOrSigner } from "../utils";
 import { hooks } from "../connectors/metaMask";

@@ -89,25 +89,6 @@
       {
         "indexed": false,
         "internalType": "address",
-        "name": "token",
-        "type": "address"
-      }
-    ],
-    "name": "Stargate",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
         "name": "srcToken",
         "type": "address"
       },
@@ -193,13 +174,18 @@
                 "type": "address"
               },
               {
-                "internalType": "address",
-                "name": "router",
-                "type": "address"
+                "internalType": "address[]",
+                "name": "protocolAddresses",
+                "type": "address[]"
               },
               {
                 "internalType": "uint8",
                 "name": "swapType",
+                "type": "uint8"
+              },
+              {
+                "internalType": "uint8",
+                "name": "protocolType",
                 "type": "uint8"
               },
               {
@@ -310,13 +296,18 @@
                 "type": "address"
               },
               {
-                "internalType": "address",
-                "name": "router",
-                "type": "address"
+                "internalType": "address[]",
+                "name": "protocolAddresses",
+                "type": "address[]"
               },
               {
                 "internalType": "uint8",
                 "name": "swapType",
+                "type": "uint8"
+              },
+              {
+                "internalType": "uint8",
+                "name": "protocolType",
                 "type": "uint8"
               },
               {
@@ -427,13 +418,18 @@
                 "type": "address"
               },
               {
-                "internalType": "address",
-                "name": "router",
-                "type": "address"
+                "internalType": "address[]",
+                "name": "protocolAddresses",
+                "type": "address[]"
               },
               {
                 "internalType": "uint8",
                 "name": "swapType",
+                "type": "uint8"
+              },
+              {
+                "internalType": "uint8",
+                "name": "protocolType",
                 "type": "uint8"
               },
               {
