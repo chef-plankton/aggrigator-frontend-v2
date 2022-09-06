@@ -145,6 +145,17 @@ export default function Updater(): null {
                       status: true,
                       txHash: tx.hash,
                       chainId: chainId,
+                      isMultiChainSwap: false,
+                    })
+                  );
+                }
+                if (tx.type === "multichain-swap") {
+                  dispatch(
+                    SuccessModalStateStatus({
+                      status: true,
+                      txHash: tx.hash,
+                      chainId: chainId,
+                      isMultiChainSwap: true,
                     })
                   );
                 }
