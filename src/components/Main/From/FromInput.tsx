@@ -36,11 +36,11 @@ const StyledInput = styled.input`
   text-align: right;
   text-overflow: ellipsis;
   font-weight: 400;
-  padding: 10px; 
+  padding: 10px;
   display: block;
   color: white;
   background: rgba(255, 255, 255, 0.01);
-  border: 1px solid rgba(255,255,255,0.01);
+  border: 1px solid rgba(255, 255, 255, 0.01);
   outline: none;
   width: 100%;
   height: 100%;
@@ -173,7 +173,8 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
                     srcAmount: test(amount_in, +offer_token[4]),
                     dstMinAmount: test(amount_out, +offer_token[4]),
                     path: [offer_token[0], ask_token[0]],
-                    router: router_addr,
+                    protocolAddresses: [router_addr],
+                    protocolType: 1,
                     swapType: SwapTypes.Regular,
                   };
                   swapDescription = {
@@ -222,7 +223,8 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
                     srcAmount: test(amount_in, +offer_token[4]),
                     dstMinAmount: test(amount_out, +offer_token[4]),
                     path: [offer_token[0], ask_token[0]],
-                    router: router_addr,
+                    protocolAddresses: [router_addr],
+                    protocolType: 1,
                     swapType: SwapTypes.StargateBridge,
                   };
 
@@ -283,8 +285,7 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
         };
       }
     });
-    
-    
+
     console.log({ swapDescription });
 
     return swapDescription;

@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
 import useWallet from "../components/Wallets/useWallet";
 import { AkkaAggrigator } from "../config/abi/types";
-import { SwapDescriptionStruct } from "../config/abi/types/AkkaAggrigator";
+import { SwapDescriptionStruct } from "../config/abi/types/IAkkaAggrigator";
 import { useTransactionAdder } from "../state/transactions/hooks";
 import { useCallWithoutGasPrice } from "./useCallWithoutGasPrice";
 import { useAkkaContract } from "./useContract";

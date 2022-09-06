@@ -18,7 +18,7 @@ import { RootState } from "../../app/store";
 import plusIcon from "../../assets/plus.png";
 import NoiseIcon from "../../assets/img/Noise.png";
 import { Weth } from "../../config/abi/types";
-import { SwapDescriptionStruct } from "../../config/abi/types/AkkaAggrigator";
+import { SwapDescriptionStruct } from "../../config/abi/types/IAkkaAggrigator";
 import { SwapTypes } from "../../config/constants/types";
 import { changeApprovalState } from "../../features/account/accountSlice";
 import { changeChain } from "../../features/chains/chainsSlice";
@@ -172,7 +172,10 @@ function Main() {
         return;
       }
 
-      if (balance !== null && balance?.lt(parseUnits(amount, fromToken.decimals))) {
+      if (
+        balance !== null &&
+        balance?.lt(parseUnits(amount, fromToken.decimals))
+      ) {
         dispatch(
           changeSwapButtonState({
             state: SwapButonStates.INSUFFICIENT_BALANCE,
@@ -199,7 +202,9 @@ function Main() {
 
       if (
         approvevalue &&
-        BigNumber.from(approvevalue)?.gte(parseUnits(amount, fromToken.decimals))
+        BigNumber.from(approvevalue)?.gte(
+          parseUnits(amount, fromToken.decimals)
+        )
       ) {
         dispatch(
           changeSwapButtonState({
@@ -323,7 +328,7 @@ function Main() {
         const payload = await getBytes(tochaindata);
         const router = sd.routes.filter(
           (item) => item.swapType === SwapTypes.StargateBridge
-        )[0].router;
+        )[0].protocolAddresses[0];
         const quote = await quoteLayerZeroFee(
           router,
           BigNumber.from(sd.dstChainId),
@@ -331,8 +336,9 @@ function Main() {
           payload,
           sd.gasForSwap as BigNumber
         );
-        console.log(quote.toString());
-          
+        // console.log(quote.toString());
+        console.log("str",sd.dstDesiredMinAmount.toString());
+        console.log({sd});
         aggrigatorSwap(sd, quote[0], payload);
       } else {
         aggrigatorSwap(
@@ -492,7 +498,7 @@ function Main() {
           {showRoute ? (
             <div className='w-full md:h-[420px] md:w-[440px] px-[24px] bg-[#1B1A2E] pb-[24px] md:py-[24px] flex flex-col justify-center items-center'>
               {isLoadingRoute ? <MyLoader /> : <InfoBox />}
-              {isLoadingRoute ? '' : <Route />}
+              {isLoadingRoute ? "" : <Route />}
             </div>
           ) : (
             ""

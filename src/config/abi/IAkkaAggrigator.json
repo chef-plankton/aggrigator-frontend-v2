@@ -1,0 +1,124 @@
+[
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "srcToken",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "dstToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "srcDesiredAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "dstDesiredMinAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint16",
+              "name": "dstChainId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint16",
+              "name": "srcPoolId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint16",
+              "name": "dstPoolId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "address",
+              "name": "dstContractAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "isRegularTransfer",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "gasForSwap",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "srcToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "dstToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address[]",
+                  "name": "protocolAddresses",
+                  "type": "address[]"
+                },
+                {
+                  "internalType": "uint8",
+                  "name": "swapType",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "uint8",
+                  "name": "protocolType",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "address[]",
+                  "name": "path",
+                  "type": "address[]"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "srcAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "dstMinAmount",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct IAkkaAggrigator.RouteDescription[]",
+              "name": "routes",
+              "type": "tuple[]"
+            }
+          ],
+          "internalType": "struct IAkkaAggrigator.SwapDescription",
+          "name": "desc",
+          "type": "tuple"
+        },
+        {
+          "internalType": "bytes",
+          "name": "payload",
+          "type": "bytes"
+        }
+      ],
+      "name": "aggrigatorCoreExternal",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ]
