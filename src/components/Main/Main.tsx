@@ -405,14 +405,16 @@ function Main() {
       console.log({ fromChainData });
       console.log({ toChainData });
       const payload = await getBytes(toChainData);
-      console.log("payload finished", payload);
-      console.log(
-        fromChainData.routes[fromChainData.routes.length - 1]
-          .protocolAddresses[0]
-      );
-      console.log(fromChainData.dstChainId);
-      console.log(fromChainData.to);
-      console.log(fromChainData.gasForSwap);
+      // console.log("payload finished", payload);
+      // console.log(
+      //   fromChainData.routes[fromChainData.routes.length - 1]
+      //     .protocolAddresses[0]
+      // );
+      // console.log(fromChainData.dstChainId);
+      // console.log(fromChainData.to);
+      // console.log(fromChainData.gasForSwap);
+      // console.log(BigNumber.from(fromChainData.srcDesiredAmount).toString());
+      // console.log(BigNumber.from(fromChainData.dstDesiredMinAmount).toString());
 
       const quote = await quoteLayerZeroFee(
         fromChainData.routes[fromChainData.routes.length - 1]
@@ -422,8 +424,20 @@ function Main() {
         payload,
         fromChainData.gasForSwap as BigNumber
       );
+      console.log(quote[0].toString());
 
-      aggrigatorSwap(fromChainData, quote[0], payload);
+      aggrigatorSwap(fromChainData, quote[0], payload)
+      .catch((err) => {
+        if (err?.code === 4001) {
+          dispatch(
+            changeSwapButtonState({
+              state: SwapButonStates.SWAP,
+              text: "Swap",
+              isDisable: false,
+            })
+          );
+        }
+      });;
     }
   }
   /** The children of this component will slide down on mount and will slide up on unmount */

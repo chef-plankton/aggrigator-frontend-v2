@@ -285,9 +285,12 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
               srcDesiredAmount: BigNumber.from(
                 BridgeChainOpration[0].amount_in_wei
               ),
-              dstDesiredMinAmount: BigNumber.from(
-                BridgeChainOpration[BridgeChainOpration.length - 1]
-                  .amount_out_wei
+              // dstDesiredMinAmount: BigNumber.from(
+              //   BridgeChainOpration[BridgeChainOpration.length - 1]
+              //     .amount_out_wei
+              // ),
+              dstDesiredMinAmount:BigNumber.from(
+                BridgeChainOpration[0].amount_in_wei
               ),
               to: account,
               dstChainId: NewBridgeChainOpration.ask_bridge_data.chain_id,
@@ -366,8 +369,11 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
               srcDesiredAmount: BigNumber.from(
                 MixeadSrcAndBridge[0].amount_in_wei
               ),
-              dstDesiredMinAmount: BigNumber.from(
-                MixeadSrcAndBridge[MixeadSrcAndBridge.length - 1].amount_out_wei
+              // dstDesiredMinAmount: BigNumber.from(
+              //   MixeadSrcAndBridge[MixeadSrcAndBridge.length - 1].amount_out_wei
+              // ),
+              dstDesiredMinAmount:BigNumber.from(
+                BridgeChainOpration[0].amount_in_wei
               ),
               to: account,
               dstChainId: NewBridgeChainOpration.ask_bridge_data.chain_id,
@@ -409,13 +415,13 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
             MixeadSrcAndBridge[MixeadSrcAndBridge.length - 1].ask_token[0],
           srcDesiredAmount: BigNumber.from(MixeadSrcAndBridge[0].amount_in_wei),
           dstDesiredMinAmount: BigNumber.from(
-            MixeadSrcAndBridge[MixeadSrcAndBridge.length - 1].amount_out_wei
+            0
           ),
           to: account,
           dstChainId: NewBridgeChainOpration.ask_bridge_data.chain_id,
           dstPoolId: NewBridgeChainOpration.ask_bridge_data.pool_id,
           srcPoolId: NewBridgeChainOpration.offer_bridge_data.pool_id,
-          gasForSwap: BigNumber.from("1005617"),
+          gasForSwap: BigNumber.from("600000"),
           dstContractAddress: dstSetContractWithChainId(toChain),
           isRegularTransfer: false,
           routes: MixeadSrcAndBridge.map((route, index) => {
