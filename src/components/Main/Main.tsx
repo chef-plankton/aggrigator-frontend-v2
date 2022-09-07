@@ -19,7 +19,10 @@ import plusIcon from "../../assets/plus.png";
 import NoiseIcon from "../../assets/img/Noise.png";
 import { Weth } from "../../config/abi/types";
 import { SwapDescriptionStruct } from "../../config/abi/types/IAkkaAggrigator";
-import { SwapTypes } from "../../config/constants/types";
+import {
+  OneChainSwapDescriptionStruct,
+  SwapTypes,
+} from "../../config/constants/types";
 import { changeApprovalState } from "../../features/account/accountSlice";
 import { changeChain } from "../../features/chains/chainsSlice";
 import { connectWalletStatus } from "../../features/modals/modalsSlice";
@@ -93,6 +96,15 @@ function Main() {
   const amount = useSelector(({ route }: RootState) => route.amount);
   const swapDescription = useSelector(
     ({ route }: RootState) => route.swapDescription
+  );
+  const oneChainSwapDesc = useSelector(
+    ({ route }: RootState) => route.oneChainSwapDesc
+  );
+  const quoteLayerZeroFeeSwapDesc = useSelector(
+    ({ route }: RootState) => route.quoteLayerZeroFeeSwapDesc
+  );
+  const payloadEncodeSwapDesc = useSelector(
+    ({ route }: RootState) => route.payloadEncodeSwapDesc
   );
   const { callWithoutGasPrice } = useCallWithoutGasPrice<
     Weth,
@@ -296,76 +308,122 @@ function Main() {
     }
   }
   // bs sb
+  // async function multiCallSwap() {
+  //   if (swapDescription) {
+  //     const sd = JSON.parse(swapDescription) as SwapDescriptionStruct;
+  //     if (fromChain !== toChain) {
+  //       let tochaindata = { ...sd };
+  //       const index = tochaindata.routes.indexOf(
+  //         tochaindata.routes.filter(
+  //           (item) => item.swapType === SwapTypes.StargateBridge
+  //         )[0]
+  //       );
+  //       const filteredArr = tochaindata.routes.slice(
+  //         tochaindata.routes.length === 1
+  //           ? 0
+  //           : tochaindata.routes.length > 1
+  //           ? index + 1
+  //           : 1,
+  //         tochaindata.routes.length
+  //       );
+  //       tochaindata = {
+  //         ...sd,
+  //         routes: filteredArr,
+  //         srcToken: filteredArr[0].srcToken,
+  //         dstToken: filteredArr[filteredArr.length - 1].dstToken,
+  //         srcDesiredAmount: filteredArr[0].dstMinAmount,
+  //         dstDesiredMinAmount: filteredArr[filteredArr.length - 1].dstMinAmount,
+  //       };
+
+  //       // [s s b s s] [s s]
+  //       const payload = await getBytes(tochaindata);
+  //       const router = sd.routes.filter(
+  //         (item) => item.swapType === SwapTypes.StargateBridge
+  //       )[0].protocolAddresses[0];
+  //       const quote = await quoteLayerZeroFee(
+  //         router,
+  //         BigNumber.from(sd.dstChainId),
+  //         sd.to,
+  //         payload,
+  //         sd.gasForSwap as BigNumber
+  //       );
+
+  //       const a: SwapDescriptionStruct = {
+  //         ...sd,
+  //         dstDesiredMinAmount: sd.routes[index].dstMinAmount,
+  //         routes: sd.routes.slice(0, index + 1),
+  //       };
+
+  //       aggrigatorSwap(a, quote[0], payload);
+  //     } else {
+  //       aggrigatorSwap(
+  //         sd,
+  //         BigNumber.from("0"),
+  //         new AbiCoder().encode(["string"], [""])
+  //       ).catch((err) => {
+  //         if (err?.code === 4001) {
+  //           dispatch(
+  //             changeSwapButtonState({
+  //               state: SwapButonStates.SWAP,
+  //               text: "Swap",
+  //               isDisable: false,
+  //             })
+  //           );
+  //         }
+  //       });
+  //     }
+  //   }
+  // }
   async function multiCallSwap() {
-    if (swapDescription) {
-      const sd = JSON.parse(swapDescription) as SwapDescriptionStruct;
-      if (fromChain !== toChain) {
-        let tochaindata = { ...sd };
-        const index = tochaindata.routes.indexOf(
-          tochaindata.routes.filter(
-            (item) => item.swapType === SwapTypes.StargateBridge
-          )[0]
-        );
-        const filteredArr = tochaindata.routes.slice(
-          tochaindata.routes.length === 1
-            ? 0
-            : tochaindata.routes.length > 1
-              ? index+1
-              : 1,
-          tochaindata.routes.length
-        );
-        tochaindata = {
-          ...sd,
-          routes: filteredArr,
-          srcToken: filteredArr[0].srcToken,
-          dstToken: filteredArr[filteredArr.length - 1].dstToken,
-          srcDesiredAmount: filteredArr[0].dstMinAmount,
-          dstDesiredMinAmount: filteredArr[filteredArr.length - 1].dstMinAmount,
-        };
-        console.log({ tochaindata });
-        // console.log({ filteredArr });
-        // console.log("filteredArr", BigNumber.from(filteredArr[0].dstMinAmount).toString());
-        // console.log("filteredArr", BigNumber.from(filteredArr[0].srcAmount).toString());
-        // console.log("data", BigNumber.from(tochaindata.dstDesiredMinAmount).toString());
-        // console.log(parseUnits('20168000000'));
+    if (oneChainSwapDesc) {
+      const swapDescription = JSON.parse(
+        oneChainSwapDesc
+      ) as SwapDescriptionStruct;
+      console.log({ swapDescription });
+      aggrigatorSwap(
+        swapDescription,
+        BigNumber.from("0"),
+        new AbiCoder().encode(["string"], [""])
+      ).catch((err) => {
+        if (err?.code === 4001) {
+          dispatch(
+            changeSwapButtonState({
+              state: SwapButonStates.SWAP,
+              text: "Swap",
+              isDisable: false,
+            })
+          );
+        }
+      });
+    } else {
+      const fromChainData = JSON.parse(
+        quoteLayerZeroFeeSwapDesc
+      ) as SwapDescriptionStruct;
+      const toChainData = JSON.parse(
+        payloadEncodeSwapDesc
+      ) as SwapDescriptionStruct;
+      console.log({ fromChainData });
+      console.log({ toChainData });
+      const payload = await getBytes(toChainData);
+      console.log("payload finished", payload);
+      console.log(
+        fromChainData.routes[fromChainData.routes.length - 1]
+          .protocolAddresses[0]
+      );
+      console.log(fromChainData.dstChainId);
+      console.log(fromChainData.to);
+      console.log(fromChainData.gasForSwap);
 
-        // [s s b s s] [s s]
-        const payload = await getBytes(tochaindata);
-        const router = sd.routes.filter(
-          (item) => item.swapType === SwapTypes.StargateBridge
-        )[0].protocolAddresses[0];
-        const quote = await quoteLayerZeroFee(
-          router,
-          BigNumber.from(sd.dstChainId),
-          sd.to,
-          payload,
-          sd.gasForSwap as BigNumber
-        );
-        // console.log(quote.toString());
-        // console.log("str", sd.dstDesiredMinAmount.toString());
-        // console.log({ sd });
-        // console.log(index);
-        const a: SwapDescriptionStruct = { ...sd, dstDesiredMinAmount: sd.routes[index].dstMinAmount, routes: sd.routes.slice(0, index+1) }
-        console.log({ a });
+      const quote = await quoteLayerZeroFee(
+        fromChainData.routes[fromChainData.routes.length - 1]
+          .protocolAddresses[0],
+        BigNumber.from(fromChainData.dstChainId),
+        fromChainData.to,
+        payload,
+        fromChainData.gasForSwap as BigNumber
+      );
 
-        aggrigatorSwap(a, quote[0], payload);
-      } else {
-        aggrigatorSwap(
-          sd,
-          BigNumber.from("0"),
-          new AbiCoder().encode(["string"], [""])
-        ).catch((err) => {
-          if (err?.code === 4001) {
-            dispatch(
-              changeSwapButtonState({
-                state: SwapButonStates.SWAP,
-                text: "Swap",
-                isDisable: false,
-              })
-            );
-          }
-        });
-      }
+      aggrigatorSwap(fromChainData, quote[0], payload);
     }
   }
   /** The children of this component will slide down on mount and will slide up on unmount */
@@ -494,10 +552,11 @@ function Main() {
 
             <button
               onClick={handleSwapButtonClick}
-              className={`rounded-[5px] py-[16px] w-[100%] h-[56px] text-center font-clash font-[400] text-[18px] text-lg ${!swapButtonData.isDisable
+              className={`rounded-[5px] py-[16px] w-[100%] h-[56px] text-center font-clash font-[400] text-[18px] text-lg ${
+                !swapButtonData.isDisable
                   ? "text-white bg-[#BE35FF]/[0.45] hover:bg-[#BE35FF]/[0.65]"
                   : "text-[#717070] bg-[#979797] text-black"
-                }`}
+              }`}
               {...isButtonDisable}
             >
               {swapButtonData.text}
