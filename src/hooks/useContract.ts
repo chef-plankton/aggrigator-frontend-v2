@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
 import { ca } from "date-fns/locale";
 import { ChainId } from "../config/constants/types";
+import { setContractWithChainId } from "./useSetContractWithChainId";
 // returns null on errors
 function useContract<T extends Contract = Contract>(
   address: string | undefined,
@@ -56,7 +57,6 @@ export const useERC20 = (address: string, withSignerIfPossible = true) => {
   return useMemo(() => getBep20Contract(address, signer), [address, signer]);
 };
 
-
 export function useWBNBContract(
   withSignerIfPossible?: boolean
 ): ReturnType<typeof useContract<Weth>> | null {
@@ -72,19 +72,13 @@ export function useAkkaContract(
 ): ReturnType<typeof useContract<AkkaAggrigator>> | null {
   const [contractAddress, setContractAddress] = useState<string>(null);
   const chainId = useSelector(({ chains }: RootState) => chains.value);
+  console.log(chainId);
+
   useEffect(() => {
     if (chainId) {
-      switch (chainId) {
-        case ChainId.BSC:
-          setContractAddress(process.env.REACT_APP_BSC_AKKA_CONTRACT);
-          break;
-        case ChainId.FTM:
-          setContractAddress(process.env.REACT_APP_FTM_AKKA_CONTRACT);
-          break;
-      }
+      setContractAddress(setContractWithChainId(chainId));
     }
   }, [chainId]);
-
   return useContract(contractAddress, AKKA_ABI, withSignerIfPossible);
 }
 

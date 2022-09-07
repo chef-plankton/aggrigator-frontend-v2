@@ -107,8 +107,7 @@ export default function Updater(): null {
                 })
               );
               const tx = transactions[hash];
-              console.log(tx);
-              
+
               if (tx) {
                 switch (tx.type) {
                   case "approve":
