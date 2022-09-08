@@ -3,6 +3,7 @@ interface ModalStatus {
   status: boolean;
   txHash?: string;
   chainId?: number;
+  isMultiChainSwap?: boolean;
 }
 interface ModalsState {
   generalModal: boolean;
@@ -101,7 +102,12 @@ export const modalssSlice = createSlice({
     },
     SuccessModalStateStatus: (state, action) => {
       state.generalModal = true;
-      state.SuccessModalState = { status: action.payload.status,txHash:action.payload.txHash };
+      state.SuccessModalState = {
+        status: action.payload.status,
+        txHash: action.payload.txHash,
+        chainId: action.payload.chainId,
+        isMultiChainSwap: action.payload.isMultiChainSwap,
+      };
       state.fromAdvanceSettingModal = !action.payload;
       state.ToNetworklistModal = !action.payload;
       state.fromTokenlistModal = !action.payload;

@@ -12,7 +12,9 @@ import {
 } from "../../../config/abi/types/AkkaAggrigator";
 import { getPriceOfToken } from "../../../config/api";
 import {
+  MultiChainSwapDescriptionStruct,
   NetworkName,
+  OneChainSwapDescriptionStruct,
   RouteRegularOperations,
   RouteResponseDto,
   RouteStargateBridgeOperations,
@@ -21,6 +23,9 @@ import {
 import {
   changeAmount,
   changeIsLoading,
+  changeOneChainSwapDesc,
+  changePayloadEncodeSwapDesc,
+  changeQuoteLayerZeroFeeSwapDesc,
   changeRecieve,
   changeResponseData,
   changeResponseString,
@@ -36,11 +41,11 @@ const StyledInput = styled.input`
   text-align: right;
   text-overflow: ellipsis;
   font-weight: 400;
-  padding: 10px; 
+  padding: 10px;
   display: block;
   color: white;
   background: rgba(255, 255, 255, 0.01);
-  border: 1px solid rgba(255,255,255,0.01);
+  border: 1px solid rgba(255, 255, 255, 0.01);
   outline: none;
   width: 100%;
   height: 100%;
@@ -79,6 +84,15 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
   const chainId = useSelector(({ chains }: RootState) => chains.value);
   const counter = useSelector(({ route }: RootState) => route.counter);
   const wallet = useSelector(({ account }: RootState) => account.wallet);
+  const oneChainSwapDesc = useSelector(
+    ({ route }: RootState) => route.oneChainSwapDesc
+  );
+  const quoteLayerZeroFeeSwapDesc = useSelector(
+    ({ route }: RootState) => route.quoteLayerZeroFeeSwapDesc
+  );
+  const payloadEncodeSwapDesc = useSelector(
+    ({ route }: RootState) => route.payloadEncodeSwapDesc
+  );
   const akkaContractAddress = setContractWithChainId(toChain);
 
   const akkaDstContractAddress = dstSetContractWithChainId(toChain);
@@ -106,13 +120,33 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
               dispatch(changeResponseString(JSON.stringify(data)));
               dispatch(changeResponseData(data.data));
               dispatch(changeShowRoute(true));
-              dispatch(
-                changeSwapDescription(
-                  JSON.stringify(
-                    convertResponseDataToSwapDescriptionStruct(data.data)
+              if (fromChain === toChain) {
+                dispatch(
+                  changeOneChainSwapDesc(
+                    JSON.stringify(oneChainSwapDescriptionStruct(data.data))
                   )
-                )
-              );
+                );
+                dispatch(changeQuoteLayerZeroFeeSwapDesc(null));
+                dispatch(changePayloadEncodeSwapDesc(null));
+              } else {
+                dispatch(
+                  changeQuoteLayerZeroFeeSwapDesc(
+                    JSON.stringify(
+                      multiChainSwapDescriptionStruct(data.data)
+                        .quoteLayerZeroFeeSwapDescriptionStruct
+                    )
+                  )
+                );
+                dispatch(
+                  changePayloadEncodeSwapDesc(
+                    JSON.stringify(
+                      multiChainSwapDescriptionStruct(data.data)
+                        .payloadEncodeSwapDescription
+                    )
+                  )
+                );
+                dispatch(changeOneChainSwapDesc(null));
+              }
             })
             .finally(() => {
               dispatch(changeIsLoading(false));
@@ -127,11 +161,326 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
       getPriceOfToken("BTC").then(console.log).catch(console.log);
     }
   }, [amount, fromChain, toChain, fromToken, toToken, chainId, counter]);
+
+  // One Chain Swap Object For Smart Contract
+  const oneChainSwapDescriptionStruct = (
+    resData: RouteResponseDto
+  ): SwapDescriptionStruct => {
+    let OneChainOpration = resData.routes[0].operations_seperated[0].operations;
+    let oneChainSwapDescriptionStruct: SwapDescriptionStruct;
+    oneChainSwapDescriptionStruct = {
+      srcToken: OneChainOpration[0].offer_token[0],
+      dstToken: OneChainOpration[OneChainOpration.length - 1].ask_token[0],
+      srcDesiredAmount: BigNumber.from(OneChainOpration[0].amount_in_wei),
+      dstDesiredMinAmount: BigNumber.from(
+        OneChainOpration[OneChainOpration.length - 1].amount_out_wei
+      ),
+      to: account,
+      dstChainId: 0,
+      dstPoolId: 0,
+      srcPoolId: 0,
+      gasForSwap: BigNumber.from("2105617"),
+      dstContractAddress: setContractWithChainId(
+        resData.routes[0].operations_seperated[0].chain_id
+      ),
+      isRegularTransfer: true,
+      routes: OneChainOpration.map((route) => {
+        return {
+          srcToken: route.offer_token[0],
+          dstToken: route.ask_token[0],
+          srcAmount: BigNumber.from(route.amount_in_wei),
+          dstMinAmount: BigNumber.from(route.amount_out_wei),
+          swapType: 1,
+          protocolType: 1,
+          path: [route.offer_token[0], route.ask_token[0]],
+          protocolAddresses: [route.router_addr],
+        };
+      }),
+    };
+    return oneChainSwapDescriptionStruct;
+  };
+  // Multi Chain Swap Object For Smart Contract
+  const multiChainSwapDescriptionStruct = (resData: RouteResponseDto) => {
+    let SrcChainOpration: (
+      | RouteRegularOperations
+      | RouteStargateBridgeOperations
+    )[];
+    let BridgeChainOpration: (
+      | RouteRegularOperations
+      | RouteStargateBridgeOperations
+    )[];
+    let DstChainOpration: (
+      | RouteRegularOperations
+      | RouteStargateBridgeOperations
+    )[];
+    let MixeadSrcAndBridge: (
+      | RouteRegularOperations
+      | RouteStargateBridgeOperations
+    )[];
+    let payloadEncodeSwapDescription: SwapDescriptionStruct;
+    let quoteLayerZeroFeeSwapDescriptionStruct: SwapDescriptionStruct;
+    switch (resData.routes[0].operations_seperated.length) {
+      case 1: {
+        SrcChainOpration = null;
+        BridgeChainOpration =
+          resData.routes[0].operations_seperated[0].operations;
+        const NewBridgeChainOpration = new RouteStargateBridgeOperations({
+          ...resData.routes[0].operations_seperated[1].operations[0],
+        });
+        DstChainOpration = null;
+
+        // quoteLayerZero Object
+        quoteLayerZeroFeeSwapDescriptionStruct = {
+          srcToken: BridgeChainOpration[0].offer_token[0],
+          dstToken:
+            BridgeChainOpration[BridgeChainOpration.length - 1].ask_token[0],
+          srcDesiredAmount: BigNumber.from(
+            BridgeChainOpration[0].amount_in_wei
+          ),
+          dstDesiredMinAmount: BigNumber.from(
+            BridgeChainOpration[BridgeChainOpration.length - 1].amount_out_wei
+          ),
+          to: account,
+          dstChainId: NewBridgeChainOpration.ask_bridge_data.chain_id,
+          dstPoolId: NewBridgeChainOpration.ask_bridge_data.pool_id,
+          srcPoolId: NewBridgeChainOpration.offer_bridge_data.pool_id,
+          gasForSwap: BigNumber.from("1005617"),
+          dstContractAddress: account,
+          isRegularTransfer: false,
+          routes: BridgeChainOpration.map((route, index) => {
+            return {
+              srcToken: route.offer_token[0],
+              dstToken: route.ask_token[0],
+              srcAmount: BigNumber.from(route.amount_in_wei),
+              dstMinAmount: BigNumber.from(route.amount_out_wei),
+              swapType: index === BridgeChainOpration.length - 1 ? 2 : 1,
+              protocolType: 1,
+              path: [route.offer_token[0], route.ask_token[0]],
+              protocolAddresses: [route.router_addr],
+            };
+          }),
+        };
+        return { quoteLayerZeroFeeSwapDescriptionStruct };
+      }
+      case 2:
+        {
+          if (
+            resData.routes[0].operations_seperated[0].chain ===
+            NetworkName.BRIDGE
+          ) {
+            SrcChainOpration = null;
+            const NewBridgeChainOpration = new RouteStargateBridgeOperations({
+              ...resData.routes[0].operations_seperated[1].operations[0],
+            });
+            BridgeChainOpration =
+              resData.routes[0].operations_seperated[0].operations;
+            DstChainOpration =
+              resData.routes[0].operations_seperated[1].operations;
+            // quoteLayerZero Object
+            quoteLayerZeroFeeSwapDescriptionStruct = {
+              srcToken: BridgeChainOpration[0].offer_token[0],
+              dstToken:
+                BridgeChainOpration[BridgeChainOpration.length - 1]
+                  .ask_token[0],
+              srcDesiredAmount: BigNumber.from(
+                BridgeChainOpration[0].amount_in_wei
+              ),
+              // dstDesiredMinAmount: BigNumber.from(
+              //   BridgeChainOpration[BridgeChainOpration.length - 1]
+              //     .amount_out_wei
+              // ),
+              dstDesiredMinAmount:BigNumber.from(
+                BridgeChainOpration[0].amount_in_wei
+              ),
+              to: account,
+              dstChainId: NewBridgeChainOpration.ask_bridge_data.chain_id,
+              dstPoolId: NewBridgeChainOpration.ask_bridge_data.pool_id,
+              srcPoolId: NewBridgeChainOpration.offer_bridge_data.pool_id,
+              gasForSwap: BigNumber.from("1005617"),
+              dstContractAddress: dstSetContractWithChainId(toChain),
+              isRegularTransfer: false,
+              routes: BridgeChainOpration.map((route, index) => {
+                return {
+                  srcToken: route.offer_token[0],
+                  dstToken: route.ask_token[0],
+                  srcAmount: BigNumber.from(route.amount_in_wei),
+                  dstMinAmount: BigNumber.from(route.amount_out_wei),
+                  swapType: index === BridgeChainOpration.length - 1 ? 2 : 1,
+                  protocolType: 1,
+                  path: [route.offer_token[0], route.ask_token[0]],
+                  protocolAddresses: [route.router_addr],
+                };
+              }),
+            };
+            // playload Object
+            payloadEncodeSwapDescription = {
+              srcToken: DstChainOpration[0].offer_token[0],
+              dstToken:
+                DstChainOpration[DstChainOpration.length - 1].ask_token[0],
+              srcDesiredAmount: BigNumber.from(
+                DstChainOpration[0].amount_in_wei
+              ),
+              dstDesiredMinAmount: BigNumber.from(
+                DstChainOpration[DstChainOpration.length - 1].amount_out_wei
+              ),
+              to: account,
+              dstChainId: 0,
+              dstPoolId: 0,
+              srcPoolId: 0,
+              gasForSwap: BigNumber.from("1005617"),
+              dstContractAddress: account,
+              isRegularTransfer: false,
+              routes: DstChainOpration.map((route) => {
+                return {
+                  srcToken: route.offer_token[0],
+                  dstToken: route.ask_token[0],
+                  srcAmount: BigNumber.from(route.amount_in_wei),
+                  dstMinAmount: BigNumber.from(route.amount_out_wei),
+                  swapType: 1,
+                  protocolType: 1,
+                  path: [route.offer_token[0], route.ask_token[0]],
+                  protocolAddresses: [route.router_addr],
+                };
+              }),
+            };
+            return {
+              payloadEncodeSwapDescription,
+              quoteLayerZeroFeeSwapDescriptionStruct,
+            };
+          }
+          if (
+            resData.routes[0].operations_seperated[1].chain ===
+            NetworkName.BRIDGE
+          ) {
+            SrcChainOpration =
+              resData.routes[0].operations_seperated[0].operations;
+            const NewBridgeChainOpration = new RouteStargateBridgeOperations({
+              ...resData.routes[0].operations_seperated[1].operations[0],
+            });
+            BridgeChainOpration =
+              resData.routes[0].operations_seperated[1].operations;
+            MixeadSrcAndBridge = SrcChainOpration.concat(BridgeChainOpration);
+            DstChainOpration = null;
+            // quoteLayerZero Object
+            quoteLayerZeroFeeSwapDescriptionStruct = {
+              srcToken: MixeadSrcAndBridge[0].offer_token[0],
+              dstToken:
+                MixeadSrcAndBridge[MixeadSrcAndBridge.length - 1].ask_token[0],
+              srcDesiredAmount: BigNumber.from(
+                MixeadSrcAndBridge[0].amount_in_wei
+              ),
+              // dstDesiredMinAmount: BigNumber.from(
+              //   MixeadSrcAndBridge[MixeadSrcAndBridge.length - 1].amount_out_wei
+              // ),
+              dstDesiredMinAmount:BigNumber.from(
+                BridgeChainOpration[0].amount_in_wei
+              ),
+              to: account,
+              dstChainId: NewBridgeChainOpration.ask_bridge_data.chain_id,
+              dstPoolId: NewBridgeChainOpration.ask_bridge_data.pool_id,
+              srcPoolId: NewBridgeChainOpration.offer_bridge_data.pool_id,
+              gasForSwap: BigNumber.from("1005617"),
+              dstContractAddress: account,
+              isRegularTransfer: false,
+              routes: MixeadSrcAndBridge.map((route, index) => {
+                return {
+                  srcToken: route.offer_token[0],
+                  dstToken: route.ask_token[0],
+                  srcAmount: BigNumber.from(route.amount_in_wei),
+                  dstMinAmount: BigNumber.from(route.amount_out_wei),
+                  swapType: index === MixeadSrcAndBridge.length - 1 ? 2 : 1,
+                  protocolType: 1,
+                  path: [route.offer_token[0], route.ask_token[0]],
+                  protocolAddresses: [route.router_addr],
+                };
+              }),
+            };
+            return { quoteLayerZeroFeeSwapDescriptionStruct };
+          }
+        }
+        break;
+      case 3: {
+        SrcChainOpration = resData.routes[0].operations_seperated[0].operations;
+        const NewBridgeChainOpration = new RouteStargateBridgeOperations({
+          ...resData.routes[0].operations_seperated[1].operations[0],
+        });
+        BridgeChainOpration =
+          resData.routes[0].operations_seperated[1].operations;
+        MixeadSrcAndBridge = SrcChainOpration.concat(BridgeChainOpration);
+        DstChainOpration = resData.routes[0].operations_seperated[2].operations;
+        // quoteLayerZero Object
+        quoteLayerZeroFeeSwapDescriptionStruct = {
+          srcToken: MixeadSrcAndBridge[0].offer_token[0],
+          dstToken:
+            MixeadSrcAndBridge[MixeadSrcAndBridge.length - 1].ask_token[0],
+          srcDesiredAmount: BigNumber.from(MixeadSrcAndBridge[0].amount_in_wei),
+          dstDesiredMinAmount: BigNumber.from(
+            0
+          ),
+          to: account,
+          dstChainId: NewBridgeChainOpration.ask_bridge_data.chain_id,
+          dstPoolId: NewBridgeChainOpration.ask_bridge_data.pool_id,
+          srcPoolId: NewBridgeChainOpration.offer_bridge_data.pool_id,
+          gasForSwap: BigNumber.from("600000"),
+          dstContractAddress: dstSetContractWithChainId(toChain),
+          isRegularTransfer: false,
+          routes: MixeadSrcAndBridge.map((route, index) => {
+            return {
+              srcToken: route.offer_token[0],
+              dstToken: route.ask_token[0],
+              srcAmount: BigNumber.from(route.amount_in_wei),
+              dstMinAmount: BigNumber.from(route.amount_out_wei),
+              swapType: index === MixeadSrcAndBridge.length - 1 ? 2 : 1,
+              protocolType: 1,
+              path: [route.offer_token[0], route.ask_token[0]],
+              protocolAddresses: [route.router_addr],
+            };
+          }),
+        };
+        // playload Object
+        payloadEncodeSwapDescription = {
+          srcToken: DstChainOpration[0].offer_token[0],
+          dstToken: DstChainOpration[DstChainOpration.length - 1].ask_token[0],
+          srcDesiredAmount: BigNumber.from(DstChainOpration[0].amount_in_wei),
+          dstDesiredMinAmount: BigNumber.from(
+            DstChainOpration[DstChainOpration.length - 1].amount_out_wei
+          ),
+          to: account,
+          dstChainId: 0,
+          dstPoolId: 0,
+          srcPoolId: 0,
+          gasForSwap: BigNumber.from("1005617"),
+          dstContractAddress: setContractWithChainId(
+            resData.routes[0].operations_seperated[2].chain_id
+          ),
+          isRegularTransfer: false,
+          routes: DstChainOpration.map((route) => {
+            return {
+              srcToken: route.offer_token[0],
+              dstToken: route.ask_token[0],
+              srcAmount: BigNumber.from(route.amount_in_wei),
+              dstMinAmount: BigNumber.from(route.amount_out_wei),
+              swapType: 1,
+              protocolType: 1,
+              path: [route.offer_token[0], route.ask_token[0]],
+              protocolAddresses: [route.router_addr],
+            };
+          }),
+        };
+        return {
+          payloadEncodeSwapDescription,
+          quoteLayerZeroFeeSwapDescriptionStruct,
+        };
+      }
+      default:
+        console.log("error in creating smart contract struct");
+    }
+  };
+
   const convertResponseDataToSwapDescriptionStruct = (
     resData: RouteResponseDto
   ) => {
     let swapDescription: SwapDescriptionStruct;
-    let swapDescription2: SwapDescriptionStruct;
     swapDescription = {
       ...swapDescription,
       dstChainId: 0,
@@ -173,7 +522,8 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
                     srcAmount: test(amount_in, +offer_token[4]),
                     dstMinAmount: test(amount_out, +offer_token[4]),
                     path: [offer_token[0], ask_token[0]],
-                    router: router_addr,
+                    protocolAddresses: [router_addr],
+                    protocolType: 1,
                     swapType: SwapTypes.Regular,
                   };
                   swapDescription = {
@@ -213,6 +563,7 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
                     amount_out,
                     contract_addr,
                     router_addr,
+                    amount_out_wei,
                   } = routeStargateBridgeOperations;
                   let route0: RouteDescriptionStruct;
 
@@ -220,9 +571,10 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
                     srcToken: offer_token[0],
                     dstToken: ask_token[0],
                     srcAmount: test(amount_in, +offer_token[4]),
-                    dstMinAmount: test(amount_out, +offer_token[4]),
+                    dstMinAmount: BigNumber.from(amount_out_wei),
                     path: [offer_token[0], ask_token[0]],
-                    router: router_addr,
+                    protocolAddresses: [router_addr],
+                    protocolType: 1,
                     swapType: SwapTypes.StargateBridge,
                   };
 
@@ -260,14 +612,13 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
     );
     swapDescription = { ...swapDescription, isRegularTransfer: true };
     swapDescription?.routes.forEach((s, index, arr) => {
-      if (s.swapType === SwapTypes.StargateBridge) {
-        if (arr[index + 1] !== undefined) {
-          swapDescription = { ...swapDescription, isRegularTransfer: false };
-        }
-      }
-
       if (index === 0) {
         const operations = resData.routes[0].operations;
+
+        // parseUnits(
+        //   resData.return_amount.toString(),
+        //   +operations[operations.length - 1].ask_token[4]
+        // )
         swapDescription = {
           ...swapDescription,
           srcToken: arr[0].srcToken,
@@ -277,18 +628,27 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
             +operations[0].offer_token[4]
           ),
           dstDesiredMinAmount: parseUnits(
-            resData.return_amount.toString(),
+            resData.return_amount_wei,
             +operations[operations.length - 1].ask_token[4]
           ),
         };
       }
+
+      if (s.swapType === SwapTypes.StargateBridge) {
+        if (arr[index + 1] !== undefined) {
+          swapDescription = { ...swapDescription, isRegularTransfer: false };
+        }
+      }
     });
-    
-    
-    console.log({ swapDescription });
 
     return swapDescription;
   };
+  useEffect(() => {
+    console.log({ oneChainSwapDesc });
+    console.log({ quoteLayerZeroFeeSwapDesc });
+    console.log({ payloadEncodeSwapDesc });
+  }, [oneChainSwapDesc, quoteLayerZeroFeeSwapDesc, payloadEncodeSwapDesc]);
+
   return (
     <>
       <StyledInput

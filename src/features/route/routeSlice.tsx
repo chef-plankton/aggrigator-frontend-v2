@@ -27,20 +27,38 @@ interface RouteState {
   counter: number;
   responseData: RouteResponseDto;
   swapDescription: string;
+  oneChainSwapDesc: string;
+  quoteLayerZeroFeeSwapDesc: string;
+  payloadEncodeSwapDesc: string;
   responseString: string;
   // slippageTolerance: number;
 }
 const initialState: RouteState = {
   isLoading: false,
   fromChain: 56,
-  fromToken: { name: "BNB", adress: "0x0000000000000000000000000000000000000000", image: "", symbol: "BNB", decimals: 18 },
+  fromToken: {
+    name: "BNB",
+    adress: "0x0000000000000000000000000000000000000000",
+    image: "",
+    symbol: "BNB",
+    decimals: 18,
+  },
   toChain: 250,
-  toToken: { name: "USD Coin", adress: "0x04068DA6C83AFCFA0e13ba15A6696662335D5B75", image: "", symbol: "USDC", decimals: 6 },
+  toToken: {
+    name: "USD Coin",
+    adress: "0x04068DA6C83AFCFA0e13ba15A6696662335D5B75",
+    image: "",
+    symbol: "USDC",
+    decimals: 6,
+  },
   amount: "",
   recieve: "",
   showRoute: false,
   counter: 0,
   swapDescription: null,
+  oneChainSwapDesc: null,
+  quoteLayerZeroFeeSwapDesc: null,
+  payloadEncodeSwapDesc: null,
   responseData: null,
   responseString: "",
   // slippageTolerance: 0.01,
@@ -85,6 +103,15 @@ export const chainsSlice = createSlice({
     changeSwapDescription: (state, action) => {
       state.swapDescription = action.payload;
     },
+    changeOneChainSwapDesc: (state, action) => {
+      state.oneChainSwapDesc = action.payload;
+    },
+    changeQuoteLayerZeroFeeSwapDesc: (state, action) => {
+      state.quoteLayerZeroFeeSwapDesc = action.payload;
+    },
+    changePayloadEncodeSwapDesc: (state, action) => {
+      state.payloadEncodeSwapDesc = action.payload;
+    },
     clearRouteAfterSwap: () => initialState,
     // changeSlippageTolerance: (state, action) => {
     //   state.slippageTolerance = action.payload;
@@ -106,6 +133,9 @@ export const {
   changeCounter,
   changeResponseString,
   changeSwapDescription,
+  changeOneChainSwapDesc,
+  changeQuoteLayerZeroFeeSwapDesc,
+  changePayloadEncodeSwapDesc,
   clearRouteAfterSwap,
   // changeSlippageTolerance,
 } = chainsSlice.actions;

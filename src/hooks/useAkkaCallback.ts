@@ -86,8 +86,6 @@ export function useAkkaCalcLayerZeroFeeCallback(): {
     [BigNumber, BigNumber]
   >();
   let parsedResponseString = null;
-  const fromChain = useSelector(({ route }: RootState) => route.fromChain);
-  const toChain = useSelector(({ route }: RootState) => route.toChain);
   const responseString = useSelector(
     ({ route }: RootState) => route.responseString
   );
@@ -111,16 +109,13 @@ export function useAkkaCalcLayerZeroFeeCallback(): {
         payload,
         gasForCall
       ) => {
-        const fee = await callWithGasPrice(
-          akkaContract,
-          "quoteLayerZeroFee",
-          [router, dstChainId, to, payload, gasForCall] as Parameters<
-            typeof akkaContract.quoteLayerZeroFee
-          >[],
-          {
-            // gasLimit: 21000000,
-          }
-        );
+        const fee = await callWithGasPrice(akkaContract, "quoteLayerZeroFee", [
+          router,
+          dstChainId,
+          to,
+          payload,
+          gasForCall,
+        ] as Parameters<typeof akkaContract.quoteLayerZeroFee>[]);
         return fee as [BigNumber, BigNumber];
       },
       inputError: sufficientBalance ? undefined : "Insufficient Token balance",
@@ -176,7 +171,7 @@ export function useAkkaAggrigatorSwapCallback(): {
         );
         addTransaction(tx, {
           summary: `swap ${inputAmount}`,
-          type: "swap",
+          type: fromChain === toChain ? "swap" : "multichain-swap",
         });
 
         return tx as TransactionResponse;
