@@ -20,6 +20,7 @@ import NoiseIcon from "../../assets/img/Noise.png";
 import { Weth } from "../../config/abi/types";
 import { SwapDescriptionStruct } from "../../config/abi/types/IAkkaAggrigator";
 import {
+  ChainId,
   OneChainSwapDescriptionStruct,
   SwapTypes,
 } from "../../config/constants/types";
@@ -157,15 +158,28 @@ function Main() {
   useEffect(() => {
     if (walletChainId) {
       dispatch(changeChain(walletChainId));
-      dispatch(
-        changeFromToken({
-          name: "",
-          adress: "",
-          image: "",
-          symbol: "",
-          decimals: 0,
-        })
-      );
+      if (walletChainId === ChainId.BSC) {
+        dispatch(
+          changeFromToken({
+            name: "Wrapped BNB",
+            adress: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+            image: "",
+            symbol: "WBNB",
+            decimals: 18,
+          })
+        );
+      }
+      if (walletChainId === ChainId.FTM) {
+        dispatch(
+          changeFromToken({
+            name: "Wrapped Fantom",
+            adress: "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83",
+            image: "",
+            symbol: "WFTM",
+            decimals: 6,
+          })
+        );
+      }
     }
   }, [walletChainId]);
 
@@ -426,8 +440,7 @@ function Main() {
       );
       console.log(quote[0].toString());
 
-      aggrigatorSwap(fromChainData, quote[0], payload)
-      .catch((err) => {
+      aggrigatorSwap(fromChainData, quote[0], payload).catch((err) => {
         if (err?.code === 4001) {
           dispatch(
             changeSwapButtonState({
@@ -437,7 +450,7 @@ function Main() {
             })
           );
         }
-      });;
+      });
     }
   }
   /** The children of this component will slide down on mount and will slide up on unmount */
