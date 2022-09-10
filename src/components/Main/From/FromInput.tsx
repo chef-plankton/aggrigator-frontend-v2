@@ -5,6 +5,7 @@ import { isNumber } from "lodash";
 import { FC, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import Swal from "sweetalert2";
 import { RootState } from "../../../app/store";
 import {
   RouteDescriptionStruct,
@@ -117,6 +118,19 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
               }&amount=${amount}`
             )
             .then((data) => {
+              if (data.data[0] === -1) {
+                Swal.fire({
+                  icon: "error",
+                  title: "No route found",
+                  background: "rgb(23, 22, 41)",
+                  position: "center",
+                  showCancelButton: false,
+                  showConfirmButton: false,
+                  width: "400px",
+                  timer: 2000,
+                });
+                return;
+              }
               dispatch(changeResponseString(JSON.stringify(data)));
               dispatch(changeResponseData(data.data));
               dispatch(changeShowRoute(true));
@@ -289,7 +303,7 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
               //   BridgeChainOpration[BridgeChainOpration.length - 1]
               //     .amount_out_wei
               // ),
-              dstDesiredMinAmount:BigNumber.from(
+              dstDesiredMinAmount: BigNumber.from(
                 BridgeChainOpration[0].amount_in_wei
               ),
               to: account,
@@ -372,7 +386,7 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
               // dstDesiredMinAmount: BigNumber.from(
               //   MixeadSrcAndBridge[MixeadSrcAndBridge.length - 1].amount_out_wei
               // ),
-              dstDesiredMinAmount:BigNumber.from(
+              dstDesiredMinAmount: BigNumber.from(
                 BridgeChainOpration[0].amount_in_wei
               ),
               to: account,
@@ -414,9 +428,7 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
           dstToken:
             MixeadSrcAndBridge[MixeadSrcAndBridge.length - 1].ask_token[0],
           srcDesiredAmount: BigNumber.from(MixeadSrcAndBridge[0].amount_in_wei),
-          dstDesiredMinAmount: BigNumber.from(
-            0
-          ),
+          dstDesiredMinAmount: BigNumber.from(0),
           to: account,
           dstChainId: NewBridgeChainOpration.ask_bridge_data.chain_id,
           dstPoolId: NewBridgeChainOpration.ask_bridge_data.pool_id,
