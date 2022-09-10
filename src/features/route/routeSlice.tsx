@@ -37,10 +37,10 @@ const initialState: RouteState = {
   isLoading: false,
   fromChain: 56,
   fromToken: {
-    name: "BNB",
-    adress: "0x0000000000000000000000000000000000000000",
+    name: "Wrapped BNB",
+    adress: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
     image: "",
-    symbol: "BNB",
+    symbol: "WBNB",
     decimals: 18,
   },
   toChain: 250,
