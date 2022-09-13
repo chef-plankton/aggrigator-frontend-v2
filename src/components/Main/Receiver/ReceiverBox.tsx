@@ -16,8 +16,9 @@ const StyledReceiverBox = styled.div<{
   border: 1px solid rgba(255, 255, 255, 0.18);
   width: 100%;
   min-height: 100px;
-  margin-bottom: 50px;
-  padding: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

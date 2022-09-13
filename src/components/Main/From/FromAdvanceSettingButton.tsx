@@ -1,5 +1,5 @@
 import React from "react";
-import settingImage from "../../../assets/img/settings.png";
+import settingImage from "../../../assets/img/settingicon.png";
 import ReactTooltip from "react-tooltip";
 import { useDispatch } from "react-redux";
 import { FromAdvanceSettingStatus } from "../../../features/modals/modalsSlice";
@@ -9,7 +9,7 @@ function FromAdvanceSettingButton() {
   return (
     <>
       <div
-        className="hover:bg-[#EEEEEE] p-2 rounded-md cursor-pointer"
+        className="hover:bg-[#1B1A2E] p-2 rounded-md cursor-pointer"
         onClick={() => dispatch(FromAdvanceSettingStatus(true))}
       >
         <div>

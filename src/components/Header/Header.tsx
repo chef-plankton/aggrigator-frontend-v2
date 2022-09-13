@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from "react";
-import logoPic from "../../assets/mainlogo.png";
-import lightlogoPic from "../../assets/lightlogo.png";
-import { Link } from "react-router-dom";
-import ArrowDownFont from "../../assets/arrow-down-sign-to-navigate.png";
-import ChainsDropdown from "./ChainsDropdown";
-import Logo from "./Logo/Logo";
-import ChainsButton from "./ChainsButton";
-import ConnectWalletButton from "./ConnectWalletButton";
-import Menu from "./Menu";
-import ChangeThemeButton from "./ChangeThemeButton";
-import { RootState } from "../../app/store";
+import { useState } from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { RootState } from "../../app/store";
+import ArrowDownFont from "../../assets/arrow-down-sign-to-navigate.png";
+import lightlogoPic from "../../assets/lightlogo2.png";
+import logoPic from "../../assets/mainlogo.png";
+import ChainsButton from "./ChainsButton";
+import ChainsDropdown from "./ChainsDropdown";
+import ConnectWalletButton from "./ConnectWalletButton";
+import Logo from "./Logo/Logo";
+
 function Header() {
   const [toggle, setToggle] = useState(true);
   const toggleMenu = () => {
@@ -19,20 +18,22 @@ function Header() {
   };
   const [dropdown, setDropdown] = useState(false);
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
+  const [hidden, setHidden] = useState<boolean>(false);
+
   return (
     <nav
       className={`${
-        themeMode === "light" ? "bg-white" : "bg-[#232931]"
-      } bg-white shadow-lg z-10`}
+        themeMode === "light" ? "bg-[#22223d]" : "bg-[#22223d]"
+      } shadow-lg z-10 pt-[6px] md:px-[50px] px-[15px] md:h-[10vh]`}
     >
-      <div className="max-w-full mx-auto px-4">
-        <div className="flex justify-between">
-          <div className="flex space-x-7">
+      <div className='max-w-full mx-auto border-b-[1px] border-b-[#FFFFFF] border-opacity-[0.1]'>
+        <div className='flex justify-between'>
+          <div className='flex space-x-7'>
             <div>
-              <Link to="/" className="flex items-center py-4 px-2">
+              <Link to='/' className='flex items-center py-4 px-2'>
                 {/* Main Menu Logo */}
                 <Logo
-                  logoPic={themeMode === "light" ? logoPic : lightlogoPic}
+                  logoPic={themeMode === "light" ? lightlogoPic : lightlogoPic}
                 />
               </Link>
             </div>
@@ -40,7 +41,11 @@ function Header() {
             {/* <Menu /> */}
           </div>
           {/* Secondary Navbar items */}
-          <div className="hidden md:flex items-center space-x-3 ">
+          <div
+            className={`hidden md:${
+              hidden ? "hidden" : "flex"
+            } items-center space-x-3 `}
+          >
             {/* Chains Button Dropdown */}
             <ChainsButton
               ArrowDownFont={ArrowDownFont}
@@ -49,26 +54,37 @@ function Header() {
               setToggle={setToggle}
             />
             {/* Check showing dropdown */}
-            {dropdown ? <ChainsDropdown setDropdown={setDropdown} /> : ""}
+            {dropdown ? (
+              <ChainsDropdown setDropdown={setDropdown} setHidden={setHidden} />
+            ) : (
+              ""
+            )}
 
             {/* Connect wallet button */}
             <ConnectWalletButton />
 
             {/* change theme button */}
-            <ChangeThemeButton />
+            {/* <ChangeThemeButton /> */}
           </div>
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
-            <div className="md:hidden flex items-center mr-5">
+          <div className='md:hidden flex items-center'>
+            <div className='md:hidden flex items-center md:mr-5'>
               <ChainsButton
                 ArrowDownFont={ArrowDownFont}
                 setDropdown={setDropdown}
                 dropdown={dropdown}
                 setToggle={setToggle}
               />
-              {dropdown ? <ChainsDropdown setDropdown={setDropdown} /> : ""}
+              {dropdown ? (
+                <ChainsDropdown
+                  setDropdown={setDropdown}
+                  setHidden={setHidden}
+                />
+              ) : (
+                ""
+              )}
             </div>
-            <button
+            {/* <button
               onClick={toggleMenu}
               className="outline-none mobile-menu-button"
             >
@@ -84,12 +100,12 @@ function Header() {
               >
                 <path d="M4 6h16M4 12h16M4 18h16"></path>
               </svg>
-            </button>
+            </button> */}
           </div>
         </div>
       </div>
       {/* mobile menu */}
-      <div className={`${toggle ? "hidden" : ""} mobile-menu`}>
+      {/* <div className={`${toggle ? "hidden" : ""} mobile-menu`}>
         <ul className="">
           <li className="active">
             <a
@@ -125,7 +141,7 @@ function Header() {
           </li>
           <li></li>
         </ul>
-      </div>
+      </div> */}
     </nav>
   );
 }

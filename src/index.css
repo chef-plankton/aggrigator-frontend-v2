@@ -2,7 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500&display=swap");
-
+@import url("https://fonts.googleapis.com/css2?family=Outfit&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 html {
   box-sizing: border-box;
   font-family: "Ubuntu", sans-serif;
@@ -29,7 +34,7 @@ button {
 }
 
 .scrollbar::-webkit-scrollbar {
-  width: 8px;
+  width: 3px;
   background-color: transparent;
 }
 
@@ -49,7 +54,6 @@ button {
   user-select: none;
   z-index: 2;
 }
-
 
 .index-module__menus .index-module__menu-arrow {
   -webkit-box-pack: center;

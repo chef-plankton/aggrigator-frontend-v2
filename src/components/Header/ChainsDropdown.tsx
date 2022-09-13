@@ -10,41 +10,49 @@ import { getAddChainParameters } from "../../chains";
 import bnblightIcon from "../../assets/img/chains/binance-light.svg";
 import polygonIcon from "../../assets/img/chains/polygon.svg";
 import fantomIcon from "../../assets/img/chains/fantom.svg";
+import useAuth from "../../hooks/useAuth";
+import useWallet from "../Wallets/useWallet";
+import { useState } from "react";
 interface Props {
   setDropdown: (value: boolean) => void;
+  setHidden: (value: boolean) => void;
 }
-function ChainsDropdown({ setDropdown }: Props) {
+function ChainsDropdown({ setDropdown, setHidden }: Props) {
   const chainId = useSelector(({ chains }: RootState) => chains.value);
-  const { useIsActive: metamaskUseIsActive } = metamaskhooks;
-  const metamaskIsActive = metamaskUseIsActive();
-  const { useIsActive: walletconnectUseIsActive } = walletconnecthooks;
-  const walletconnectIsActive = walletconnectUseIsActive();
+
+  const wallet = useSelector(({ account }: RootState) => account.wallet);
+
+  const web3Hooks = useWallet(wallet);
+  const {
+    useChainId,
+    useAccount,
+    useIsActivating,
+    useIsActive,
+    useProvider,
+    useENSNames,
+  } = web3Hooks;
+  const isActive = useIsActive();
+
   const dispatch = useDispatch();
-  const changeChainId = (chainid: number) => {
-    if (metamaskIsActive) {
-      dispatch(changeChain(chainid));
-      metaMask.activate(getAddChainParameters(chainid));
-    }
-    if (walletconnectIsActive) {
-      dispatch(changeChain(chainid));
-      walletConnect.activate(chainid);
-      console.log(walletConnect.activate(chainid));
-    } else {
-      dispatch(changeChain(chainid));
-    }
+  const { login } = useAuth(web3Hooks);
+
+  const changeChainId = async (chainid: number) => {
+    setHidden(true);
+    await login(getAddChainParameters(chainid), chainid, wallet);
+    setHidden(false);
   };
   return (
-    <div className="z-10 bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 chainslistdrowdown">
-      <ul className="py-1 text-sm text-gray-700 dark:text-gray-200">
+    <div className='z-10 bg-[#1B1A2E] divide-y divide-gray-100 rounded shadow w-44 dark:bg-[#22223D] chainslistdrowdown'>
+      <ul className='py-1 text-sm text-[white]'>
         <li>
           <div
             onClick={() => {
               changeChainId(56);
               setDropdown(false);
             }}
-            className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+            className='flex items-center px-4 py-2 hover:bg-[#22223D] dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer'
           >
-            <img src={bnblightIcon} alt="" className="w-[24px] mr-2" />
+            <img src={bnblightIcon} alt='' className='w-[24px] mr-2' />
             BNB Chain
           </div>
         </li>
@@ -54,9 +62,9 @@ function ChainsDropdown({ setDropdown }: Props) {
               changeChainId(250);
               setDropdown(false);
             }}
-            className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+            className='flex items-center px-4 py-2 hover:bg-[#22223D] dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer'
           >
-            <img src={fantomIcon} alt="" className="w-[24px] mr-2" />
+            <img src={fantomIcon} alt='' className='w-[24px] mr-2' />
             Fantom
           </div>
         </li>
@@ -67,9 +75,9 @@ function ChainsDropdown({ setDropdown }: Props) {
               changeChainId(97);
               setDropdown(false);
             }}
-            className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+            className='flex items-center px-4 py-2 hover:bg-[#22223D] dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer'
           >
-            <img src={bnblightIcon} alt="" className="w-[24px] mr-2" />
+            <img src={bnblightIcon} alt='' className='w-[24px] mr-2' />
             BSC Testnet
           </div>
         </li>

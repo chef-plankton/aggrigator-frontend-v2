@@ -9,14 +9,17 @@ function useTokenAllowance(
   owner?: string,
   spender?: string
 ): BigNumber | undefined {
-  const contract = useERC20(tokenAdress);
-
+  const contract = useTokenContract(tokenAdress);
   const [allowance, setAllowance] = useState<BigNumber>(undefined);
+
   useEffect(() => {
-    contract.allowance(owner, spender).then((data) => {
-      setAllowance(data);
-    });
-  }, [allowance]);
+    if (owner && tokenAdress && spender) {
+      
+      contract.allowance(owner, spender).then((data) => {
+        setAllowance(data);
+      });
+    }
+  }, [owner, tokenAdress, spender]);
 
   return useMemo(
     () => (tokenAdress && allowance ? allowance : undefined),

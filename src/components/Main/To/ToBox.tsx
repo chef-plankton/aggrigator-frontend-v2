@@ -9,17 +9,12 @@ import { RootState } from "../../../app/store";
 import bnblightIcon from "../../../assets/img/chains/binance-light.svg";
 import fantomIcon from "../../../assets/img/chains/fantom.svg";
 const StyledToBox = styled.div<{ color: string; backgroundColor: string }>`
-  background: ${({ backgroundColor }) =>
-    backgroundColor ? backgroundColor : "rgba(255, 255, 255, 0.25)"};
-  box-shadow: 0 8px 32px 0 #23293176;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
   width: 100%;
-  min-height: 200px;
-  margin-bottom: 35px;
-  padding: 20px;
+  margin-bottom: 24px;
+  // padding: 10px 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -30,19 +25,19 @@ function ToBox() {
   const chainId = useSelector(({ route }: RootState) => route.toChain);
   return (
     <StyledToBox
-      color={themeMode === "light" ? "black" : "white"}
+      color={themeMode === "light" ? "white" : "white"}
       backgroundColor={
         themeMode === "light"
-          ? "rgba(255, 255, 255, 0.25)"
-          : "rgba(255, 255, 255, 0.25)"
+          ? "transparent"
+          : "transparent"
       }
     >
-      <div className='px-3 py-1 w-[100%] flex justify-between'>
-        <div>To</div>
-        <ToBalance />
+      <div className='pb-[10px] py-1 w-[100%] flex justify-between'>
+        <div className="font-clash font-[400] text-[16px]">To</div>
+        {/* <ToBalance /> */}
       </div>
-      <div className='px-3 py-5 flex justify-between flex-col md:flex-row'>
-        <div className='md:w-[50%] w-[100%} flex justify-between'>
+      <div className='flex justify-between flex-col md:flex-row p-[5px] rounded-[5px] bg-[#ffffff]/[0.07]'>
+        <div className='md:w-[65%] w-[100%] flex justify-between'>
           <ToChangeNetworkButton
             imageSrc={`${chainId === 56 ? bnblightIcon : ""}${
               chainId === 250 ? fantomIcon : ""
@@ -51,7 +46,6 @@ function ToBox() {
             ${chainId === 250 ? "Fantom" : ""}${
               chainId === 97 ? "BNB Chain" : ""
             }`}
-            chain={chainId === 97 ? "testnet" : "mainnet"}
           />
           <ToChangeChainButton
             imageSrc={
@@ -61,7 +55,7 @@ function ToBox() {
             chain={"mainnet"}
           />
         </div>
-        <div className='md:w-[50%] w-[100%} mt-[50px] md:mt-0 flex justify-center'>
+        <div className='md:w-[35%] w-[100%] mt-[5px] md:mt-0 flex justify-end'>
           <ToInput />
         </div>
       </div>

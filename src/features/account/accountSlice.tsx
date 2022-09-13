@@ -1,12 +1,23 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-export type WalletName = "metamask" | "walletconnect";
+import { BigNumber } from "ethers";
+export type WalletName = "metamask" | "walletconnect" | "";
+export enum ApprovalState {
+  UNKNOWN,
+  NOT_APPROVED,
+  PENDING,
+  APPROVED,
+}
 interface AccountState {
   wallet: WalletName;
   address: string;
+  approveState: ApprovalState;
+  approvevalue: string;
 }
 const initialState: AccountState = {
-  wallet: "metamask",
+  wallet: "",
   address: "",
+  approveState: ApprovalState.UNKNOWN,
+  approvevalue: null,
 };
 
 export const accountSlice = createSlice({
@@ -19,10 +30,17 @@ export const accountSlice = createSlice({
     changeAddress: (state, action) => {
       state.address = action.payload;
     },
+    changeApprovevalue: (state, action) => {
+      state.approvevalue = action.payload;
+    },
+    changeApprovalState: (state, action) => {
+      state.approveState = action.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { changeWallet, changeAddress } = accountSlice.actions;
+export const { changeWallet, changeAddress, changeApprovevalue,changeApprovalState } =
+  accountSlice.actions;
 
 export default accountSlice.reducer;

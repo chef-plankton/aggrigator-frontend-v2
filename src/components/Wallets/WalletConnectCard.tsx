@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState, MouseEvent } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { hooks, walletConnect } from "../../connectors/walletConnect";
@@ -6,7 +6,9 @@ import { CHAINS, getAddChainParameters, URLS } from "../../chains";
 import walletConnectIcon from "../../assets/img/wallets/walletConnect.svg";
 import { useDispatch } from "react-redux";
 import { changeWallet } from "../../features/account/accountSlice";
-function WalletConnectCard() {
+const WalletConnectCard: FC<{
+  handleClick: (e: MouseEvent<HTMLElement>) => void;
+}> = ({ handleClick }) => {
   const {
     useChainId,
     useAccounts,
@@ -20,32 +22,17 @@ function WalletConnectCard() {
   const isActive = useIsActive();
   const [error, setError] = useState(undefined);
 
-
-  const dispatch = useDispatch();
   return (
     <div
-      className="flex items-center justify-between border-[1px] rounded-xl border-[#D3D3D3] px-[12px] py-[15px] bg-[#edeef2] mb-2 cursor-pointer"
-      onClick={
-        isActive
-          ? undefined
-          : isActivating
-          ? undefined
-          : () =>
-              walletConnect
-                .activate(chainId)
-                .then(() => {
-                  setError(undefined);
-                  dispatch(changeWallet("walletconnect"));
-                })
-                .catch(setError)
-      }
+      className='w-[49%] flex flex-col items-center justify-between px-[12px] py-[15px] border-[5px] border-[#22223D] bg-[#22223D] mb-2 cursor-pointer hover:border-[5px] hover:border-[#814AFB]'
+      onClick={handleClick}
     >
-      <h6 className="font-medium text-[16px]">WalletConnect</h6>
       <div>
-        <img src={walletConnectIcon} alt="" className="w-[32px]" />
+        <img src={walletConnectIcon} alt='' className='w-[32px] mb-2' />
       </div>
+      <h6 className='font-medium text-[16px] text-white'>WalletConnect</h6>
     </div>
   );
-}
+};
 
 export default WalletConnectCard;

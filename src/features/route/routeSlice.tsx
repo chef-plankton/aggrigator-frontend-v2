@@ -1,15 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { RouteResponseDto } from "../../config/constants/types";
 interface FromtokenType {
   name: string;
   adress: string;
   image: string;
+  symbol: string;
+  decimals: number;
 }
 interface totokenType {
   name: string;
   adress: string;
   image: string;
+  symbol: string;
+  decimals: number;
 }
+
 interface RouteState {
+  isLoading: boolean;
   fromChain: number;
   fromToken: FromtokenType;
   toChain: number;
@@ -17,45 +24,52 @@ interface RouteState {
   amount: string;
   recieve: number | string;
   showRoute: boolean;
-  responseData: {
-    data: {
-      return_amount: number;
-      routes: [
-        {
-          operations: [];
-          operations_seperated: [];
-        }
-      ];
-    };
-  };
-
+  counter: number;
+  responseData: RouteResponseDto;
+  swapDescription: string;
+  oneChainSwapDesc: string;
+  quoteLayerZeroFeeSwapDesc: string;
+  payloadEncodeSwapDesc: string;
+  responseString: string;
   // slippageTolerance: number;
 }
 const initialState: RouteState = {
+  isLoading: false,
   fromChain: 56,
-  fromToken: { name: "", adress: "", image: "" },
-  toChain: 56,
-  toToken: { name: "", adress: "", image: "" },
+  fromToken: {
+    name: "Wrapped BNB",
+    adress: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+    image: "",
+    symbol: "WBNB",
+    decimals: 18,
+  },
+  toChain: 250,
+  toToken: {
+    name: "USD Coin",
+    adress: "0x04068DA6C83AFCFA0e13ba15A6696662335D5B75",
+    image: "",
+    symbol: "USDC",
+    decimals: 6,
+  },
   amount: "",
   recieve: "",
   showRoute: false,
-  responseData: {
-    data: {
-      return_amount: undefined,
-      routes: [
-        {
-          operations: undefined,
-          operations_seperated: undefined,
-        },
-      ],
-    },
-  },
+  counter: 0,
+  swapDescription: null,
+  oneChainSwapDesc: null,
+  quoteLayerZeroFeeSwapDesc: null,
+  payloadEncodeSwapDesc: null,
+  responseData: null,
+  responseString: "",
   // slippageTolerance: 0.01,
 };
 export const chainsSlice = createSlice({
   name: "route",
   initialState,
   reducers: {
+    changeIsLoading: (state, action) => {
+      state.isLoading = action.payload;
+    },
     changeFromChain: (state, action) => {
       state.fromChain = action.payload;
     },
@@ -80,6 +94,25 @@ export const chainsSlice = createSlice({
     changeResponseData: (state, action) => {
       state.responseData = action.payload;
     },
+    changeCounter: (state, action) => {
+      state.counter = action.payload;
+    },
+    changeResponseString: (state, action) => {
+      state.responseString = action.payload;
+    },
+    changeSwapDescription: (state, action) => {
+      state.swapDescription = action.payload;
+    },
+    changeOneChainSwapDesc: (state, action) => {
+      state.oneChainSwapDesc = action.payload;
+    },
+    changeQuoteLayerZeroFeeSwapDesc: (state, action) => {
+      state.quoteLayerZeroFeeSwapDesc = action.payload;
+    },
+    changePayloadEncodeSwapDesc: (state, action) => {
+      state.payloadEncodeSwapDesc = action.payload;
+    },
+    clearRouteAfterSwap: () => initialState,
     // changeSlippageTolerance: (state, action) => {
     //   state.slippageTolerance = action.payload;
     // },
@@ -88,6 +121,7 @@ export const chainsSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const {
+  changeIsLoading,
   changeFromChain,
   changeFromToken,
   changeToChain,
@@ -96,6 +130,13 @@ export const {
   changeRecieve,
   changeShowRoute,
   changeResponseData,
+  changeCounter,
+  changeResponseString,
+  changeSwapDescription,
+  changeOneChainSwapDesc,
+  changeQuoteLayerZeroFeeSwapDesc,
+  changePayloadEncodeSwapDesc,
+  clearRouteAfterSwap,
   // changeSlippageTolerance,
 } = chainsSlice.actions;
 

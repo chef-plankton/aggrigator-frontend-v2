@@ -3,35 +3,41 @@ import CloseIcon from "../../../assets/img/close.png";
 import { useDispatch } from "react-redux";
 import { changeModalStatus } from "../../../features/modals/modalsSlice";
 import SlippageImage from "../../../assets/img/slippage.svg";
-import TimeImage from "../../../assets/img/use-legacy-transactions.svg";
+
 function FromAdvanceSetting() {
   const dispatch = useDispatch();
   return (
     <>
-      <div className="flex justify-between items-center mb-5 pt-5 pr-5 pl-5">
+      <div className='flex justify-between items-center mb-5 pb-4 border-b-[2px] border-[#ffffff1a] bg-clip-padding'>
         <div>
-          <h4 className="font-medium">Trade Settings</h4>
+          <h4 className='font-medium text-white'>Trade Settings</h4>
         </div>
         <div>
           <img
             src={CloseIcon}
-            alt=""
+            alt=''
             onClick={() => dispatch(changeModalStatus(false))}
-            className="cursor-pointer w-[15px]"
+            className='cursor-pointer w-[15px]'
           />
         </div>
       </div>{" "}
-      <div className="flex items-center justify-between my-1 px-5 py-3">
-        <div className="flex justify-start items-center">
+      <div className='flex flex-col items-start justify-between my-1'>
+        <div className='flex justify-start items-center'>
+          <span className='text-white'>Slipping telorance per swap</span>
           <img
             src={SlippageImage}
-            alt="slippageimg"
-            className="w-[24px] h-[24px] rounded-[50%] mr-2"
+            alt='slippageimg'
+            className='w-[24px] h-[24px] rounded-[50%] ml-2'
           />
-          <span>Slippage tolerance</span>
         </div>
-        <div className="w-[30%]">
-          <input type="text" placeholder="0.01" className="w-[100%] p-2 border border-slate-300 rounded-md focus:outline-none" />
+        <div className="flex justify-between w-[100%] mt-[20px]">
+          <div className="bg-[#22223D] p-3 text-white hover:bg-[#814AFB] cursor-pointer">0.5%</div>
+          <div className="bg-[#22223D] p-3 text-white hover:bg-[#814AFB] cursor-pointer">1%</div>
+          <div className="bg-[#22223D] p-3 text-white hover:bg-[#814AFB] cursor-pointer">3%</div>
+          <div className="bg-[#22223D] p-3 text-white hover:bg-[#814AFB] cursor-pointer">5%</div>
+          <div className="bg-[#22223D] p-3 text-white hover:bg-[#814AFB] cursor-pointer">8%</div>
+          <div className="bg-[#22223D] p-3 text-white hover:bg-[#814AFB] cursor-pointer">12%</div>
+          <div className="bg-[#22223D] p-3 text-white hover:bg-[#814AFB] cursor-pointer">20%</div>
         </div>
       </div>
       {/* <div className="flex items-center justify-between my-1 px-5 py-3">

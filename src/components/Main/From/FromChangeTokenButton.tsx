@@ -4,63 +4,71 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { RootState } from "../../../app/store";
 import ArrowDownFont from "../../../assets/arrow-down-sign-to-navigate.png";
-import tokenImage from "../../../assets/img/token.png";
+import tokenImage from "../../../assets/img/creation.png";
 import { fromTokenlistStatus } from "../../../features/modals/modalsSlice";
 const StyledButton = styled.div<
   HTMLAttributes<HTMLElement> & { backgroundColor: string }
 >`
   width: 50%;
-  height: 100%;
+  min-height: 48px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px 5px;
+  padding: 5px;
   margin: 0 10px;
   text-decoration: none;
-  border-radius: 15px;
-  background-color: ${({ backgroundColor }) =>
+  // background-color: ${({ backgroundColor }) =>
     backgroundColor ? backgroundColor : "#EEEEEE"};
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(30px);
+  border: 1px solid rgba(255,255,255,0.01);
+  // backdrop-filter: blur(30px);
+  border-radius: 5px;
   font-size: 14px;
   cursor: pointer;
   @media (max-width: 768px) {
     padding: 10px 15px;
+    margin: 0;
+    margin-left: 5px;
   }
 `;
 const FromChangeChainButton: FC<{
   imageSrc: string;
   coinName: string;
   chain: string;
-}> = ({ imageSrc, coinName, chain }) => {
+}> = () => {
   const dispatch = useDispatch();
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   const fromToken = useSelector(({ route }: RootState) => route.fromToken);
   const fromChain = useSelector(({ route }: RootState) => route.fromChain);
   return (
     <StyledButton
-      backgroundColor={themeMode === "light" ? "#EEEEEE" : "#393E46"}
+      className='hover:bg-[#ffffff]/[0.2]'
+      backgroundColor={
+        themeMode === "light" ? "rgba(255, 255, 255, 0.02)" : "#393E46"
+      }
       onClick={() => dispatch(fromTokenlistStatus(true))}
     >
-      {/* <div>
-        <img src={imageSrc} alt="" />
-      </div>
-      <div className="mx-5">
-        <h3>{coinName}</h3>
-        <h6>{chain}</h6>
-      </div> */}
-      <div>
+      <div className='w-[25%]'>
         <img
-          src={`https://assets-cdn.trustwallet.com/blockchains/${fromChain === 56 || fromChain === 97 ? "smartchain" : fromChain === 250 ? "fantom" : ""}/assets/${fromToken.adress}/logo.png`}
-          alt=""
-          className="w-[42px]"
+          src={
+            fromToken.adress
+              ? `https://assets-cdn.trustwallet.com/blockchains/${
+                  fromChain === 56 || fromChain === 97
+                    ? "smartchain"
+                    : fromChain === 250
+                    ? "fantom"
+                    : ""
+                }/assets/${fromToken.adress}/logo.png`
+              : tokenImage
+          }
+          alt=''
+          className='w-[32px] rounded-[50%]'
         />
       </div>
-      <div className="mx-5">
-        <h2>{fromToken.name === "" ? "Select Token" : fromToken.name}</h2>
+      <div className='mx-2 w-[65%] text-left font-outfit font-[500] text-[13px]'>
+        <h2>{fromToken.symbol === "" ? "Select Token" : fromToken.symbol}</h2>
       </div>
-      <div>
-        <img src={ArrowDownFont} alt="" />
+      <div className='w-[10%]'>
+        <img src={ArrowDownFont} alt='' className='w-[10px]' />
       </div>
     </StyledButton>
   );

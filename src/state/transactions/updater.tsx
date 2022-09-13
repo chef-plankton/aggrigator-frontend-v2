@@ -1,11 +1,33 @@
 import { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { AppState, useAppDispatch } from "../index";
-import { checkedTransaction, finalizeTransaction } from "./actions";
-import useWallet from "../../components/Wallets/useWallet";
 import Swal from "sweetalert2";
 import { RootState } from "../../app/store";
 import { useCurrentBlock } from "../../components/Main/Main";
+import useWallet from "../../components/Wallets/useWallet";
+import {
+  ApprovalState,
+  changeApprovalState,
+  changeApprovevalue,
+} from "../../features/account/accountSlice";
+import {
+  FailedModalStateStatus,
+  SuccessModalStateStatus,
+} from "../../features/modals/modalsSlice";
+import { clearRouteAfterSwap } from "../../features/route/routeSlice";
+import { changeSwapButtonState } from "../../features/swapbutton/swapbuttonSlice";
+import useTokenBalance from "../../hooks/useTokenBalance";
+import { AppState, useAppDispatch } from "../index";
+import { checkedTransaction, finalizeTransaction } from "./actions";
+
+enum SwapButonStates {
+  CONNECT_TO_WALLET = "CONNECT_TO_WALLET",
+  ENTER_AMOUNT = "ENTER_AMOUNT",
+  APPROVE = "APPROVE",
+  LOADING = "LOADING",
+  SWAP = "SWAP",
+  WRAP = "WRAP",
+  INSUFFICIENT_BALANCE = "INSUFFICIENT_BALANCE",
+}
 
 export function shouldCheck(
   currentBlock: number,
@@ -29,26 +51,38 @@ export function shouldCheck(
 }
 
 export default function Updater(): null {
-  const walletName = useSelector((state: RootState) => state.account.wallet);
-  const hooks = useWallet(walletName);
+  const wallet = useSelector(({ account }: RootState) => account.wallet);
+  const hooks = useWallet(wallet);
   const { useProvider, useChainId } = hooks;
   const chainId = useChainId();
   const library = useProvider();
   const currentBlockNumber = useCurrentBlock();
-
+  const approveState = useSelector(
+    ({ account }: RootState) => account.approveState
+  );
   const dispatch = useAppDispatch();
   const state = useSelector<AppState, AppState["transactions"]>(
     (s) => s.transactions
   );
-
+  const fromToken = useSelector(({ route }: RootState) => route.fromToken);
+  const toToken = useSelector(({ route }: RootState) => route.toToken);
+  const fromChain = useSelector(({ route }: RootState) => route.fromChain);
+  const toChain = useSelector(({ route }: RootState) => route.toChain);
+  const amount = useSelector(({ route }: RootState) => route.amount);
+  const { useAccount, useIsActivating, useIsActive, useENSNames } =
+    useWallet(wallet);
+  const approvevalue = useSelector(
+    ({ account }: RootState) => account.approvevalue
+  );
+  const isActive = useIsActive();
+  const account = useAccount();
   const transactions = useMemo(
     () => (chainId ? state[chainId] ?? {} : {}),
     [chainId, state]
   );
-
+  const balance = useTokenBalance(fromToken.adress, account);
   useEffect(() => {
     if (!chainId || !library || !currentBlockNumber) return;
-
     Object.keys(transactions)
       .filter((hash) => shouldCheck(currentBlockNumber, transactions[hash]))
       .forEach((hash) => {
@@ -72,19 +106,136 @@ export default function Updater(): null {
                   },
                 })
               );
-              receipt.status === 1
-                ? Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: `Confirmed`,
-                    showConfirmButton: false,
-                    timer: 1500,
+              const tx = transactions[hash];
+
+              if (tx) {
+                switch (tx.type) {
+                  case "approve":
+                    if (receipt.status === 1) {
+                      dispatch(changeApprovalState(ApprovalState.APPROVED));
+                    } else {
+                      dispatch(changeApprovalState(ApprovalState.NOT_APPROVED));
+                    }
+                    break;
+                  case "swap":
+                    if (isActive) {
+                      if (receipt.status === 1) {
+                        dispatch(changeApprovevalue(null));
+                        dispatch(clearRouteAfterSwap());
+                      } else {
+                        dispatch(changeApprovalState(ApprovalState.APPROVED));
+                      }
+                    } else {
+                      dispatch(
+                        changeSwapButtonState({
+                          isDisable: false,
+                          state: SwapButonStates.CONNECT_TO_WALLET,
+                          text: "Connect To Wallet",
+                        })
+                      );
+                    }
+                    break;
+                }
+              }
+              if (receipt.status === 1) {
+                if (tx.type === "swap") {
+                  dispatch(
+                    SuccessModalStateStatus({
+                      status: true,
+                      txHash: tx.hash,
+                      chainId: chainId,
+                      isMultiChainSwap: false,
+                    })
+                  );
+                }
+                if (tx.type === "multichain-swap") {
+                  dispatch(
+                    SuccessModalStateStatus({
+                      status: true,
+                      txHash: tx.hash,
+                      chainId: chainId,
+                      isMultiChainSwap: true,
+                    })
+                  );
+                }
+              } else {
+                dispatch(
+                  FailedModalStateStatus({
+                    status: true,
+                    txHash: tx.hash,
+                    chainId: chainId,
                   })
-                : Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "Something went wrong!",
-                  });
+                );
+              }
+
+              // receipt.status === 1
+              //   ? Swal.fire({
+              //       position: "top-end",
+              //       icon: "success",
+              //       title: `Transaction Confirmed`,
+              //       html: `<p>Tx: ${tx.hash}</p>`,
+              //       width: "500px",
+              //       heightAuto: false,
+              //       showCancelButton: true,
+              //       showCloseButton: true,
+              //       showConfirmButton: true,
+              //       confirmButtonColor: "black",
+              //       cancelButtonColor: "#d33",
+              //       confirmButtonText: `Show on ${
+              //         chainId === 56
+              //           ? "BSC Scan"
+              //           : chainId === 250
+              //           ? "FTM Scan"
+              //           : ""
+              //       }`,
+              //     }).then((data) => {
+              //       const { isDismissed, isConfirmed, isDenied } = data;
+              //       if (isConfirmed) {
+              //         window.open(
+              //           `${
+              //             chainId === 56
+              //               ? "https://bscscan.com"
+              //               : chainId === 250
+              //               ? "https://ftmscan.com/"
+              //               : ""
+              //           }/tx/${tx.hash}`,
+              //           "_blank"
+              //         );
+              //       }
+              //     })
+              //   : Swal.fire({
+              //       icon: "error",
+              //       title: "Oops...",
+              //       html: `<p>Tx: ${tx.hash}</p>`,
+              //       width: "500px",
+              //       heightAuto: false,
+              //       showCancelButton: true,
+              //       showCloseButton: true,
+              //       showConfirmButton: true,
+              //       confirmButtonColor: "black",
+              //       cancelButtonColor: "#d33",
+              //       confirmButtonText: `Show on ${
+              //         chainId === 56
+              //           ? "BSC Scan"
+              //           : chainId === 250
+              //           ? "FTM Scan"
+              //           : ""
+              //       }`,
+              //     }).then((data) => {
+              //       const { isDismissed, isConfirmed, isDenied } = data;
+              //       if (isConfirmed) {
+              //         window.open(
+              //           `${
+              //             chainId === 56
+              //               ? "https://bscscan.com"
+              //               : chainId === 250
+              //               ? "https://ftmscan.com/"
+              //               : ""
+              //           }/tx/${tx.hash}`,
+              //           "_blank"
+              //         );
+              //       }
+              //     });
             } else {
               dispatch(checkedTransaction({ chainId, hash }));
             }

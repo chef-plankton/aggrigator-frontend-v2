@@ -9,7 +9,14 @@ import {
 import { useTokenContract } from "./useContract";
 import { useCallWithoutGasPrice } from "./useCallWithoutGasPrice";
 import { BigNumber, ethers } from "ethers";
-
+import { useSelector } from "react-redux";
+import { RootState } from "../app/store";
+import useWallet from "../components/Wallets/useWallet";
+import { parseUnits } from "@ethersproject/units";
+import { useDispatch } from "react-redux";
+import { changeApprovevalue } from "../features/account/accountSlice";
+import { Erc20 } from "../config/abi/types";
+import {setContractWithChainId} from "./useSetContractWithChainId";
 export enum ApprovalState {
   UNKNOWN,
   NOT_APPROVED,
@@ -17,14 +24,31 @@ export enum ApprovalState {
   APPROVED,
 }
 
-// returns a variable indicating the state of the approval and a function which approves if necessary or early returns
+// returns a variable indicating the state of the approval and a function which approves if necessary or early returns'
+export type ApproveParams = (
+  spender: string,
+  amountToApprove: BigNumber
+) => Promise<void>;
 export function useApproveCallback(
   tokenAddress?: string,
   amountToApprove?: BigNumber,
   spender?: string
 ): [ApprovalState, () => Promise<void>] {
-  const account = "0x0F6702D890d250b236DDDd4C55A035431Eb8a899";
-  const { callWithoutGasPrice } = useCallWithoutGasPrice();
+  const dispatch = useDispatch();
+  const wallet = useSelector(({ account }: RootState) => account.wallet);
+  const {
+    useChainId,
+    useAccount,
+    useIsActivating,
+    useIsActive,
+    useProvider,
+    useENSNames,
+  } = useWallet(wallet);
+  const account = useAccount();
+  const { callWithoutGasPrice } = useCallWithoutGasPrice<
+    Erc20,
+    TransactionResponse
+  >();
 
   const token = amountToApprove;
   const currentAllowance = useTokenAllowance(
@@ -32,15 +56,19 @@ export function useApproveCallback(
     account ?? undefined,
     spender
   );
-  const pendingApproval = useHasPendingApproval(tokenAddress, spender);
 
+  const pendingApproval = useHasPendingApproval(tokenAddress, spender);
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
-    if (!amountToApprove || !spender) return ApprovalState.UNKNOWN;
+    if (!amountToApprove || !spender) {
+      return ApprovalState.UNKNOWN;
+    }
     // if (amountToApprove.currency === ETHER) return ApprovalState.APPROVED;
     // we might not have enough data to know whether or not we need to approve
-    if (!currentAllowance) return ApprovalState.UNKNOWN;
-
+    if (!currentAllowance) {
+      return ApprovalState.UNKNOWN;
+    }
+    dispatch(changeApprovevalue(currentAllowance.toString()));
     // amountToApprove will be defined if currentAllowance is
     return currentAllowance.lt(amountToApprove)
       ? pendingApproval
@@ -51,10 +79,7 @@ export function useApproveCallback(
 
   const tokenContract = useTokenContract(tokenAddress);
   const addTransaction = useTransactionAdder();
-
   const approve = useCallback(async (): Promise<void> => {
-    console.log(approvalState);
-    
     if (approvalState !== ApprovalState.NOT_APPROVED) {
       console.log("Error", "Approve was called unnecessarily");
       console.error("approve was called unnecessarily");
@@ -86,15 +111,17 @@ export function useApproveCallback(
       return;
     }
 
-    let useExact = false;
-
     // eslint-disable-next-line consistent-return
+    console.log(spender);
+    console.log(amountToApprove);
+    console.log(tokenContract);
+    
     return callWithoutGasPrice(
       tokenContract,
       "approve",
-      [spender, useExact ? amountToApprove : MaxUint256],
+      [spender, amountToApprove] as Parameters<ApproveParams>,
       {
-        gasLimit: 21000000,
+        gasLimit: 210000,
       }
     )
       .then((response: TransactionResponse) => {
@@ -134,10 +161,12 @@ export function useApproveCallbackFromTrade(
     () => (inputAmount ? ethers.utils.parseUnits(inputAmount) : undefined),
     [inputAmount, allowedSlippage]
   );
-  // 0xae13d989dac2f0debff460ac112a837c89baa7cd
+  const wallet = useSelector(({ account }: RootState) => account.wallet);
+  const { useChainId } = useWallet(wallet);
+  const chainId = useChainId();
   return useApproveCallback(
     tokenAddress,
     amountToApprove,
-    "0x78867BbEeF44f2326bF8DDd1941a4439382EF2A7"
+    setContractWithChainId(chainId)
   );
 }

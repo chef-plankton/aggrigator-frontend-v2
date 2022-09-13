@@ -1,47 +1,23 @@
 import React from "react";
-import GithubIcon from "../../assets/img/socials/github.png";
+import Logo from '../../assets/lightlogo2.png'
+import InstagramIcon from '../../assets/img/socials/instagram.png'
+import TelegramIcon from '../../assets/img/socials/telegram.png'
 function Footer() {
   return (
-    <>
-      <div className="flex justify-between bg-slate-100 py-5 px-5 items-center">
-        <div>
-          <p>Akka | Free to use</p>
-        </div>
+    <footer className='w-[100%] flex justify-center items-center bg-[#18172E] py-[15px] px-[50px] md:h-[18vh]'>
+      <div className='flex flex-col'>
+        <img src={Logo} alt='Logo' className="h-[50px] my-2" />
+        <div className="flex justify-evenly py-5 mt-2 items-center">
+          <a href='https://twitter.com/akka_finance' target="_blank">
+            <img src={InstagramIcon} alt='' className="w-[20px]"/>
+          </a>
 
-        <ul className="wrapper">
-          <li className="icon facebook">
-            <span className="tooltip">Facebook</span>
-            <span>
-              <i className="fab fa-facebook-f"></i>
-            </span>
-          </li>
-          <li className="icon twitter">
-            <span className="tooltip">Twitter</span>
-            <span>
-              <i className="fab fa-twitter"></i>
-            </span>
-          </li>
-          <li className="icon instagram">
-            <span className="tooltip">Instagram</span>
-            <span>
-              <i className="fab fa-instagram"></i>
-            </span>
-          </li>
-          <li className="icon github">
-            <span className="tooltip">Github</span>
-            <span>
-              <img src={GithubIcon} alt="" />
-            </span>
-          </li>
-          <li className="icon youtube">
-            <span className="tooltip">Youtube</span>
-            <span>
-              <i className="fab fa-youtube"></i>
-            </span>
-          </li>
-        </ul>
+          <a href='https://t.me/akkafinance' target="_blank">
+            <img src={TelegramIcon} alt='' className="w-[20px]"/>
+          </a>
+        </div>
       </div>
-    </>
+    </footer>
   );
 }
 

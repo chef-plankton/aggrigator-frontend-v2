@@ -1,4 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
+interface ModalStatus {
+  status: boolean;
+  txHash?: string;
+  chainId?: number;
+  isMultiChainSwap?: boolean;
+}
 interface ModalsState {
   generalModal: boolean;
   connectWalletModal: boolean;
@@ -7,6 +13,8 @@ interface ModalsState {
   ToTokenlistModal: boolean;
   ToNetworklistModal: boolean;
   fromAdvanceSettingModal: boolean;
+  SuccessModalState: ModalStatus;
+  FailedModalState: ModalStatus;
 }
 const initialState: ModalsState = {
   generalModal: false,
@@ -16,6 +24,8 @@ const initialState: ModalsState = {
   ToTokenlistModal: false,
   ToNetworklistModal: false,
   fromAdvanceSettingModal: false,
+  SuccessModalState: { status: false, txHash: "" },
+  FailedModalState: { status: false, txHash: "" },
 };
 export const modalssSlice = createSlice({
   name: "modals",
@@ -32,6 +42,8 @@ export const modalssSlice = createSlice({
       state.ToTokenlistModal = !action.payload;
       state.ToNetworklistModal = !action.payload;
       state.fromAdvanceSettingModal = !action.payload;
+      state.SuccessModalState = { status: !action.payload };
+      state.FailedModalState = { status: !action.payload };
     },
     fromTokenlistStatus: (state, action) => {
       state.generalModal = true;
@@ -41,6 +53,8 @@ export const modalssSlice = createSlice({
       state.ToTokenlistModal = !action.payload;
       state.ToNetworklistModal = !action.payload;
       state.fromAdvanceSettingModal = !action.payload;
+      state.SuccessModalState = { status: !action.payload };
+      state.FailedModalState = { status: !action.payload };
     },
     fromNetworklistStatus: (state, action) => {
       state.generalModal = true;
@@ -50,6 +64,8 @@ export const modalssSlice = createSlice({
       state.ToTokenlistModal = !action.payload;
       state.ToNetworklistModal = !action.payload;
       state.fromAdvanceSettingModal = !action.payload;
+      state.SuccessModalState = { status: !action.payload };
+      state.FailedModalState = { status: !action.payload };
     },
     ToTokenlistStatus: (state, action) => {
       state.generalModal = true;
@@ -59,6 +75,8 @@ export const modalssSlice = createSlice({
       state.fromNetworklistModal = !action.payload;
       state.ToNetworklistModal = !action.payload;
       state.fromAdvanceSettingModal = !action.payload;
+      state.SuccessModalState = { status: !action.payload };
+      state.FailedModalState = { status: !action.payload };
     },
     ToNetworklistStatus: (state, action) => {
       state.generalModal = true;
@@ -68,6 +86,8 @@ export const modalssSlice = createSlice({
       state.fromNetworklistModal = !action.payload;
       state.ToTokenlistModal = !action.payload;
       state.fromAdvanceSettingModal = !action.payload;
+      state.SuccessModalState = { status: !action.payload };
+      state.FailedModalState = { status: !action.payload };
     },
     FromAdvanceSettingStatus: (state, action) => {
       state.generalModal = true;
@@ -77,6 +97,35 @@ export const modalssSlice = createSlice({
       state.connectWalletModal = !action.payload;
       state.fromNetworklistModal = !action.payload;
       state.ToTokenlistModal = !action.payload;
+      state.SuccessModalState = { status: !action.payload };
+      state.FailedModalState = { status: !action.payload };
+    },
+    SuccessModalStateStatus: (state, action) => {
+      state.generalModal = true;
+      state.SuccessModalState = {
+        status: action.payload.status,
+        txHash: action.payload.txHash,
+        chainId: action.payload.chainId,
+        isMultiChainSwap: action.payload.isMultiChainSwap,
+      };
+      state.fromAdvanceSettingModal = !action.payload;
+      state.ToNetworklistModal = !action.payload;
+      state.fromTokenlistModal = !action.payload;
+      state.connectWalletModal = !action.payload;
+      state.fromNetworklistModal = !action.payload;
+      state.ToTokenlistModal = !action.payload;
+      state.FailedModalState = { status: !action.payload.status };
+    },
+    FailedModalStateStatus: (state, action) => {
+      state.generalModal = true;
+      state.FailedModalState = { status: action.payload.status };
+      state.fromAdvanceSettingModal = !action.payload;
+      state.ToNetworklistModal = !action.payload;
+      state.fromTokenlistModal = !action.payload;
+      state.connectWalletModal = !action.payload;
+      state.fromNetworklistModal = !action.payload;
+      state.ToTokenlistModal = !action.payload;
+      state.SuccessModalState = { status: !action.payload.status };
     },
   },
 });
@@ -90,6 +139,8 @@ export const {
   ToTokenlistStatus,
   ToNetworklistStatus,
   FromAdvanceSettingStatus,
+  SuccessModalStateStatus,
+  FailedModalStateStatus,
 } = modalssSlice.actions;
 
 export default modalssSlice.reducer;

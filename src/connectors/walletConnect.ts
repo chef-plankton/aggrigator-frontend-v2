@@ -8,6 +8,8 @@ export const [walletConnect, hooks] = initializeConnector<WalletConnect>(
       actions,
       options: {
         rpc: URLS,
+        bridge: 'https://bridge.walletconnect.org',
       },
-    })
+    },
+    )
 )

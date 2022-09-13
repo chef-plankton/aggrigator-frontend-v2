@@ -10,6 +10,7 @@ export type TransactionType =
   | 'limit-order-submission'
   | 'limit-order-cancellation'
   | 'limit-order-approval'
+  | 'multichain-swap'
 
 export interface SerializableTransactionReceipt {
   to: string

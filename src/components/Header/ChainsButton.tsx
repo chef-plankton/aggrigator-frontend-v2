@@ -1,10 +1,10 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { useSelector } from "react-redux";
 import ReactTooltip from "react-tooltip";
 import { RootState } from "../../app/store";
 import bnblightIcon from "../../assets/img/chains/binance-light.svg";
-import polygonIcon from "../../assets/img/chains/polygon.svg";
 import fantomIcon from "../../assets/img/chains/fantom.svg";
+
 const ChainsButton: FC<{
   ArrowDownFont: string;
   setDropdown: (value: boolean) => void;
@@ -23,8 +23,8 @@ const ChainsButton: FC<{
         data-tip
         data-for="chainsbutton"
         onClick={toggleChains}
-        className={`py-2 px-3 font-medium ${
-          themeMode === "light" ? "text-gray-500" : "text-white"
+        className={`py-2 px-3 text-[14px] ${
+          themeMode === "light" ? "text-white" : "text-white"
         }  rounded transition duration-300 flex items-center chainslistbtn`}
       >
         <img
@@ -43,9 +43,9 @@ const ChainsButton: FC<{
           className="w-[12px] h-[12px] ml-2 -mb-0.5"
         />
       </button>
-      <ReactTooltip id="chainsbutton" type="info" effect="solid" place="bottom">
+      {/* <ReactTooltip id="chainsbutton" type="info" effect="solid" place="bottom">
         <span>Select your network</span>
-      </ReactTooltip>
+      </ReactTooltip> */}
     </>
   );
 };

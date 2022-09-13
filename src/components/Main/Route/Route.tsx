@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { RootState } from "../../../app/store";
@@ -6,10 +7,18 @@ import ArrowDownFont from "../../../assets/arrow-down-sign-to-navigate.png";
 import bridgeIcon from "../../../assets/brooklyn-bridge.png";
 import bnblightIcon from "../../../assets/img/chains/binance-light.svg";
 import fantomIcon from "../../../assets/img/chains/fantom.svg";
+import { NetworkName } from "../../../config/constants/types";
+import {
+  changeResponseData,
+  changeShowRoute,
+} from "../../../features/route/routeSlice";
+import DexBox from "./DexBox";
 // From Box Styles
 const MainStyled = styled.div`
-  margin-bottom: 80px;
-  margin-top: 30px;
+  background: #22223d;
+  padding: 20px 20px;
+  margin-bottom: 20px;
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -30,243 +39,182 @@ function Route() {
   const toToken = useSelector(({ route }: RootState) => route.toToken);
   const fromChain = useSelector(({ route }: RootState) => route.fromChain);
   const toChain = useSelector(({ route }: RootState) => route.toChain);
+  const amount = useSelector(({ route }: RootState) => route.amount);
   const showRoute = useSelector(({ route }: RootState) => route.showRoute);
   const responseData = useSelector(
     ({ route }: RootState) => route.responseData
   );
-  const [masir, setMasir] = useState([]);
-  useEffect(() => {
-    if (responseData.data.routes[0].operations_seperated != undefined) {
-      setMasir(responseData.data.routes[0].operations_seperated);
-    }
-  }, [responseData.data.routes[0].operations_seperated]);
 
+  const [masir, setMasir] = useState([]);
+  const dispatch = useDispatch();
+
+  let oprationSeperated = responseData?.routes[0]?.operations_seperated;
+
+  useEffect(() => {
+    if (oprationSeperated != undefined) {
+      setMasir(oprationSeperated);
+    }
+  }, []);
   return (
     <>
       {showRoute ? (
-        <MainStyled>
-          <HeaderStyled>
-            <div className='flex justify-between items-end mt-[8px]'>
-              <div className='text-[24px] text-black font-[700] leading-[28px]'>
-                Smart Routing
-              </div>
-            </div>
-            <div className='text-[14px] leading-[16px] text-[#929292] mt-2'>
-              This route optimizes your total output by considering split
-              routes, multiple hops, and the gas cost of each step.
-            </div>
-          </HeaderStyled>
-          {fromChain != toChain ? (
-            <MenusStyled className='index-module__menus'>
-              <div
-                onClick={() => setActive(1)}
-                className={`${
-                  active === 1
-                    ? "bg-[#fff] border-[1px] border-solid border-[#bdbdbd]"
-                    : "border-none bg-[#f9f9f9]"
-                } index-module__item flex flex-col justify-start items-start py-[12px] px-[16px] cursor-pointer`}
-              >
-                <span className='text-[#3d3d3d] text-[14px] font-[400] leading-[16px] mb-[8px]'>
-                  {fromChain === 56 ? "BSC" : ""}
-                  {fromChain === 250 ? "Fantom" : ""}
-                  {fromChain === 97 ? "BSC testnet" : ""}
-                </span>
-                <div className='flex items-center justify-start'>
-                  <div
-                    data-testid='base-logo-wrapper'
-                    className='w-[32px] h-[32px] mr-[6px] bg-[#fff] rounded-[50%] box-border overflow-hidden inline-block'
-                  >
-                    <img
-                      data-testid='base-logo'
-                      className='w-[100%] h-[100%]'
-                      alt=''
-                      src={`https://assets-cdn.trustwallet.com/blockchains/${
-                        fromChain === 56 || fromChain === 97
-                          ? "smartchain"
-                          : fromChain === 250
-                          ? "fantom"
-                          : ""
-                      }/assets/${fromToken.adress}/logo.png`}
-                    />
-                  </div>
-                  <span className='text-[#000] text-[18px] font-[700] leading-[24px]'>
-                    {fromToken.name}
-                  </span>
-                </div>
-                <div className='text-[#ebf0f7] text-[80px] font-[700] leading-[60px] absolute top-[14px] right-[16px]'>
-                  1
-                </div>
-              </div>
-              <span className='w-[50px] md:w-[100px]'>
-                <img src={bridgeIcon} alt='' />
-              </span>
-              <div
-                onClick={() => setActive(2)}
-                className={`${
-                  active === 2
-                    ? "bg-[#fff] border-[1px] border-solid border-[#bdbdbd]"
-                    : "border-none bg-[#f9f9f9]"
-                } index-module__item flex flex-col justify-start items-start py-[12px] px-[16px] cursor-pointer`}
-              >
-                <span className='text-[#3d3d3d] text-[14px] font-[400] leading-[16px] mb-[8px]'>
-                  {toChain === 250 ? "Fantom" : ""}
-                  {toChain === 56 ? "BSC" : ""}
-                  {toChain === 97 ? "BSC testnet" : ""}
-                </span>
-                <div className='flex items-center justify-start'>
-                  <div
-                    data-testid='base-logo-wrapper'
-                    className='w-[32px] h-[32px] mr-[6px] bg-[#fff] rounded-[50%] box-border overflow-hidden inline-block'
-                  >
-                    <img
-                      data-testid='base-logo'
-                      className='w-[100%] h-[100%]'
-                      alt=''
-                      src={`https://assets-cdn.trustwallet.com/blockchains/${
-                        toChain === 56 || toChain === 97
-                          ? "smartchain"
-                          : toChain === 250
-                          ? "fantom"
-                          : ""
-                      }/assets/${toToken.adress}/logo.png`}
-                    />
-                  </div>
-                  <span className='text-[#000] text-[18px] font-[700] leading-[24px]'>
-                    {toToken.name}
-                  </span>
-                </div>
-                <div className='text-[#ebf0f7] text-[80px] font-[700] leading-[60px] absolute top-[14px] right-[16px]'>
-                  2
-                </div>
-              </div>
-            </MenusStyled>
-          ) : (
-            ""
-          )}
-
-          <div>
-            <div className='flex items-center justify-between relative z-[1]'>
-              <div className='inline-block h-[36px] relative w-[36px]'>
-                <div className='w-[32px] h-[32px] absolute left-0 top-0 z-[1] bg-[#fff] rounded-[50%] box-border inline-block overflow-hidden'>
-                  <img
-                    className='w-[100%] h-[100%]'
-                    alt=''
-                    src={`https://assets-cdn.trustwallet.com/blockchains/${
-                      fromChain === 56 || fromChain === 97
-                        ? "smartchain"
-                        : fromChain === 250
-                        ? "fantom"
-                        : ""
-                    }/assets/${fromToken.adress}/logo.png`}
-                  />
-                </div>
-                <div className='w-[18px] h-[18px] border-[1px] border-[#fff] bottom-0 absolute right-0 z-[2] rounded-[50%] box-border inline-block overflow-hidden'>
-                  <img
-                    className='w-[100%] h-[100%]'
-                    alt=''
-                    src={
-                      fromChain === 56 || fromChain === 97
-                        ? bnblightIcon
-                        : fromChain === 250
-                        ? fantomIcon
-                        : ""
-                    }
-                  />
-                </div>
-              </div>
-              <div className='inline-block h-[36px] relative w-[36px]'>
-                <div className='w-[32px] h-[32px] absolute left-0 top-0 z-[1] bg-[#fff] rounded-[50%] box-border inline-block overflow-hidden'>
-                  <img
-                    className='w-[100%] h-[100%]'
-                    alt=''
-                    src={`https://assets-cdn.trustwallet.com/blockchains/${
-                      toChain === 56 || toChain === 97
-                        ? "smartchain"
-                        : toChain === 250
-                        ? "fantom"
-                        : ""
-                    }/assets/${toToken.adress}/logo.png`}
-                  />
-                </div>
-                <div className='w-[18px] h-[18px] border-[1px] border-[#fff] bottom-0 absolute right-0 z-[2] rounded-[50%] box-border inline-block overflow-hidden'>
-                  <img
-                    className='w-[100%] h-[100%]'
-                    alt=''
-                    src={
-                      toChain === 56 || toChain === 97
-                        ? bnblightIcon
-                        : toChain === 250
-                        ? fantomIcon
-                        : ""
-                    }
-                  />
-                </div>
-              </div>
-            </div>
-            <div className='relative pr-[20px] pl-[16px] -mt-[10px]'>
-              <span className='okex_swap_iconfont icon_icon_Arrow_Carets1 index-module__down-arrow'></span>
-              <span className='okex_swap_iconfont icon_icon_Arrow_Carets1 index-module__up-arrow'></span>
-              <div className='relative'>
-                <div className='pr-[18px] relative pl-[92px]'>
-                  <div className='border-[1px] border-dashed border-[#bdbdbd] rounded-[8px] border-t-[transparent] bottom-[50%] left-0 absolute right-0 top-0'></div>
-                  <div className='absolute items-center bottom-[50%] flex h-[20px] justify-between max-w-[64px] translate-y-[10px] z-10 left-[18px] w-[66px]'>
-                    <div className='bg-[rgb(241,245,249)] text-[#000] text-[16px] font-[500] leading-[20px] px-[2px]'>
-                      100%
-                    </div>
-                    <div className='flex h-[16px] justify-center w-[16px]'>
-                      <span className='okex_swap_iconfont icon_icon_Arrow_Carets1 index-module__icon -rotate-90'>
-                        <img src={ArrowDownFont} alt='' />
-                      </span>
-                    </div>
-                  </div>
-                  <div className='items-center flex justify-between'>
-                    {masir[
-                      active === 1 ? 0 : active === 2 ? 2 : 0
-                    ]?.operations.map((element, index) => {
-                      return (
-                        <>
-                          <div className='z-10 bg-[#f7f7f7] rounded-[6px] flex-1 overflow-hidden py-[12px] px-[10px]'>
-                            <div className='mb-[12px] items-center flex justify-start'>
-                              <div className='w-[24px] h-[24px] mr-1'>
-                                <img
-                                  className='w-[100%] h-[100%]'
-                                  alt=''
-                                  src={`https://assets-cdn.trustwallet.com/blockchains/${
-                                    element.ask_token[1] === "bsc"
-                                      ? "smartchain"
-                                      : element.ask_token[1] === "fantom"
-                                      ? "fantom"
-                                      : ""
-                                  }/assets/${element.ask_token[0]}/logo.png`}
-                                />
-                              </div>
-                              <div className='ellipsis index-module__token-name'>
-                                {element.ask_token[3]}
-                              </div>
-                            </div>
-                            <div className='bg-white rounded-[6px] text-[#545454] py-[2px] px-[8px] justify-between items-center flex'>
-                              <span className='font-12 index-module__dex-name index-module__like-link index-module__enable'>
-                                {element.exchange}
-                              </span>
-                              <span className='font-12 index-module__like-link'>
-                                100%
-                              </span>
-                            </div>
-                          </div>
-                          <div className='z-10 items-center flex h-[16px] justify-center w-[16px]'>
-                            <span className='okex_swap_iconfont icon_icon_Arrow_Carets1 index-module__icon -rotate-90'>
-                              <img src={ArrowDownFont} alt='' />
-                            </span>
-                          </div>
-                        </>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            </div>
+        <div className='rounded-[5px] flex flex-col w-[100%] justify-center items-center mt-[25px] pt-[10px] pb-[10px] p-[15px] bg-[#ffffff]/[0.07] font-outfit font-[400] text-[14px]'>
+          <div className='font-[500] text-[#4FC37E] w-[100%] font-outfit text-left'>
+            Most Optimized Route
           </div>
-        </MainStyled>
+          <div className='mt-3 w-[100%]'>
+            {oprationSeperated[0].chain === NetworkName.BRIDGE.toLowerCase() &&
+              oprationSeperated.length == 1 && (
+                <div className='text-white my-3 flex justify-between w-[100%]'>
+                  <span className='font-outfit text-[#bfbfbf]'>Bridge</span>
+                  <div>
+                    <span className='font-outfit text-[13px]'>Stargate</span>
+                  </div>
+                </div>
+              )}
+
+            {oprationSeperated[0]?.chain === NetworkName.BRIDGE.toLowerCase() &&
+              oprationSeperated?.length == 2 && (
+                <>
+                  <div className='text-white my-3 flex justify-between w-[100%]'>
+                    <span className='font-outfit text-[#bfbfbf]'>Bridge</span>
+                    <div>
+                      <span className='font-outfit text-[13px]'>Stargate</span>
+                    </div>
+                  </div>
+                  <div className='text-white my-3 flex justify-between w-[100%]'>
+                    <span className='font-outfit text-[#bfbfbf]'>Fantom</span>
+                    <div>
+                      <span className='font-outfit text-[13px]'>{`${oprationSeperated[1]?.operations[0].offer_token[3]} > `}</span>
+                      {oprationSeperated[1]?.operations.map((e, index) =>
+                        index ===
+                        oprationSeperated[1]?.operations.length - 1 ? (
+                          <span className='font-outfit'>{`${e.ask_token[3]}`}</span>
+                        ) : (
+                          <span className='font-outfit'>{`${e.ask_token[3]} > `}</span>
+                        )
+                      )}
+                    </div>
+                  </div>
+                </>
+              )}
+
+            {oprationSeperated[1]?.chain === NetworkName.BRIDGE.toLowerCase() &&
+              oprationSeperated?.length == 2 && (
+                <>
+                  <div className='text-white my-3 flex justify-between w-[100%]'>
+                    <span className='font-outfit text-[#bfbfbf]'>BNB Chain</span>
+                    <div>
+                      <span className='font-outfit text-[13px]'>{`${oprationSeperated[0]?.operations[0].offer_token[3]} > `}</span>
+                      {oprationSeperated[0]?.operations.map((e, index) =>
+                        index ===
+                        oprationSeperated[0]?.operations.length - 1 ? (
+                          <span className='font-outfit'>{`${e.ask_token[3]}`}</span>
+                        ) : (
+                          <span className='font-outfit'>{`${e.ask_token[3]} > `}</span>
+                        )
+                      )}
+                    </div>
+                  </div>
+                  <div className='text-white my-3 flex justify-between w-[100%]'>
+                    <span className='font-outfit text-[#bfbfbf]'>Bridge</span>
+                    <div>
+                      <span className='font-outfit text-[13px]'>Stargate</span>
+                    </div>
+                  </div>
+                </>
+              )}
+
+            {oprationSeperated[1]?.chain === NetworkName.BRIDGE.toLowerCase() &&
+              oprationSeperated?.length == 3 && (
+                <>
+                  <div className='text-white my-3 flex justify-between w-[100%]'>
+                    <span className='font-outfit text-[#bfbfbf]'>
+                      {oprationSeperated[0]?.chain ===
+                      NetworkName.BSC.toLowerCase()
+                        ? "BNB Chain"
+                        : "Fantom"}
+                    </span>
+                    <div>
+                      <span className='font-outfit text-[13px]'>{`${oprationSeperated[0]?.operations[0].offer_token[3]} > `}</span>
+                      {oprationSeperated[0]?.operations.map((e, index) =>
+                        index ===
+                        oprationSeperated[0]?.operations.length - 1 ? (
+                          <span className='font-outfit'>{`${e.ask_token[3]}`}</span>
+                        ) : (
+                          <span className='font-outfit'>{`${e.ask_token[3]} > `}</span>
+                        )
+                      )}
+                    </div>
+                  </div>
+                  <div className='text-white my-3 flex justify-between w-[100%]'>
+                    <span className='font-outfit text-[#bfbfbf]'>Bridge</span>
+                    <div>
+                      <span className='font-outfit text-[13px]'>Stargate</span>
+                    </div>
+                  </div>
+                  <div className='text-white my-3 flex justify-between w-[100%]'>
+                    <span className='font-outfit text-[#bfbfbf]'>
+                      {oprationSeperated[2]?.chain ===
+                      NetworkName.BSC.toLowerCase()
+                        ? "BNB Chain"
+                        : "Fantom"}
+                    </span>
+                    <div>
+                      <span className='font-outfit text-[13px]'>{`${oprationSeperated[2]?.operations[0].offer_token[3]} > `}</span>
+                      {oprationSeperated[2]?.operations.map((e, index) =>
+                        index ===
+                        oprationSeperated[2]?.operations.length - 1 ? (
+                          <span className='font-outfit'>{`${e.ask_token[3]}`}</span>
+                        ) : (
+                          <span className='font-outfit'>{`${e.ask_token[3]} > `}</span>
+                        )
+                      )}
+                    </div>
+                  </div>
+                </>
+              )}
+
+            {oprationSeperated[0]?.chain === NetworkName.FTM.toLowerCase() &&
+              oprationSeperated?.length == 1 && (
+                <>
+                  <div className='text-white my-3 flex justify-between w-[100%]'>
+                    <span className='font-outfit text-[#bfbfbf]'>Fantom</span>
+                    <div>
+                      <span className='font-outfit text-[13px]'>{`${oprationSeperated[0]?.operations[0].offer_token[3]} > `}</span>
+                      {oprationSeperated[0]?.operations.map((e, index) =>
+                        index ===
+                        oprationSeperated[0]?.operations.length - 1 ? (
+                          <span className='font-outfit'>{`${e.ask_token[3]}`}</span>
+                        ) : (
+                          <span className='font-outfit'>{`${e.ask_token[3]} > `}</span>
+                        )
+                      )}
+                    </div>
+                  </div>
+                </>
+              )}
+            {oprationSeperated[0]?.chain === NetworkName.BSC.toLowerCase() &&
+              oprationSeperated?.length == 1 && (
+                <>
+                  <div className='text-white my-3 flex justify-between w-[100%]'>
+                    <span className='font-outfit text-[#bfbfbf]'>BNB Chain</span>
+                    <div>
+                      <span className='font-outfit'>{`${oprationSeperated[0]?.operations[0].offer_token[3]} > `}</span>
+                      {oprationSeperated[0]?.operations.map((e, index) =>
+                        index ===
+                        oprationSeperated[0]?.operations.length - 1 ? (
+                          <span className='font-outfit'>{`${e.ask_token[3]}`}</span>
+                        ) : (
+                          <span className='font-outfit'>{`${e.ask_token[3]} > `}</span>
+                        )
+                      )}
+                    </div>
+                  </div>
+                </>
+              )}
+          </div>
+        </div>
       ) : (
         ""
       )}

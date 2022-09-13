@@ -1,60 +1,30 @@
-import { useEffect, useState } from "react";
+import { FC, MouseEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { hooks, metaMask } from "../../connectors/metaMask";
-import { CHAINS, getAddChainParameters, URLS } from "../../chains";
 import metaMaskIcon from "../../assets/img/wallets/metamask.png";
-import { getWETHContract, getContract } from "../../utils/contractHelpers";
-import { ethers } from "ethers";
-import { parseEther } from "@ethersproject/units";
-import { useERC20 } from "../../hooks/useContract";
 import { useDispatch } from "react-redux";
-import { changeWallet } from "../../features/account/accountSlice";
-import { changeModalStatus } from "../../features/modals/modalsSlice";
 
-function MetaMaskCard() {
+const MetaMaskCard: FC<{
+  handleClick: (e: MouseEvent<HTMLElement>) => void;
+}> = ({ handleClick }) => {
   const { useIsActivating, useIsActive } = hooks;
   const chainId = useSelector(({ chains }: RootState) => chains.value);
   const isActivating = useIsActivating();
   const isActive = useIsActive();
   const [error, setError] = useState(undefined);
-  // const provider = useProvider();
 
-  // console.log(
-  //   getWETHContract("0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", provider).deposit({value: parseEther("0.001")})
-  // );
-
-  // attempt to connect eagerly on mount
-
-  const dispatch = useDispatch();
   return (
     <div
-      className="flex items-center justify-between border-[1px] rounded-xl border-[#D3D3D3] px-[12px] py-[15px] bg-[#edeef2] mb-2 cursor-pointer"
-      onClick={
-        isActive
-          ? undefined
-          : isActivating
-          ? undefined
-          : () =>
-              metaMask
-                .activate(getAddChainParameters(chainId))
-                .then(() => {
-                  setError(undefined);
-                  dispatch(changeWallet("metamask"));
-                  dispatch(changeModalStatus(false));
-                  void metaMask.connectEagerly().catch(() => {
-                    console.debug("Failed to connect eagerly to metamask");
-                  });
-                })
-                .catch(setError)
-      }
+      className='w-[49%] flex flex-col items-center justify-between px-[12px] py-[15px] border-[5px] border-[#22223D] bg-[#22223D] mb-2 cursor-pointer hover:border-[5px] hover:border-[#814AFB]'
+      onClick={handleClick}
     >
-      <h6 className="font-medium text-[16px]">MetaMask</h6>
       <div>
-        <img src={metaMaskIcon} alt="" className="w-[32px]" />
+        <img src={metaMaskIcon} alt='' className='w-[32px] mb-2' />
       </div>
+      <h6 className='font-medium text-[16px] text-white'>MetaMask</h6>
     </div>
   );
-}
+};
 
 export default MetaMaskCard;

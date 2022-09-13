@@ -8,19 +8,18 @@ import ArrowDownFont from "../../../assets/arrow-down-sign-to-navigate.png";
 import { fromNetworklistStatus } from "../../../features/modals/modalsSlice";
 const StyledButton = styled.div<{ backgroundColor: string }>`
   width: 50%;
-  height: 100%;
+  min-height: 45px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px 5px;
-  margin: 0 10px;
+  padding: 5px;
   text-decoration: none;
-  border-radius: 15px;
-  background-color: ${({ backgroundColor }) =>
+  // background-color: ${({ backgroundColor }) =>
     backgroundColor ? backgroundColor : "#EEEEEE"};
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(30px);
-  font-size: 14px;
+  border: 1px solid rgba(255,255,255,0.01);
+  border-radius: 5px;
+  // backdrop-filter: blur(30px);
+  font-size: 12px;
   cursor: pointer;
   @media (max-width: 768px) {
     padding: 10px 15px;
@@ -29,29 +28,26 @@ const StyledButton = styled.div<{ backgroundColor: string }>`
 const FromChangeNetworkButton: FC<{
   imageSrc: string;
   coinName: string;
-  chain: string;
-}> = ({ imageSrc, coinName, chain }) => {
+}> = ({ imageSrc, coinName }) => {
   const dispatch = useDispatch();
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   return (
     <>
       <StyledButton
+        className='hover:bg-[#ffffff]/[0.2]'
         backgroundColor={
-          themeMode === "light"
-            ? "#EEEEEE"
-            : "#393E46"
+          themeMode === "light" ? "rgba(255, 255, 255, 0.02)" : "#393E46"
         }
         onClick={() => dispatch(fromNetworklistStatus(true))}
       >
-        <div>
-          <img src={imageSrc} alt="" />
+        <div className='w-[25%]'>
+          <img src={imageSrc} alt='' className='w-[32px]' />
         </div>
-        <div className="mx-5">
+        <div className='mx-2 w-[65%] text-left font-outfit font-[500] text-[13px]'>
           <h3>{coinName}</h3>
-          <h6>{chain}</h6>
         </div>
-        <div>
-          <img src={ArrowDownFont} alt="" />
+        <div className='w-[10%]'>
+          <img src={ArrowDownFont} alt='' className='w-[10px]' />
         </div>
       </StyledButton>
     </>

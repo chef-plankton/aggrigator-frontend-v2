@@ -3,19 +3,17 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { RootState } from "../../../app/store";
 const StyledInput = styled.input`
+  text-align: right;
   position: relative;
   text-overflow: ellipsis;
   font-weight: 400;
-  font-size: 35px;
-  padding: 0px;
+  padding: 10px;
   display: block;
-  color: "palevioletred";
-  background: none;
-  border: none;
+  color: white;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255,255,255,0.01);
   outline: none;
-  border-bottom: 1px solid ${({ color }) => (color ? color : "#757575")};
-  border-radius: 3px;
-  width: 90%;
+  width: 100%;
   height: 100%;
   white-space: nowrap;
   overflow: hidden;
@@ -28,10 +26,10 @@ const StyledInput = styled.input`
   }
   ::placeholder,
   ::-webkit-input-placeholder {
-    font-size: 25px;
+    font-size: 16px;
   }
   :-ms-input-placeholder {
-    font-size: 25px;
+    font-size: 16px;
   }
 `;
 function ToInput() {
@@ -42,9 +40,14 @@ function ToInput() {
   );
   return (
     <StyledInput
+      className='font-outfit font-[500] text-[14px] focus:border-[#D6C1FC]'
       color={themeMode === "light" ? "black" : "white"}
-      placeholder='You will recieve'
-      value={responseData.data.return_amount}
+      placeholder='Recieve amount'
+      value={
+        responseData?.return_amount
+          ? Math.round(responseData.return_amount * 100000) / 100000
+          : ""
+      }
       disabled
     />
   );
