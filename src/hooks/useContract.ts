@@ -5,7 +5,6 @@ import WETH_ABI from "../config/abi/weth.json";
 import AKKA_ABI from "../config/abi/AkkaAggrigator.json";
 import { getBep20Contract } from "../utils/contractHelpers";
 import { getContract, getProviderOrSigner } from "../utils";
-import { hooks } from "../connectors/metaMask";
 import { AkkaAggrigator, Erc20, Weth } from "../config/abi/types";
 import { WETH } from "@pancakeswap/sdk";
 import ERC20_ABI from "../config/abi/erc20.json";
@@ -14,13 +13,23 @@ import { RootState } from "../app/store";
 import { ca } from "date-fns/locale";
 import { ChainId } from "../config/constants/types";
 import { setContractWithChainId } from "./useSetContractWithChainId";
+import useWallet from "../components/Wallets/useWallet";
 // returns null on errors
 function useContract<T extends Contract = Contract>(
   address: string | undefined,
   ABI: any,
   withSignerIfPossible = true
 ): T | null {
-  const { useAccount, useProvider } = hooks;
+  const wallet = useSelector(({ account }: RootState) => account.wallet);
+  const {
+    useChainId,
+    useAccount,
+    useIsActivating,
+    useIsActive,
+    useProvider,
+    useENSNames,
+  } = useWallet(wallet);
+
   const library = useProvider();
   const account = useAccount();
   const signer = useMemo(
@@ -47,7 +56,15 @@ function useContract<T extends Contract = Contract>(
  * Helper hooks to get specific contracts (by ABI)
  */
 export const useERC20 = (address: string, withSignerIfPossible = true) => {
-  const { useAccount, useProvider } = hooks;
+  const wallet = useSelector(({ account }: RootState) => account.wallet);
+  const {
+    useChainId,
+    useAccount,
+    useIsActivating,
+    useIsActive,
+    useProvider,
+    useENSNames,
+  } = useWallet(wallet);
   const library = useProvider();
   const account = useAccount();
   const signer = useMemo(
@@ -72,8 +89,6 @@ export function useAkkaContract(
 ): ReturnType<typeof useContract<AkkaAggrigator>> | null {
   const [contractAddress, setContractAddress] = useState<string>(null);
   const chainId = useSelector(({ chains }: RootState) => chains.value);
-  console.log(chainId);
-
   useEffect(() => {
     if (chainId) {
       setContractAddress(setContractWithChainId(chainId));

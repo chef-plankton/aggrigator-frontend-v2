@@ -21,6 +21,9 @@ import useAuth from "../../../hooks/useAuth";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
 import useWallet from "../../Wallets/useWallet";
+interface Props {
+  setHidden: (value: boolean) => void;
+}
 function FromNetworklist() {
   const dispatch = useDispatch();
 
@@ -55,7 +58,11 @@ function FromNetworklist() {
   //   dispatch(changeChain(chainid));
   // }
   // };
-
+  const changeChainId = async (chainid: number) => {
+    // setHidden(true);
+    await login(getAddChainParameters(chainid), chainid, wallet);
+    // setHidden(false);
+  };
   return (
     <>
       <div className='flex justify-between items-center mb-5 pb-4 border-b-[2px] border-[#ffffff1a] bg-clip-padding'>
@@ -78,6 +85,7 @@ function FromNetworklist() {
               onClick={() => {
                 // changeChainId(56);
                 dispatch(changeFromChain(56));
+                isActive && changeChainId(56);
                 dispatch(changeModalStatus(false));
                 dispatch(
                   changeFromToken({
@@ -101,6 +109,7 @@ function FromNetworklist() {
               onClick={() => {
                 // changeChainId(250);
                 dispatch(changeFromChain(250));
+                isActive && changeChainId(250);
                 dispatch(changeModalStatus(false));
                 dispatch(
                   changeFromToken({

@@ -258,7 +258,7 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
           dstChainId: NewBridgeChainOpration.ask_bridge_data.chain_id,
           dstPoolId: NewBridgeChainOpration.ask_bridge_data.pool_id,
           srcPoolId: NewBridgeChainOpration.offer_bridge_data.pool_id,
-          gasForSwap: BigNumber.from("1005617"),
+          gasForSwap: BigNumber.from(process.env.REACT_APP_GAS_FOR_SWA_GWEI),
           dstContractAddress: account,
           isRegularTransfer: false,
           routes: BridgeChainOpration.map((route, index) => {
@@ -310,7 +310,7 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
               dstChainId: NewBridgeChainOpration.ask_bridge_data.chain_id,
               dstPoolId: NewBridgeChainOpration.ask_bridge_data.pool_id,
               srcPoolId: NewBridgeChainOpration.offer_bridge_data.pool_id,
-              gasForSwap: BigNumber.from("1005617"),
+              gasForSwap: BigNumber.from(process.env.REACT_APP_GAS_FOR_SWA_GWEI),
               dstContractAddress: dstSetContractWithChainId(toChain),
               isRegularTransfer: false,
               routes: BridgeChainOpration.map((route, index) => {
@@ -341,7 +341,7 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
               dstChainId: 0,
               dstPoolId: 0,
               srcPoolId: 0,
-              gasForSwap: BigNumber.from("1005617"),
+              gasForSwap: BigNumber.from(process.env.REACT_APP_GAS_FOR_SWA_GWEI),
               dstContractAddress: account,
               isRegularTransfer: false,
               routes: DstChainOpration.map((route) => {
@@ -393,7 +393,7 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
               dstChainId: NewBridgeChainOpration.ask_bridge_data.chain_id,
               dstPoolId: NewBridgeChainOpration.ask_bridge_data.pool_id,
               srcPoolId: NewBridgeChainOpration.offer_bridge_data.pool_id,
-              gasForSwap: BigNumber.from("1005617"),
+              gasForSwap: BigNumber.from(process.env.REACT_APP_GAS_FOR_SWA_GWEI),
               dstContractAddress: account,
               isRegularTransfer: false,
               routes: MixeadSrcAndBridge.map((route, index) => {
@@ -433,7 +433,7 @@ const FromInput: FC<FromInputProps> = ({ balance }) => {
           dstChainId: NewBridgeChainOpration.ask_bridge_data.chain_id,
           dstPoolId: NewBridgeChainOpration.ask_bridge_data.pool_id,
           srcPoolId: NewBridgeChainOpration.offer_bridge_data.pool_id,
-          gasForSwap: BigNumber.from("600000"),
+          gasForSwap: BigNumber.from(process.env.REACT_APP_GAS_FOR_SWA_GWEI),
           dstContractAddress: dstSetContractWithChainId(toChain),
           isRegularTransfer: false,
           routes: MixeadSrcAndBridge.map((route, index) => {

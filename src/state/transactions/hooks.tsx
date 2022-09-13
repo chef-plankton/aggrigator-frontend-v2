@@ -17,7 +17,8 @@ export function useTransactionAdder(): (
     type?: TransactionType;
   }
 ) => void {
-  const hooks = useWallet("metamask");
+  const wallet = useSelector(({ account }: RootState) => account.wallet);
+  const hooks = useWallet(wallet);
   const { useChainId, useAccount } = hooks;
   const chainId = useChainId();
   const account = useAccount();

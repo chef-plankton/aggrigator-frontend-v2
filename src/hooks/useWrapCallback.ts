@@ -31,7 +31,8 @@ export default function useWrapCallback(
   execute?: undefined | (() => Promise<void>);
   inputError?: string;
 } {
-  const { useAccount, useChainId } = useWallet("metamask");
+  const wallet = useSelector(({ account }: RootState) => account.wallet);
+  const { useAccount, useChainId } = useWallet(wallet);
   const chainId = useChainId();
   const account = useAccount();
   const { callWithoutGasPrice } = useCallWithoutGasPrice<Weth, TransactionResponse>();

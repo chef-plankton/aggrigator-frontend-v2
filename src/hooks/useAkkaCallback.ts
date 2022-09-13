@@ -78,7 +78,8 @@ export function useAkkaCalcLayerZeroFeeCallback(): {
       ) => Promise<[BigNumber, BigNumber]>);
   inputError?: string;
 } {
-  const { useAccount, useChainId } = useWallet("metamask");
+  const wallet = useSelector(({ account }: RootState) => account.wallet);
+  const { useAccount, useChainId } = useWallet(wallet);
   const chainId = useChainId();
   const account = useAccount();
   const { callWithoutGasPrice, callWithGasPrice } = useCallWithoutGasPrice<

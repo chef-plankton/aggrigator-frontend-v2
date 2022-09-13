@@ -112,6 +112,10 @@ export function useApproveCallback(
     }
 
     // eslint-disable-next-line consistent-return
+    console.log(spender);
+    console.log(amountToApprove);
+    console.log(tokenContract);
+    
     return callWithoutGasPrice(
       tokenContract,
       "approve",

@@ -16,7 +16,7 @@ const MetaMaskCard: FC<{
 
   return (
     <div
-      className='flex flex-col items-center justify-between px-[12px] py-[15px] border-[5px] border-[#22223D] bg-[#22223D] mb-2 cursor-pointer hover:border-[5px] hover:border-[#814AFB]'
+      className='w-[49%] flex flex-col items-center justify-between px-[12px] py-[15px] border-[5px] border-[#22223D] bg-[#22223D] mb-2 cursor-pointer hover:border-[5px] hover:border-[#814AFB]'
       onClick={handleClick}
     >
       <div>

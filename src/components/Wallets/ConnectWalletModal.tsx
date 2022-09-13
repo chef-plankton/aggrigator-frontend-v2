@@ -62,15 +62,15 @@ function ConnectWalletModal() {
           />
         </div>
       </div>
-      <div className='flex flex-col w-[100%]'>
+      <div className='flex justify-between w-[100%]'>
         {isActive ? (
           <DisconnectWallet />
         ) : isLoading ? (
           <FromTokenlistIsLoading />
         ) : (
           <>
-            <MetaMaskCard handleClick={connectMetamaskHandler} />
-            {/* <WalletConnectCard handleClick={connectWalletConnectHandler} /> */}
+            {/* <MetaMaskCard handleClick={connectMetamaskHandler} /> */}
+            <WalletConnectCard handleClick={connectWalletConnectHandler} />
           </>
         )}
       </div>

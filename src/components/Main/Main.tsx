@@ -320,74 +320,7 @@ function Main() {
         console.error("Could not deposit", error);
       }
     }
-  }
-  // bs sb
-  // async function multiCallSwap() {
-  //   if (swapDescription) {
-  //     const sd = JSON.parse(swapDescription) as SwapDescriptionStruct;
-  //     if (fromChain !== toChain) {
-  //       let tochaindata = { ...sd };
-  //       const index = tochaindata.routes.indexOf(
-  //         tochaindata.routes.filter(
-  //           (item) => item.swapType === SwapTypes.StargateBridge
-  //         )[0]
-  //       );
-  //       const filteredArr = tochaindata.routes.slice(
-  //         tochaindata.routes.length === 1
-  //           ? 0
-  //           : tochaindata.routes.length > 1
-  //           ? index + 1
-  //           : 1,
-  //         tochaindata.routes.length
-  //       );
-  //       tochaindata = {
-  //         ...sd,
-  //         routes: filteredArr,
-  //         srcToken: filteredArr[0].srcToken,
-  //         dstToken: filteredArr[filteredArr.length - 1].dstToken,
-  //         srcDesiredAmount: filteredArr[0].dstMinAmount,
-  //         dstDesiredMinAmount: filteredArr[filteredArr.length - 1].dstMinAmount,
-  //       };
-
-  //       // [s s b s s] [s s]
-  //       const payload = await getBytes(tochaindata);
-  //       const router = sd.routes.filter(
-  //         (item) => item.swapType === SwapTypes.StargateBridge
-  //       )[0].protocolAddresses[0];
-  //       const quote = await quoteLayerZeroFee(
-  //         router,
-  //         BigNumber.from(sd.dstChainId),
-  //         sd.to,
-  //         payload,
-  //         sd.gasForSwap as BigNumber
-  //       );
-
-  //       const a: SwapDescriptionStruct = {
-  //         ...sd,
-  //         dstDesiredMinAmount: sd.routes[index].dstMinAmount,
-  //         routes: sd.routes.slice(0, index + 1),
-  //       };
-
-  //       aggrigatorSwap(a, quote[0], payload);
-  //     } else {
-  //       aggrigatorSwap(
-  //         sd,
-  //         BigNumber.from("0"),
-  //         new AbiCoder().encode(["string"], [""])
-  //       ).catch((err) => {
-  //         if (err?.code === 4001) {
-  //           dispatch(
-  //             changeSwapButtonState({
-  //               state: SwapButonStates.SWAP,
-  //               text: "Swap",
-  //               isDisable: false,
-  //             })
-  //           );
-  //         }
-  //       });
-  //     }
-  //   }
-  // }
+  } 
   async function multiCallSwap() {
     if (oneChainSwapDesc) {
       const swapDescription = JSON.parse(

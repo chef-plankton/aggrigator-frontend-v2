@@ -13,7 +13,7 @@ import { hooks as metaMaskHooks, metaMask } from "./connectors/metaMask";
 import { hooks as networkHooks, network } from "./connectors/network";
 import {
   hooks as walletConnectHooks,
-  walletConnect
+  walletConnect,
 } from "./connectors/walletConnect";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
@@ -46,7 +46,7 @@ root.render(
             <App />
           </Web3ReactProvider>
         </Router>
-        <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+        <ReactQueryDevtools initialIsOpen={false} position='bottom-right' />
       </QueryClientProvider>
     </Provider>
   </>
