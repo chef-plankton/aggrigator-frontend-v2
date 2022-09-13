@@ -101,7 +101,7 @@ function FromNetworklist() {
               <img src={bnblightIcon} alt='' className='w-[56px] mb-2' />
               <span className='w-[60px] md:w-[100px] text-[12px] text-center text-white'>
                 BNB Chain
-              </span>
+                </span>
             </div>
           </li>
           <li className='m-2 w-[50%]'>
