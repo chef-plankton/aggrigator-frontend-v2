@@ -8,7 +8,10 @@ import {
   hooks as walletconnecthooks,
   walletConnect,
 } from "../../../connectors/walletConnect";
-import { changeChain } from "../../../features/chains/chainsSlice";
+import {
+  changeChain,
+  changeStatus,
+} from "../../../features/chains/chainsSlice";
 import { changeModalStatus } from "../../../features/modals/modalsSlice";
 import bnblightIcon from "../../../assets/img/chains/binance-light.svg";
 import polygonIcon from "../../../assets/img/chains/polygon.svg";
@@ -32,6 +35,7 @@ function FromNetworklist() {
   const { useIsActive: walletconnectUseIsActive } = walletconnecthooks;
   const walletconnectIsActive = walletconnectUseIsActive();
   const wallet = useSelector(({ account }: RootState) => account.wallet);
+  const hidden = useSelector(({ chains }: RootState) => chains.isHidden);
   const web3Hooks = useWallet(wallet);
   const {
     useChainId,
@@ -59,9 +63,10 @@ function FromNetworklist() {
   // }
   // };
   const changeChainId = async (chainid: number) => {
-    // setHidden(true);
+    // dispatch(changeStatus(true));
     await login(getAddChainParameters(chainid), chainid, wallet);
-    // setHidden(false);
+    dispatch(changeFromChain(chainid));
+    // dispatch(changeStatus(false));
   };
   return (
     <>
@@ -83,8 +88,6 @@ function FromNetworklist() {
           <li className='m-2 w-[50%]'>
             <div
               onClick={() => {
-                // changeChainId(56);
-                dispatch(changeFromChain(56));
                 isActive && changeChainId(56);
                 dispatch(changeModalStatus(false));
                 dispatch(
@@ -101,14 +104,12 @@ function FromNetworklist() {
               <img src={bnblightIcon} alt='' className='w-[56px] mb-2' />
               <span className='w-[60px] md:w-[100px] text-[12px] text-center text-white'>
                 BNB Chain
-                </span>
+              </span>
             </div>
           </li>
           <li className='m-2 w-[50%]'>
             <div
               onClick={() => {
-                // changeChainId(250);
-                dispatch(changeFromChain(250));
                 isActive && changeChainId(250);
                 dispatch(changeModalStatus(false));
                 dispatch(

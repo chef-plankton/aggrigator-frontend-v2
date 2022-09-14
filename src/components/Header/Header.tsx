@@ -6,7 +6,6 @@ import ArrowDownFont from "../../assets/arrow-down-sign-to-navigate.png";
 import lightlogoPic from "../../assets/lightlogo2.png";
 import logoPic from "../../assets/mainlogo.png";
 import ChainsButton from "./ChainsButton";
-import ChainsDropdown from "./ChainsDropdown";
 import ConnectWalletButton from "./ConnectWalletButton";
 import Logo from "./Logo/Logo";
 
@@ -18,7 +17,7 @@ function Header() {
   };
   const [dropdown, setDropdown] = useState(false);
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
-  const [hidden, setHidden] = useState<boolean>(false);
+  const hidden = useSelector(({ chains }: RootState) => chains.isHidden);
 
   return (
     <nav
@@ -42,49 +41,15 @@ function Header() {
           </div>
           {/* Secondary Navbar items */}
           <div
-            className={`hidden md:${
-              hidden ? "hidden" : "flex"
-            } items-center space-x-3 `}
+            className={`${hidden ? "hidden" : "flex"} items-center space-x-3 `}
           >
-            {/* Chains Button Dropdown */}
-            <ChainsButton
-              ArrowDownFont={ArrowDownFont}
-              setDropdown={setDropdown}
-              dropdown={dropdown}
-              setToggle={setToggle}
-            />
-            {/* Check showing dropdown */}
-            {dropdown ? (
-              <ChainsDropdown setDropdown={setDropdown} setHidden={setHidden} />
-            ) : (
-              ""
-            )}
-
             {/* Connect wallet button */}
             <ConnectWalletButton />
-
             {/* change theme button */}
             {/* <ChangeThemeButton /> */}
           </div>
           {/* Mobile menu button */}
-          <div className='md:hidden flex items-center'>
-            <div className='md:hidden flex items-center md:mr-5'>
-              <ChainsButton
-                ArrowDownFont={ArrowDownFont}
-                setDropdown={setDropdown}
-                dropdown={dropdown}
-                setToggle={setToggle}
-              />
-              {dropdown ? (
-                <ChainsDropdown
-                  setDropdown={setDropdown}
-                  setHidden={setHidden}
-                />
-              ) : (
-                ""
-              )}
-            </div>
-            {/* <button
+          {/* <button
               onClick={toggleMenu}
               className="outline-none mobile-menu-button"
             >
@@ -101,7 +66,6 @@ function Header() {
                 <path d="M4 6h16M4 12h16M4 18h16"></path>
               </svg>
             </button> */}
-          </div>
         </div>
       </div>
       {/* mobile menu */}

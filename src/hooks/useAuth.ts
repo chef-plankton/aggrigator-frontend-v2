@@ -44,6 +44,7 @@ const useAuth = ({ useAccount, useChainId }: Web3ReactHooks): useAuthReturn => {
               dispatch(changeChain(chainId));
               dispatch(changeFromChain(chainId));
               dispatch(changeWallet(walletName));
+              localStorage.setItem("wallet", walletName);
               dispatch(changeAddress(account));
             })
             .catch((err) => {
@@ -65,6 +66,7 @@ const useAuth = ({ useAccount, useChainId }: Web3ReactHooks): useAuthReturn => {
               dispatch(changeChain(chainId));
               dispatch(changeFromChain(chainId));
               dispatch(changeWallet(walletName));
+              localStorage.setItem("wallet", walletName);
               dispatch(changeAddress(account));
             })
             .catch((err) => {

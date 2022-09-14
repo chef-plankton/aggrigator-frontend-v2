@@ -13,6 +13,7 @@ import { changeWallet } from "../../features/account/accountSlice";
 import { useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import FromTokenlistIsLoading from "../Main/From/FromTokenlistIsLoading";
+import { isBrowser } from "react-device-detect";
 function ConnectWalletModal() {
   const dispatch = useDispatch();
   const wallet = useSelector(({ account }: RootState) => account.wallet);
@@ -69,7 +70,7 @@ function ConnectWalletModal() {
           <FromTokenlistIsLoading />
         ) : (
           <>
-            {/* <MetaMaskCard handleClick={connectMetamaskHandler} /> */}
+            {isBrowser && <MetaMaskCard handleClick={connectMetamaskHandler} />}
             <WalletConnectCard handleClick={connectWalletConnectHandler} />
           </>
         )}

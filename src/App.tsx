@@ -19,59 +19,34 @@ function App() {
   const wallet = useSelector(({ account }: RootState) => account.wallet);
   const { useAccount } = useWallet(wallet);
   const account = useAccount();
-  // useEffect(() => {
-  //   if (wallet === "metamask") {
-  //     console.log("im in metamask");
-  //     void metaMask
-  //       .connectEagerly()
-  //       .then(() => {
-  //         dispatch(changeWallet("metamask"));
-  //         dispatch(changeFromChain(chainId));
-
-  //         dispatch(changeAddress(account));
-  //       })
-  //       .catch(() => {
-  //         console.debug("Failed to connect eagerly to metamask");
-  //       });
-  //   }
-  //   if (wallet === "walletconnect") {
-  //     console.log("im in wallet connect");
-  //     void walletConnect
-  //       .connectEagerly()
-  //       .then(() => {
-  //         dispatch(changeWallet("walletconnect"));
-  //         dispatch(changeFromChain(chainId));
-  //         dispatch(changeAddress(account));
-  //       })
-  //       .catch(() => {
-  //         console.debug("Failed to connect eagerly to walletConnect");
-  //       });
-  //   }
-  // }, [chainId]);
   useEffect(() => {
-    console.log("sar meta");
-    // void metaMask
-    //   .connectEagerly()
-    //   .then(() => {
-    //     dispatch(changeWallet("metamask"));
-    //     dispatch(changeFromChain(chainId));
-    //     dispatch(changeAddress(account));
-    //   })
-    //   .catch(() => {
-    //     console.debug("Failed to connect eagerly to metamask");
-    //   });
-    console.log("sar wallectconnect");
-    void walletConnect
-      .connectEagerly()
-      .then(() => {
-        dispatch(changeWallet("walletconnect"));
-        dispatch(changeFromChain(chainId));
-        dispatch(changeAddress(account));
-      })
-      .catch(() => {
-        console.debug("Failed to connect eagerly to walletConnect");
-      });
-    console.log("tah wallectconnect");
+    switch (localStorage.getItem("wallet")) {
+      case "metamask":
+        void metaMask
+          .connectEagerly()
+          .then(() => {
+            dispatch(changeWallet("metamask"));
+            dispatch(changeFromChain(chainId));
+            dispatch(changeAddress(account));
+          })
+          .catch(() => {
+            console.debug("Failed to connect eagerly to metamask");
+          });
+        break;
+
+      case "walletconnect":
+        void walletConnect
+          .connectEagerly()
+          .then(() => {
+            dispatch(changeWallet("walletconnect"));
+            dispatch(changeFromChain(chainId));
+            dispatch(changeAddress(account));
+          })
+          .catch(() => {
+            console.debug("Failed to connect eagerly to walletConnect");
+          });
+        break;
+    }
   }, [chainId]);
 
   return (

@@ -95,6 +95,7 @@ function Main() {
   const fromChain = useSelector(({ route }: RootState) => route.fromChain);
   const toChain = useSelector(({ route }: RootState) => route.toChain);
   const amount = useSelector(({ route }: RootState) => route.amount);
+  const hidden = useSelector(({ chains }: RootState) => chains.isHidden);
   const swapDescription = useSelector(
     ({ route }: RootState) => route.swapDescription
   );
@@ -320,7 +321,7 @@ function Main() {
         console.error("Could not deposit", error);
       }
     }
-  } 
+  }
   async function multiCallSwap() {
     if (oneChainSwapDesc) {
       const swapDescription = JSON.parse(
@@ -352,17 +353,6 @@ function Main() {
       console.log({ fromChainData });
       console.log({ toChainData });
       const payload = await getBytes(toChainData);
-      // console.log("payload finished", payload);
-      // console.log(
-      //   fromChainData.routes[fromChainData.routes.length - 1]
-      //     .protocolAddresses[0]
-      // );
-      // console.log(fromChainData.dstChainId);
-      // console.log(fromChainData.to);
-      // console.log(fromChainData.gasForSwap);
-      // console.log(BigNumber.from(fromChainData.srcDesiredAmount).toString());
-      // console.log(BigNumber.from(fromChainData.dstDesiredMinAmount).toString());
-
       const quote = await quoteLayerZeroFee(
         fromChainData.routes[fromChainData.routes.length - 1]
           .protocolAddresses[0],
@@ -433,17 +423,7 @@ function Main() {
         )
     );
   };
-  SlideToggleContent.defaultProps = {
-    forceSlideIn: false,
-  };
-  SlideToggleContent.propTypes = {
-    /** Should the component mount it's childeren and slide down */
-    isVisible: bool.isRequired,
-    /** Makes sure the component always slides in on mount. Otherwise it will be immediately visible if isVisible is true on mount */
-    forceSlideIn: bool,
-    /** The slidable content elements */
-    children: node.isRequired,
-  };
+
   const handleSwapButtonClick = async () => {
     if (!isActive) {
       dispatch(connectWalletStatus(true));
@@ -478,6 +458,7 @@ function Main() {
       }
     }
   };
+
   const themeMode = useSelector(({ theme }: RootState) => theme.value);
   const showRoute = useSelector(({ route }: RootState) => route.showRoute);
   const [isVisible, setIsVisible] = useState(false);
@@ -509,18 +490,20 @@ function Main() {
         <SlideToggleContent isVisible={isVisible}>
           <ReceiverBox />
         </SlideToggleContent> */}
-
-            <button
-              onClick={handleSwapButtonClick}
-              className={`rounded-[5px] py-[16px] w-[100%] h-[56px] text-center font-clash font-[400] text-[18px] text-lg ${
-                !swapButtonData.isDisable
-                  ? "text-white bg-[#BE35FF]/[0.45] hover:bg-[#BE35FF]/[0.65]"
-                  : "text-[#717070] bg-[#979797] text-black"
-              }`}
-              {...isButtonDisable}
-            >
-              {swapButtonData.text}
-            </button>
+            
+            {!hidden && (
+              <button
+                onClick={handleSwapButtonClick}
+                className={`rounded-[5px] py-[16px] w-[100%] h-[56px] text-center font-clash font-[400] text-[18px] text-lg ${
+                  !swapButtonData.isDisable
+                    ? "text-white bg-[#BE35FF]/[0.45] hover:bg-[#BE35FF]/[0.65]"
+                    : "text-[#717070] bg-[#979797] text-black"
+                }`}
+                {...isButtonDisable}
+              >
+                {swapButtonData.text}
+              </button>
+            )}
           </div>
           {showRoute ? (
             <div className='w-full md:h-[420px] md:w-[440px] px-[24px] bg-[#1B1A2E] pb-[24px] md:py-[24px] flex flex-col justify-center items-center'>
